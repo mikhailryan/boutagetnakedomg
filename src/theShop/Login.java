@@ -24,7 +24,6 @@ public class Login extends javax.swing.JFrame {
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
         
-        boolean pass_shown = false;
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
@@ -74,6 +73,7 @@ public class Login extends javax.swing.JFrame {
         registration = new javax.swing.JLabel();
         show_pass = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
+        registration1 = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -81,10 +81,11 @@ public class Login extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(19, 122, 127));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBackground(new java.awt.Color(204, 255, 255));
         jPanel2.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(19, 122, 127));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Welcome Back!");
         jPanel2.add(jLabel1);
@@ -96,7 +97,7 @@ public class Login extends javax.swing.JFrame {
 
         pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/padlock.png"))); // NOI18N
         jPanel2.add(pass);
-        pass.setBounds(50, 230, 30, 30);
+        pass.setBounds(50, 220, 30, 30);
 
         username.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         username.setForeground(new java.awt.Color(153, 153, 153));
@@ -134,11 +135,12 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(LoginButton);
-        LoginButton.setBounds(70, 290, 200, 30);
+        LoginButton.setBounds(70, 270, 200, 30);
 
-        registration.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        registration.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
+        registration.setForeground(new java.awt.Color(0, 0, 204));
         registration.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        registration.setText("Create new account ");
+        registration.setText("Sign up");
         registration.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 registrationMouseEntered(evt);
@@ -151,7 +153,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(registration);
-        registration.setBounds(70, 320, 200, 20);
+        registration.setBounds(190, 300, 80, 20);
 
         show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -160,7 +162,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(show_pass);
-        show_pass.setBounds(250, 230, 30, 30);
+        show_pass.setBounds(250, 220, 30, 30);
 
         password.setText(" Enter password...");
         password.setEchoChar((char) 0);
@@ -185,7 +187,24 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(password);
-        password.setBounds(70, 230, 200, 30);
+        password.setBounds(70, 220, 200, 30);
+
+        registration1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        registration1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        registration1.setText("Don't have an account? ");
+        registration1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                registration1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                registration1MouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                registration1MousePressed(evt);
+            }
+        });
+        jPanel2.add(registration1);
+        registration1.setBounds(70, 300, 160, 20);
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
@@ -230,7 +249,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginButtonActionPerformed
 
     private void LoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseEntered
-        LoginButton.setBackground(Color.GRAY);
+        LoginButton.setBackground(new Color(134,206,203));
     }//GEN-LAST:event_LoginButtonMouseEntered
 
     private void LoginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseExited
@@ -238,11 +257,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_LoginButtonMouseExited
 
     private void registrationMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationMouseEntered
-        registration.setForeground(Color.BLUE);
+        registration.setForeground(new Color(134,206,203));
     }//GEN-LAST:event_registrationMouseEntered
 
     private void registrationMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationMouseExited
-        registration.setForeground(Color.BLACK);
+        registration.setForeground(new Color(0,0,204));
     }//GEN-LAST:event_registrationMouseExited
 
     private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
@@ -293,6 +312,18 @@ public class Login extends javax.swing.JFrame {
     private void passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_passwordKeyReleased
+
+    private void registration1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registration1MouseEntered
+
+    private void registration1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registration1MouseExited
+
+    private void registration1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registration1MousePressed
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -333,6 +364,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel pass;
     private javax.swing.JPasswordField password;
     private javax.swing.JLabel registration;
+    private javax.swing.JLabel registration1;
     private javax.swing.JLabel show_pass;
     private javax.swing.JLabel user;
     private javax.swing.JTextField username;

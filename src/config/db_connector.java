@@ -24,5 +24,32 @@ public class db_connector {
         ResultSet result = statement.executeQuery(sql);
         return result;
     }
-
+    
+    /*
+    private void display_data(){
+        try {
+            db_connector dbcon = new db_connector();
+            ResultSet result = dbcon.get_data("SELECT * FROM table_name");
+            table_name.setModel(DbUtils.resultSetToTableModel(result));
+        } catch (SQLException e) {
+            System.out.println("Can't Connect to Database: " + e.getMessage());
+        }
+        
+    }
+    
+    public int insertData(String sql){
+        int result;
+        try{
+            try (PreparedStatement pst = conn.prepareStatement(sql)) {
+                pst.executeUpdate();
+                System.out.println("Inserted Successfully!");
+            }
+            result = 1;
+        }catch(SQLException e){
+            System.out.println("Connection Error: " + e.getMessage();
+            result = 0;
+        }
+        return result;
+    }
+    */
 }

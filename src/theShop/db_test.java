@@ -19,7 +19,7 @@ public class db_test extends javax.swing.JFrame {
     private void display_data(){
         try {
             db_connector dbcon = new db_connector();
-            ResultSet result = dbcon.get_data("SELECT * FROM isthisatable");
+            ResultSet result = dbcon.get_data("SELECT * FROM user");
             test_table.setModel(DbUtils.resultSetToTableModel(result));
         } catch (SQLException e) {
             System.out.println("Can't Connect to Database: " + e.getMessage());
