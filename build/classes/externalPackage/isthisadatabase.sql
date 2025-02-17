@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2025 at 04:34 PM
+-- Generation Time: Feb 17, 2025 at 08:17 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,46 +24,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `isthisatable`
+-- Table structure for table `user`
 --
 
-CREATE TABLE `isthisatable` (
-  `user_id` int(50) NOT NULL,
-  `firstname` varchar(255) NOT NULL,
-  `lastname` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `role` varchar(100) NOT NULL
+  `role` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `isthisatable`
+-- Dumping data for table `user`
 --
 
-INSERT INTO `isthisatable` (`user_id`, `firstname`, `lastname`, `email`, `username`, `password`, `role`) VALUES
-(1, 'Mikhail', 'Jackson', 'mjdagoat@gmail.com', 'mikuu', '12345', 'Admin'),
-(2, 'Hatsune', 'Miku', 'mikuuu@gmail.com', 'miku', '12345', 'User');
+INSERT INTO `user` (`id`, `username`, `email`, `password`, `role`) VALUES
+(101, 'mikuu', 'mikudagoat@gmail.com', 'password123', 'admin'),
+(102, 'jane_doe', 'janedoe@gmail.com', 'password123', 'user');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `isthisatable`
+-- Indexes for table `user`
 --
-ALTER TABLE `isthisatable`
-  ADD PRIMARY KEY (`user_id`);
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `isthisatable`
+-- AUTO_INCREMENT for table `user`
 --
-ALTER TABLE `isthisatable`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
