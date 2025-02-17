@@ -21,11 +21,12 @@ public class Register extends javax.swing.JFrame {
         user.setIcon(resizeImage("/images/user.png", user));
         pass.setIcon(resizeImage("/images/padlock.png", user));
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
+        show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
         ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
+        Image img = icon.getImage().getScaledInstance(label.getWidth() - 17, label.getHeight() - 17, Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
     
@@ -67,6 +68,7 @@ public class Register extends javax.swing.JFrame {
         pass = new javax.swing.JLabel();
         username = new javax.swing.JTextField();
         LoginButton = new javax.swing.JButton();
+        show_pass = new javax.swing.JLabel();
         password = new javax.swing.JPasswordField();
         leek = new javax.swing.JLabel();
 
@@ -76,18 +78,19 @@ public class Register extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(290, 340));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Registration");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 260, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 260, 40));
 
         user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, 30, 30));
+        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
 
         pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/padlock.png"))); // NOI18N
-        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 30, 30));
+        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 30, 30));
 
         username.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         username.setForeground(new java.awt.Color(153, 153, 153));
@@ -105,7 +108,7 @@ public class Register extends javax.swing.JFrame {
                 usernameActionPerformed(evt);
             }
         });
-        jPanel2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 200, 30));
+        jPanel2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 200, 30));
 
         LoginButton.setBackground(new java.awt.Color(255, 255, 255));
         LoginButton.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -117,13 +120,24 @@ public class Register extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 LoginButtonMouseExited(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                LoginButtonMousePressed(evt);
+            }
         });
         LoginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 LoginButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 290, 200, 30));
+        jPanel2.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 290, 200, 30));
+
+        show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
+        show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                show_passMouseClicked(evt);
+            }
+        });
+        jPanel2.add(show_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 230, 30, 30));
 
         password.setText(" Enter password...");
         password.setEchoChar((char) 0);
@@ -137,12 +151,12 @@ public class Register extends javax.swing.JFrame {
                 passwordFocusLost(evt);
             }
         });
-        jPanel2.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(41, 230, 200, 30));
+        jPanel2.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 200, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, 260, 530));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
         leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
-        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 190, 220));
+        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 240, 220));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -206,6 +220,27 @@ public class Register extends javax.swing.JFrame {
             password.setFont(new Font("Arial", Font.ITALIC, 10));
         }
     }//GEN-LAST:event_passwordFocusLost
+
+    private void LoginButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMousePressed
+        new db_test().setVisible(true);
+    }//GEN-LAST:event_LoginButtonMousePressed
+    boolean pass_visible = false;
+    private void show_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_show_passMouseClicked
+        pass_visible = !pass_visible;
+        String currentText = password.getText().trim();
+
+        if (pass_visible) {
+            if (!currentText.equals("Enter password...")) {
+                password.setEchoChar((char) 0);
+            }
+            show_pass.setIcon(resizeImage("/images/eye.png", show_pass));
+        } else {
+            if (!currentText.equals("Enter password...")) {
+                password.setEchoChar('•');
+            }
+            show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
+        }
+    }//GEN-LAST:event_show_passMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -246,6 +281,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel leek;
     private javax.swing.JLabel pass;
     private javax.swing.JPasswordField password;
+    private javax.swing.JLabel show_pass;
     private javax.swing.JLabel user;
     private javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
