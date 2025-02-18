@@ -97,7 +97,7 @@ public class Login extends javax.swing.JFrame {
 
         pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/padlock.png"))); // NOI18N
         jPanel2.add(pass);
-        pass.setBounds(50, 220, 30, 30);
+        pass.setBounds(50, 230, 30, 30);
 
         username.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         username.setForeground(new java.awt.Color(153, 153, 153));
@@ -135,7 +135,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(LoginButton);
-        LoginButton.setBounds(70, 270, 200, 30);
+        LoginButton.setBounds(70, 280, 200, 30);
 
         registration.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         registration.setForeground(new java.awt.Color(0, 0, 204));
@@ -153,7 +153,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(registration);
-        registration.setBounds(190, 300, 80, 20);
+        registration.setBounds(190, 310, 80, 20);
 
         show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -162,7 +162,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(show_pass);
-        show_pass.setBounds(250, 220, 30, 30);
+        show_pass.setBounds(250, 230, 30, 30);
 
         password.setText(" Enter password...");
         password.setEchoChar((char) 0);
@@ -187,7 +187,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(password);
-        password.setBounds(70, 220, 200, 30);
+        password.setBounds(70, 230, 200, 30);
 
         registration1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         registration1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -204,7 +204,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(registration1);
-        registration1.setBounds(70, 300, 160, 20);
+        registration1.setBounds(70, 310, 160, 20);
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 

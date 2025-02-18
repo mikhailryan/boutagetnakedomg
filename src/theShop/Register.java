@@ -7,8 +7,12 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Window;
+import java.util.Arrays;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 public class Register extends javax.swing.JFrame {
 
@@ -71,14 +75,14 @@ public class Register extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         user = new javax.swing.JLabel();
         pass = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
-        LoginButton = new javax.swing.JButton();
+        username_input = new javax.swing.JTextField();
+        register_button = new javax.swing.JButton();
         show_pass = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
+        password_input = new javax.swing.JPasswordField();
         email_input = new javax.swing.JTextField();
         email = new javax.swing.JLabel();
         show_pass1 = new javax.swing.JLabel();
-        password1 = new javax.swing.JPasswordField();
+        password1_input = new javax.swing.JPasswordField();
         pass1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         admin_role = new javax.swing.JRadioButton();
@@ -100,52 +104,55 @@ public class Register extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Registration");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 260, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 320, 40));
 
         user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
+        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 30, 30));
 
         pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/padlock.png"))); // NOI18N
-        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, 30, 30));
+        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 30, 30));
 
-        username.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
-        username.setForeground(new java.awt.Color(153, 153, 153));
-        username.setText(" Enter username...");
-        username.addFocusListener(new java.awt.event.FocusAdapter() {
+        username_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
+        username_input.setForeground(new java.awt.Color(153, 153, 153));
+        username_input.setText(" Enter username...");
+        username_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                usernameFocusGained(evt);
+                username_inputFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                usernameFocusLost(evt);
+                username_inputFocusLost(evt);
             }
         });
-        username.addActionListener(new java.awt.event.ActionListener() {
+        username_input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameActionPerformed(evt);
+                username_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 200, 30));
+        jPanel2.add(username_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 200, 30));
 
-        LoginButton.setBackground(new java.awt.Color(255, 255, 255));
-        LoginButton.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        LoginButton.setText("Fuck off");
-        LoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+        register_button.setBackground(new java.awt.Color(255, 255, 255));
+        register_button.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        register_button.setText("Fuck off");
+        register_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                register_buttonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                LoginButtonMouseEntered(evt);
+                register_buttonMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                LoginButtonMouseExited(evt);
+                register_buttonMouseExited(evt);
             }
             public void mousePressed(java.awt.event.MouseEvent evt) {
-                LoginButtonMousePressed(evt);
+                register_buttonMousePressed(evt);
             }
         });
-        LoginButton.addActionListener(new java.awt.event.ActionListener() {
+        register_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                LoginButtonActionPerformed(evt);
+                register_buttonActionPerformed(evt);
             }
         });
-        jPanel2.add(LoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, 200, 30));
+        jPanel2.add(register_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, 200, -1));
 
         show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -153,21 +160,21 @@ public class Register extends javax.swing.JFrame {
                 show_passMouseClicked(evt);
             }
         });
-        jPanel2.add(show_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, 30, 30));
+        jPanel2.add(show_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 230, 30, 30));
 
-        password.setText(" Enter password...");
-        password.setEchoChar((char) 0);
-        password.setForeground(Color.GRAY);
-        password.setFont(new Font("Arial", Font.ITALIC, 10));
-        password.addFocusListener(new java.awt.event.FocusAdapter() {
+        password_input.setText(" Enter password...");
+        password_input.setEchoChar((char) 0);
+        password_input.setForeground(Color.GRAY);
+        password_input.setFont(new Font("Arial", Font.ITALIC, 10));
+        password_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                passwordFocusGained(evt);
+                password_inputFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                passwordFocusLost(evt);
+                password_inputFocusLost(evt);
             }
         });
-        jPanel2.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 260, 200, 30));
+        jPanel2.add(password_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 200, 30));
 
         email_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         email_input.setForeground(new java.awt.Color(153, 153, 153));
@@ -185,10 +192,10 @@ public class Register extends javax.swing.JFrame {
                 email_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, 200, 30));
+        jPanel2.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 200, 30));
 
         email.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/email.png"))); // NOI18N
-        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 30, 30));
+        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
 
         show_pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -196,29 +203,34 @@ public class Register extends javax.swing.JFrame {
                 show_pass1MouseClicked(evt);
             }
         });
-        jPanel2.add(show_pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 30, 30));
+        jPanel2.add(show_pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, 30, 30));
 
-        password1.setText(" Confirm password...");
-        password1.setEchoChar((char) 0);
-        password1.setForeground(Color.GRAY);
-        password1.setFont(new Font("Arial", Font.ITALIC, 10));
-        password1.addFocusListener(new java.awt.event.FocusAdapter() {
+        password1_input.setText(" Confirm password...");
+        password1_input.setEchoChar((char) 0);
+        password1_input.setForeground(Color.GRAY);
+        password1_input.setFont(new Font("Arial", Font.ITALIC, 10));
+        password1_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                password1FocusGained(evt);
+                password1_inputFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                password1FocusLost(evt);
+                password1_inputFocusLost(evt);
             }
         });
-        password1.addMouseListener(new java.awt.event.MouseAdapter() {
+        password1_input.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                password1MouseEntered(evt);
+                password1_inputMouseEntered(evt);
             }
         });
-        jPanel2.add(password1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 200, 30));
+        password1_input.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                password1_inputActionPerformed(evt);
+            }
+        });
+        jPanel2.add(password1_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 200, 30));
 
         pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/access.png"))); // NOI18N
-        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 30, 30));
+        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 30, 30));
 
         jPanel3.setBackground(new java.awt.Color(134, 206, 203));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Role", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
@@ -246,15 +258,15 @@ public class Register extends javax.swing.JFrame {
         jPanel3.add(user_role);
         user_role.setBounds(20, 20, 60, 30);
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 350, 200, 60));
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 200, 70));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/setting.png"))); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, 30, 30));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 30, 30));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Already have an account?");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 460, 160, 20));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 460, 160, -1));
 
         to_login.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         to_login.setForeground(new java.awt.Color(0, 0, 204));
@@ -271,7 +283,7 @@ public class Register extends javax.swing.JFrame {
                 to_loginMouseExited(evt);
             }
         });
-        jPanel2.add(to_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 70, 20));
+        jPanel2.add(to_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 70, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
@@ -293,70 +305,72 @@ public class Register extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
+    private void username_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_inputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_usernameActionPerformed
+    }//GEN-LAST:event_username_inputActionPerformed
 
-    private void usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFocusGained
-        if (username.getText().equals(" Enter username...")) {
-            username.setText("");  
-            username.setForeground(Color.BLACK); 
+    private void username_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusGained
+        if (username_input.getText().equals(" Enter username...")) {
+            username_input.setText("");  
+            username_input.setForeground(Color.BLACK);
+            username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }
-    }//GEN-LAST:event_usernameFocusGained
+    }//GEN-LAST:event_username_inputFocusGained
 
-    private void usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFocusLost
-        if (username.getText().isEmpty()) {
-            username.setText(" Enter username...");
-            username.setForeground(Color.GRAY);
+    private void username_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusLost
+        if (username_input.getText().isEmpty()) {
+            username_input.setText(" Enter username...");
+            username_input.setForeground(Color.GRAY);
         }
-    }//GEN-LAST:event_usernameFocusLost
+    }//GEN-LAST:event_username_inputFocusLost
 
-    private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
+    private void register_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_register_buttonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_LoginButtonActionPerformed
+    }//GEN-LAST:event_register_buttonActionPerformed
 
-    private void LoginButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseEntered
-        LoginButton.setBackground(new Color(134,206,203));
-    }//GEN-LAST:event_LoginButtonMouseEntered
+    private void register_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMouseEntered
+        register_button.setBackground(new Color(134,206,203));
+    }//GEN-LAST:event_register_buttonMouseEntered
 
-    private void LoginButtonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseExited
-        LoginButton.setBackground(Color.WHITE);
-    }//GEN-LAST:event_LoginButtonMouseExited
+    private void register_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMouseExited
+        register_button.setBackground(Color.WHITE);
+    }//GEN-LAST:event_register_buttonMouseExited
 
-    private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
-        if (password.getText().equals(" Enter password...")) {
-            password.setText("");
-            password.setEchoChar('•');
-            password.setForeground(Color.BLACK);
-            password.setFont(new Font("Arial", Font.PLAIN, 10));
+    private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
+        if (password_input.getText().equals(" Enter password...")) {
+            password_input.setText("");
+            password_input.setEchoChar('•');
+            password_input.setForeground(Color.BLACK);
+            password_input.setFont(new Font("Arial", Font.PLAIN, 10));
+            password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }   
-    }//GEN-LAST:event_passwordFocusGained
+    }//GEN-LAST:event_password_inputFocusGained
 
-    private void passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusLost
-        if (password.getText().isEmpty()) {
-            password.setText(" Enter password...");
-            password.setEchoChar((char) 0);
-            password.setForeground(Color.GRAY);
-            password.setFont(new Font("Arial", Font.ITALIC, 10));
+    private void password_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusLost
+        if (password_input.getText().isEmpty()) {
+            password_input.setText(" Enter password...");
+            password_input.setEchoChar((char) 0);
+            password_input.setForeground(Color.GRAY);
+            password_input.setFont(new Font("Arial", Font.ITALIC, 10));
         }
-    }//GEN-LAST:event_passwordFocusLost
+    }//GEN-LAST:event_password_inputFocusLost
 
-    private void LoginButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMousePressed
-        new db_test().setVisible(true);
-    }//GEN-LAST:event_LoginButtonMousePressed
+    private void register_buttonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMousePressed
+        
+    }//GEN-LAST:event_register_buttonMousePressed
     boolean pass_visible = false;
     private void show_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_show_passMouseClicked
         pass_visible = !pass_visible;
-        String currentText = password.getText().trim();
+        String currentText = password_input.getText().trim();
 
         if (pass_visible) {
             if (!currentText.equals("Enter password...")) {
-                password.setEchoChar((char) 0);
+                password_input.setEchoChar((char) 0);
             }
             show_pass.setIcon(resizeImage("/images/eye.png", show_pass));
         } else {
             if (!currentText.equals("Enter password...")) {
-                password.setEchoChar('•');
+                password_input.setEchoChar('•');
             }
             show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
         }
@@ -366,49 +380,51 @@ public class Register extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_email_inputActionPerformed
 
-    private void password1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1FocusGained
-        if (password1.getText().equals(" Confirm password...")) {
-            password1.setText("");
-            password1.setEchoChar('•');
-            password1.setForeground(Color.BLACK);
-            password1.setFont(new Font("Arial", Font.PLAIN, 10));
+    private void password1_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1_inputFocusGained
+        if (password1_input.getText().equals(" Confirm password...")) {
+            password1_input.setText("");
+            password1_input.setEchoChar('•');
+            password1_input.setForeground(Color.BLACK);
+            password1_input.setFont(new Font("Arial", Font.PLAIN, 10));
+            password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         } 
-    }//GEN-LAST:event_password1FocusGained
+    }//GEN-LAST:event_password1_inputFocusGained
 
-    private void password1FocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1FocusLost
-        if (password1.getText().isEmpty()) {
-            password1.setText(" Confirm password...");
-            password1.setEchoChar((char) 0);
-            password1.setForeground(Color.GRAY);
-            password1.setFont(new Font("Arial", Font.ITALIC, 10));
+    private void password1_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1_inputFocusLost
+        if (password1_input.getText().isEmpty()) {
+            password1_input.setText(" Confirm password...");
+            password1_input.setEchoChar((char) 0);
+            password1_input.setForeground(Color.GRAY);
+            password1_input.setFont(new Font("Arial", Font.ITALIC, 10));
         }
-    }//GEN-LAST:event_password1FocusLost
+    }//GEN-LAST:event_password1_inputFocusLost
     boolean pass_visible1 = false;
     private void show_pass1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_show_pass1MouseClicked
         pass_visible1 = !pass_visible1;
-        String currentText = password1.getText().trim();
+        String currentText = password1_input.getText().trim();
 
         if (pass_visible1) {
             if (!currentText.equals("Confirm password...")) {
-                password1.setEchoChar((char) 0);
+                password1_input.setEchoChar((char) 0);
             }
             show_pass1.setIcon(resizeImage("/images/eye.png", show_pass1));
         } else {
             if (!currentText.equals("Confirm password...")) {
-                password1.setEchoChar('•');
+                password1_input.setEchoChar('•');
             }
             show_pass1.setIcon(resizeImage("/images/hidden.png", show_pass1));
         }
     }//GEN-LAST:event_show_pass1MouseClicked
 
-    private void password1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_password1MouseEntered
+    private void password1_inputMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_password1_inputMouseEntered
         // TODO add your handling code here:
-    }//GEN-LAST:event_password1MouseEntered
+    }//GEN-LAST:event_password1_inputMouseEntered
 
     private void email_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_email_inputFocusGained
+        email_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         if (email_input.getText().equals(" Enter email...")) {
             email_input.setText("");  
-            email_input.setForeground(Color.BLACK); 
+            email_input.setForeground(Color.BLACK);
         }
     }//GEN-LAST:event_email_inputFocusGained
 
@@ -435,6 +451,57 @@ public class Register extends javax.swing.JFrame {
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_to_loginMouseClicked
+
+    private void password1_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password1_inputActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_password1_inputActionPerformed
+
+    private void register_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMouseClicked
+        
+        if(username_input.getText().trim().isEmpty() || username_input.getText().equals(" Enter username...")) {
+            username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        String password = new String(password_input.getPassword());
+        if(password.isEmpty() || password.equals(" Enter password...")) {
+            password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        String email = email_input.getText().trim();
+        if(email.isEmpty() || email.equals(" Enter email...") || !isValidEmail(email)) {
+            email_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        String password1 = new String(password1_input.getPassword());
+        if(password1.isEmpty() || password.equals(" Enter password...")) {
+            password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        boolean pass_confirmed = Arrays.equals(password_input.getPassword(), password1_input.getPassword());
+        
+        if(username_input.getText().trim().isEmpty() || username_input.getText().equals(" Enter username...")){
+            JOptionPane.showMessageDialog(null, "Please Enter a Username!");
+        }else if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)){
+            if(email.isEmpty() || email.equals("Enter email...")){
+                JOptionPane.showMessageDialog(null, "Please Enter an Email!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Please Enter a Valid Email!");
+            }
+            
+        }else if(password.isEmpty() || password.equals(" Enter password...")){
+            JOptionPane.showMessageDialog(null, "Please Enter a Password!");
+        }else if(password1.isEmpty() || password.equals(" Enter password...")){
+            JOptionPane.showMessageDialog(null, "Please Confirm your Password!");
+        }else if(!pass_confirmed){
+            JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_register_buttonMouseClicked
+    
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        return email.matches(emailRegex);
+    }
+
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -468,7 +535,6 @@ public class Register extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton LoginButton;
     private javax.swing.JRadioButton admin_role;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel email;
@@ -482,14 +548,15 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JLabel leek;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel pass1;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JPasswordField password1;
+    private javax.swing.JPasswordField password1_input;
+    private javax.swing.JPasswordField password_input;
+    private javax.swing.JButton register_button;
     private javax.swing.JLabel show_pass;
     private javax.swing.JLabel show_pass1;
     private javax.swing.JLabel to_login;
     private javax.swing.JLabel user;
     private javax.swing.JRadioButton user_role;
-    private javax.swing.JTextField username;
+    private javax.swing.JTextField username_input;
     // End of variables declaration//GEN-END:variables
 
 }
