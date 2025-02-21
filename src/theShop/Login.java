@@ -122,6 +122,9 @@ public class Login extends javax.swing.JFrame {
         LoginButton.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
         LoginButton.setText("Login");
         LoginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                LoginButtonMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 LoginButtonMouseEntered(evt);
             }
@@ -324,6 +327,11 @@ public class Login extends javax.swing.JFrame {
     private void registration1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_registration1MousePressed
+
+    private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
+//        new db_test().setVisible(true);
+//        this.dispose();
+    }//GEN-LAST:event_LoginButtonMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
