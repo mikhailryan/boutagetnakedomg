@@ -1,30 +1,13 @@
 
 package theShop;
 
-import config.db_connector;
-import java.sql.*;
-import net.proteanit.sql.DbUtils;
-
-public class db_test extends javax.swing.JFrame {
+public class User_Dashboard extends javax.swing.JFrame {
 
     /**
-     * Creates new form db_test
+     * Creates new form Admin_Dashboard
      */
-    public db_test() {
+    public User_Dashboard() {
         initComponents();
-        
-        display_data();
-    }
-    
-    private void display_data(){
-        try {
-            db_connector dbcon = new db_connector();
-            ResultSet result = dbcon.getData("SELECT * FROM user");
-            test_table.setModel(DbUtils.resultSetToTableModel(result));
-        } catch (SQLException e) {
-            System.out.println("Can't Connect to Database: " + e.getMessage());
-        }
-        
     }
 
     /**
@@ -37,42 +20,48 @@ public class db_test extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        test_table = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
         jPanel1.setLayout(null);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("bruh");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(250, 50, 300, 50);
+        jPanel2.setBackground(new java.awt.Color(19, 122, 127));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        test_table.setBackground(new java.awt.Color(153, 255, 255));
-        test_table.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        test_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("the Shop");
+        jLabel1.setToolTipText("");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 220, 110));
 
-            }
-        ));
-        test_table.setGridColor(new java.awt.Color(0, 0, 204));
-        test_table.setSelectionForeground(new java.awt.Color(153, 255, 255));
-        test_table.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        test_table.setShowVerticalLines(false);
-        jScrollPane1.setViewportView(test_table);
-        test_table.getAccessibleContext().setAccessibleDescription("");
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(0, 0, 260, 530);
 
-        jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 140, 740, 280);
+        jPanel3.setBackground(new java.awt.Color(134, 206, 203));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 120, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel3);
+        jPanel3.setBounds(0, 80, 800, 120);
+
+        jLabel2.setText("USER DASHBOARD");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(481, 510, 100, 20);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,28 +95,30 @@ public class db_test extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(db_test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(User_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(db_test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(User_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(db_test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(User_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(db_test.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(User_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new db_test().setVisible(true);
+                new User_Dashboard().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable test_table;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
 }

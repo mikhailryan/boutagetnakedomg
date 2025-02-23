@@ -1,5 +1,6 @@
 package theShop;
 
+import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -7,11 +8,18 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Window;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class Login extends javax.swing.JFrame {
-
+    
+    db_connector conn = new db_connector();
+    
     /** Creates new form Login */
     public Login() {
         initComponents();
@@ -24,6 +32,8 @@ public class Login extends javax.swing.JFrame {
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
         
+        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
@@ -68,11 +78,11 @@ public class Login extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         user = new javax.swing.JLabel();
         pass = new javax.swing.JLabel();
-        username = new javax.swing.JTextField();
+        username_input = new javax.swing.JTextField();
         LoginButton = new javax.swing.JButton();
         registration = new javax.swing.JLabel();
         show_pass = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
+        password_input = new javax.swing.JPasswordField();
         registration1 = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
@@ -99,24 +109,24 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(pass);
         pass.setBounds(50, 230, 30, 30);
 
-        username.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
-        username.setForeground(new java.awt.Color(153, 153, 153));
-        username.setText(" Enter username...");
-        username.addFocusListener(new java.awt.event.FocusAdapter() {
+        username_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
+        username_input.setForeground(new java.awt.Color(153, 153, 153));
+        username_input.setText(" Enter username...");
+        username_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                usernameFocusGained(evt);
+                username_inputFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                usernameFocusLost(evt);
+                username_inputFocusLost(evt);
             }
         });
-        username.addActionListener(new java.awt.event.ActionListener() {
+        username_input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                usernameActionPerformed(evt);
+                username_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(username);
-        username.setBounds(70, 180, 200, 30);
+        jPanel2.add(username_input);
+        username_input.setBounds(70, 180, 200, 30);
 
         LoginButton.setBackground(new java.awt.Color(255, 255, 255));
         LoginButton.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
@@ -167,30 +177,30 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(show_pass);
         show_pass.setBounds(250, 230, 30, 30);
 
-        password.setText(" Enter password...");
-        password.setEchoChar((char) 0);
-        password.setForeground(Color.GRAY);
-        password.setFont(new Font("Arial", Font.ITALIC, 10));
-        password.addFocusListener(new java.awt.event.FocusAdapter() {
+        password_input.setText(" Enter password...");
+        password_input.setEchoChar((char) 0);
+        password_input.setForeground(Color.GRAY);
+        password_input.setFont(new Font("Arial", Font.ITALIC, 10));
+        password_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                passwordFocusGained(evt);
+                password_inputFocusGained(evt);
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
-                passwordFocusLost(evt);
+                password_inputFocusLost(evt);
             }
         });
-        password.addActionListener(new java.awt.event.ActionListener() {
+        password_input.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordActionPerformed(evt);
+                password_inputActionPerformed(evt);
             }
         });
-        password.addKeyListener(new java.awt.event.KeyAdapter() {
+        password_input.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                passwordKeyReleased(evt);
+                password_inputKeyReleased(evt);
             }
         });
-        jPanel2.add(password);
-        password.setBounds(70, 230, 200, 30);
+        jPanel2.add(password_input);
+        password_input.setBounds(70, 230, 200, 30);
 
         registration1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         registration1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -229,23 +239,25 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
     
-    private void usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usernameActionPerformed
+    private void username_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_username_inputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_usernameActionPerformed
+    }//GEN-LAST:event_username_inputActionPerformed
 
-    private void usernameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFocusGained
-        if (username.getText().equals(" Enter username...")) {
-            username.setText("");  
-            username.setForeground(Color.BLACK); 
+    private void username_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusGained
+        if (username_input.getText().equals(" Enter username...")) {
+            username_input.setText("");  
+            username_input.setForeground(Color.BLACK); 
         }
-    }//GEN-LAST:event_usernameFocusGained
+        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    }//GEN-LAST:event_username_inputFocusGained
 
-    private void usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFocusLost
-        if (username.getText().isEmpty()) {
-            username.setText(" Enter username...");
-            username.setForeground(Color.GRAY);
+    private void username_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusLost
+        if (username_input.getText().isEmpty()) {
+            username_input.setText(" Enter username...");
+            username_input.setForeground(Color.GRAY);
         }
-    }//GEN-LAST:event_usernameFocusLost
+        
+    }//GEN-LAST:event_username_inputFocusLost
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
         // TODO add your handling code here:
@@ -267,54 +279,55 @@ public class Login extends javax.swing.JFrame {
         registration.setForeground(new Color(0,0,204));
     }//GEN-LAST:event_registrationMouseExited
 
-    private void passwordFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusGained
-        if (password.getText().equals(" Enter password...")) {
-            password.setText("");
-            password.setEchoChar('•');
-            password.setForeground(Color.BLACK);
-            password.setFont(new Font("Arial", Font.PLAIN, 10));
+    private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
+        if (password_input.getText().equals(" Enter password...")) {
+            password_input.setText("");
+            password_input.setEchoChar('•');
+            password_input.setForeground(Color.BLACK);
+            password_input.setFont(new Font("Arial", Font.PLAIN, 10));
         }   
-    }//GEN-LAST:event_passwordFocusGained
+        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    }//GEN-LAST:event_password_inputFocusGained
 
-    private void passwordFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_passwordFocusLost
-        if (password.getText().isEmpty()) {
-            password.setText(" Enter password...");
-            password.setEchoChar((char) 0);
-            password.setForeground(Color.GRAY);
-            password.setFont(new Font("Arial", Font.ITALIC, 10));
+    private void password_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusLost
+        if (password_input.getText().isEmpty()) {
+            password_input.setText(" Enter password...");
+            password_input.setEchoChar((char) 0);
+            password_input.setForeground(Color.GRAY);
+            password_input.setFont(new Font("Arial", Font.ITALIC, 10));
         }
-    }//GEN-LAST:event_passwordFocusLost
+    }//GEN-LAST:event_password_inputFocusLost
 
     private void registrationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationMousePressed
         new Register().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_registrationMousePressed
 
-    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+    private void password_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_password_inputActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordActionPerformed
+    }//GEN-LAST:event_password_inputActionPerformed
     
     private boolean pass_visible = false;
     private void show_passMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_show_passMouseClicked
         pass_visible = !pass_visible;
-        String currentText = password.getText().trim();
+        String currentText = password_input.getText().trim();
 
         if (pass_visible) {
             if (!currentText.equals("Enter password...")) {
-                password.setEchoChar((char) 0);
+                password_input.setEchoChar((char) 0);
             }
             show_pass.setIcon(resizeImage("/images/eye.png", show_pass));
         } else {
             if (!currentText.equals("Enter password...")) {
-                password.setEchoChar('•');
+                password_input.setEchoChar('•');
             }
             show_pass.setIcon(resizeImage("/images/hidden.png", show_pass)); 
         }
     }//GEN-LAST:event_show_passMouseClicked
 
-    private void passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyReleased
+    private void password_inputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_inputKeyReleased
         // TODO add your handling code here:
-    }//GEN-LAST:event_passwordKeyReleased
+    }//GEN-LAST:event_password_inputKeyReleased
 
     private void registration1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MouseEntered
         // TODO add your handling code here:
@@ -329,8 +342,34 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_registration1MousePressed
 
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
-//        new db_test().setVisible(true);
-//        this.dispose();
+        String username = username_input.getText().trim();
+        String password = new String(password_input.getPassword());
+        
+        if(username.isEmpty() || username.equals("Enter username...")) {
+            username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        if(password.isEmpty() || password.equals(" Enter password...")) {
+            password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
+        
+        if(username.isEmpty() || username.equals("Enter username...")){
+            JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.ERROR_MESSAGE);
+        }else if(password.isEmpty() || password.equals(" Enter password...")){
+            JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
+        }else {
+            try {
+                if (!conn.validateUser(username, password)) {
+                    username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                    password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                    JOptionPane.showMessageDialog(null, "Invalid Username or Password!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else{
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_LoginButtonMouseClicked
     
     public static void main(String args[]) {
@@ -370,12 +409,12 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;
     private javax.swing.JLabel pass;
-    private javax.swing.JPasswordField password;
+    private javax.swing.JPasswordField password_input;
     private javax.swing.JLabel registration;
     private javax.swing.JLabel registration1;
     private javax.swing.JLabel show_pass;
     private javax.swing.JLabel user;
-    private javax.swing.JTextField username;
+    private javax.swing.JTextField username_input;
     // End of variables declaration//GEN-END:variables
 
 }

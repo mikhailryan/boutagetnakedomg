@@ -1,41 +1,61 @@
 package theShop;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FocusTraversalPolicy;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Window;
+
+import config.db_connector;
+import java.awt.*;
+import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.Arrays;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import javax.swing.*;
+import javax.swing.border.TitledBorder;
 
 public class Register extends javax.swing.JFrame {
-
+    
+    db_connector conn = new db_connector();
+    
     /** Creates new form Login */
     public Register() {
         initComponents();
         
+        
         unFocus();
+        setDefaultBorders();
 
         user.setIcon(resizeImage("/images/user.png", user));
         pass.setIcon(resizeImage("/images/padlock.png", user));
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
-        email.setIcon(resizeImage("/images/email.png", email));
+        email_pic.setIcon(resizeImage("/images/email.png", email_pic));
         show_pass1.setIcon(resizeImage("/images/hidden.png", show_pass1));
         pass1.setIcon(resizeImage("/images/access.png", pass1));
         jLabel2.setIcon(resizeImage("/images/setting.png", jLabel2));
+        
+        ActionListener roleSelectionListener = (ActionEvent e) -> {
+            role_panel.setBorder(BorderFactory.createTitledBorder(
+                    BorderFactory.createLineBorder(Color.BLACK, 1), "Role"
+            ));
+        };
+
+        user_role.addActionListener(roleSelectionListener);
+        admin_role.addActionListener(roleSelectionListener);
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
         ImageIcon icon = new ImageIcon(getClass().getResource(path));
         Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
         return new ImageIcon(img);
+    }
+    
+    private void setDefaultBorders() {
+    username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    email_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    TitledBorder roleBorder = BorderFactory.createTitledBorder(
+        BorderFactory.createLineBorder(Color.BLACK, 1), "Role"
+    );
+    roleBorder.setTitleFont(new Font("Arial", Font.BOLD, 11));
+    role_panel.setBorder(roleBorder);
     }
     
     private void unFocus(){
@@ -81,11 +101,11 @@ public class Register extends javax.swing.JFrame {
         show_pass = new javax.swing.JLabel();
         password_input = new javax.swing.JPasswordField();
         email_input = new javax.swing.JTextField();
-        email = new javax.swing.JLabel();
+        email_pic = new javax.swing.JLabel();
         show_pass1 = new javax.swing.JLabel();
         password1_input = new javax.swing.JPasswordField();
         pass1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        role_panel = new javax.swing.JPanel();
         admin_role = new javax.swing.JRadioButton();
         user_role = new javax.swing.JRadioButton();
         jLabel2 = new javax.swing.JLabel();
@@ -195,8 +215,8 @@ public class Register extends javax.swing.JFrame {
         });
         jPanel2.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 200, 30));
 
-        email.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/email.png"))); // NOI18N
-        jPanel2.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
+        email_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/email.png"))); // NOI18N
+        jPanel2.add(email_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
 
         show_pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -233,10 +253,15 @@ public class Register extends javax.swing.JFrame {
         pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/access.png"))); // NOI18N
         jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 30, 30));
 
-        jPanel3.setBackground(new java.awt.Color(134, 206, 203));
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Role", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
-        jPanel3.setOpaque(false);
-        jPanel3.setLayout(null);
+        role_panel.setBackground(new java.awt.Color(0, 0, 0));
+        role_panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Role", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
+        role_panel.setOpaque(false);
+        role_panel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                role_panelFocusGained(evt);
+            }
+        });
+        role_panel.setLayout(null);
 
         admin_role.setBackground(new java.awt.Color(134, 206, 203));
         buttonGroup1.add(admin_role);
@@ -248,7 +273,7 @@ public class Register extends javax.swing.JFrame {
                 admin_roleActionPerformed(evt);
             }
         });
-        jPanel3.add(admin_role);
+        role_panel.add(admin_role);
         admin_role.setBounds(120, 20, 60, 30);
 
         user_role.setBackground(new java.awt.Color(134, 206, 203));
@@ -256,10 +281,10 @@ public class Register extends javax.swing.JFrame {
         user_role.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         user_role.setForeground(new java.awt.Color(19, 122, 127));
         user_role.setText("User");
-        jPanel3.add(user_role);
+        role_panel.add(user_role);
         user_role.setBounds(20, 20, 60, 30);
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 200, 70));
+        jPanel2.add(role_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 200, 70));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/setting.png"))); // NOI18N
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 30, 30));
@@ -313,9 +338,9 @@ public class Register extends javax.swing.JFrame {
     private void username_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusGained
         if (username_input.getText().equals(" Enter username...")) {
             username_input.setText("");  
-            username_input.setForeground(Color.BLACK);
-            username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            username_input.setForeground(Color.BLACK); 
         }
+        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }//GEN-LAST:event_username_inputFocusGained
 
     private void username_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusLost
@@ -387,8 +412,8 @@ public class Register extends javax.swing.JFrame {
             password1_input.setEchoChar('•');
             password1_input.setForeground(Color.BLACK);
             password1_input.setFont(new Font("Arial", Font.PLAIN, 10));
-            password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         } 
+        password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }//GEN-LAST:event_password1_inputFocusGained
 
     private void password1_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password1_inputFocusLost
@@ -459,44 +484,97 @@ public class Register extends javax.swing.JFrame {
 
     private void register_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMouseClicked
         
-        if(username_input.getText().trim().isEmpty() || username_input.getText().equals(" Enter username...")) {
+        String username = username_input.getText().trim();
+        String email = email_input.getText().trim();
+        String password = new String(password_input.getPassword());
+        String password1 = new String(password1_input.getPassword());
+        String role = "";
+        
+        if(username.isEmpty() || username.equals("Enter username...")) {
             username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
         
-        String password = new String(password_input.getPassword());
         if(password.isEmpty() || password.equals(" Enter password...")) {
             password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
         
-        String email = email_input.getText().trim();
-        if(email.isEmpty() || email.equals(" Enter email...") || !isValidEmail(email)) {
+        if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)) {
             email_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
         
-        String password1 = new String(password1_input.getPassword());
         if(password1.isEmpty() || password.equals(" Enter password...")) {
             password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
+
+        if(!user_role.isSelected() && !admin_role.isSelected()) {
+            role_panel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.RED, 2), "Role"
+            ));
+        }
         
         boolean pass_confirmed = Arrays.equals(password_input.getPassword(), password1_input.getPassword());
+        if(!pass_confirmed){
+            password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        }
         
-        if(username_input.getText().trim().isEmpty() || username_input.getText().equals(" Enter username...")){
-            JOptionPane.showMessageDialog(null, "Please Enter a Username!");
-        }else if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)){
-            if(email.isEmpty() || email.equals("Enter email...")){
-                JOptionPane.showMessageDialog(null, "Please Enter an Email!");
-            } else {
-                JOptionPane.showMessageDialog(null, "Please Enter a Valid Email!");
+        if (user_role.isSelected()) {
+            role = "user";
+        } else if (admin_role.isSelected()) {
+            role = "admin";
+        }
+        
+        // idk wtf is ts tbh..
+        try {
+            if(username.isEmpty() || username.equals("Enter username...")){
+            JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)){
+                if(email.isEmpty() || email.equals("Enter email...")){
+                    JOptionPane.showMessageDialog(null, "Please Enter an Email!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please Enter a Valid Email!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }else if(password.isEmpty() || password.equals(" Enter password...")){
+                JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if(password.length() < 8) {
+                JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if(!pass_confirmed){
+                JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if(!user_role.isSelected() && !admin_role.isSelected()) {
+                JOptionPane.showMessageDialog(null, "Please select a role!", "Error", JOptionPane.ERROR_MESSAGE);
+            }else if(conn.fieldExists("username", username) || conn.fieldExists("email", email)){
+                if(conn.fieldExists("username", username)){
+                    username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                }
+                if(conn.fieldExists("email", email)){
+                    email_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                }
+                
+                if(conn.fieldExists("username", username)){
+                    JOptionPane.showMessageDialog(null, "Username already taken!", "Error", JOptionPane.ERROR_MESSAGE);
+                }else if(conn.fieldExists("email", email)){
+                    JOptionPane.showMessageDialog(null, "Email already used!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }else{
+
+                conn.insertData("INSERT INTO `user` (`username`, `email`, `password`, `role`) VALUES ('"+username+"', '"+email+"', '"+password+"', '"+role+"')");
+                JOptionPane.showMessageDialog(null, "Registered Successfully!");
+                
+                if(user_role.isSelected()){
+                    new User_Dashboard().setVisible(true);
+                }else if(admin_role.isSelected()){
+                    new Admin_Dashboard().setVisible(true);
+                }
+                this.dispose();
             }
-            
-        }else if(password.isEmpty() || password.equals(" Enter password...")){
-            JOptionPane.showMessageDialog(null, "Please Enter a Password!");
-        }else if(password1.isEmpty() || password.equals(" Enter password...")){
-            JOptionPane.showMessageDialog(null, "Please Confirm your Password!");
-        }else if(!pass_confirmed){
-            JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            System.out.println("Can't Connect to Database: " + e.getMessage());
         }
     }//GEN-LAST:event_register_buttonMouseClicked
+    
+    private void role_panelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_role_panelFocusGained
+        
+    }//GEN-LAST:event_role_panelFocusGained
     
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -539,20 +617,20 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JRadioButton admin_role;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JLabel email;
     private javax.swing.JTextField email_input;
+    private javax.swing.JLabel email_pic;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel leek;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel pass1;
     private javax.swing.JPasswordField password1_input;
     private javax.swing.JPasswordField password_input;
     private javax.swing.JButton register_button;
+    private javax.swing.JPanel role_panel;
     private javax.swing.JLabel show_pass;
     private javax.swing.JLabel show_pass1;
     private javax.swing.JLabel to_login;
