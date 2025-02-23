@@ -494,7 +494,7 @@ public class Register extends javax.swing.JFrame {
             username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
         
-        if(password.isEmpty() || password.equals(" Enter password...")) {
+        if(password.isEmpty() || password.equals(" Enter password...") || password.length() < 8) {
             password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         }
         
@@ -504,7 +504,7 @@ public class Register extends javax.swing.JFrame {
         
         if(password1.isEmpty() || password.equals(" Enter password...")) {
             password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        }   
 
         if(!user_role.isSelected() && !admin_role.isSelected()) {
             role_panel.setBorder(BorderFactory.createTitledBorder(

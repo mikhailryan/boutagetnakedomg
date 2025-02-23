@@ -8,6 +8,7 @@ import java.awt.FocusTraversalPolicy;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Window;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -359,12 +360,20 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
         }else {
             try {
-                if (!conn.validateUser(username, password)) {
+                ResultSet result = conn.getData("SELECT role FROM user WHERE username = '"+username+"' AND password = '"+password+"'");
+                
+                if (result.next()) {
+                    String role = result.getString("role");
+                    if (role.equals("admin")){
+                        new Admin_Dashboard().setVisible(true);
+                    }else{
+                        new User_Dashboard().setVisible(true);
+                    }
+                    this.dispose();
+                }else{
                     username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
                     password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
                     JOptionPane.showMessageDialog(null, "Invalid Username or Password!", "Error", JOptionPane.ERROR_MESSAGE);
-                }else{
-                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
