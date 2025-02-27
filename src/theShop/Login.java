@@ -1,5 +1,6 @@
 package theShop;
 
+import config.PasswordUtil;
 import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
@@ -33,8 +34,11 @@ public class Login extends javax.swing.JFrame {
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
         
-        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        setDefaultBorder();
+    }
+    
+    private void setDefaultBorder(){
+        
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
@@ -346,13 +350,10 @@ public class Login extends javax.swing.JFrame {
         String username = username_input.getText().trim();
         String password = new String(password_input.getPassword());
         
-        if(username.isEmpty() || username.equals("Enter username...")) {
-            username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        if(username.isEmpty() || username.equals("Enter username...")) username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(password.isEmpty() || password.equals(" Enter password...")) password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         
-        if(password.isEmpty() || password.equals(" Enter password...")) {
-            password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        String hashedPassword = PasswordUtil.hashPassword(password);
         
         if(username.isEmpty() || username.equals("Enter username...")){
             JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -360,7 +361,7 @@ public class Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
         }else {
             try {
-                ResultSet result = conn.getData("SELECT role FROM user WHERE username = '"+username+"' AND password = '"+password+"'");
+                ResultSet result = conn.getData("SELECT role FROM user WHERE username = '"+username+"' AND password = '"+hashedPassword+"'");
                 
                 if (result.next()) {
                     String role = result.getString("role");

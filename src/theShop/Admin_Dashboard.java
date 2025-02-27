@@ -8,6 +8,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
      */
     public Admin_Dashboard() {
         initComponents();
+        
     }
 
     /**
@@ -24,6 +25,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,7 +63,9 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
         jLabel2.setText("ADMIN DASHBOARD");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(480, 510, 120, 20);
+        jLabel2.setBounds(480, 510, 130, 20);
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(290, 220, 480, 290);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,10 +110,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Admin_Dashboard().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Admin_Dashboard().setVisible(true);
         });
     }
 
@@ -119,5 +121,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

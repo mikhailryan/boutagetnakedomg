@@ -1,6 +1,7 @@
 package theShop;
 
 
+import config.PasswordUtil;
 import config.db_connector;
 import java.awt.*;
 import java.awt.event.*;
@@ -29,6 +30,7 @@ public class Register extends javax.swing.JFrame {
         show_pass1.setIcon(resizeImage("/images/hidden.png", show_pass1));
         pass1.setIcon(resizeImage("/images/access.png", pass1));
         jLabel2.setIcon(resizeImage("/images/setting.png", jLabel2));
+        name_pic.setIcon(resizeImage("/images/id-card.png", name_pic));
         
         ActionListener roleSelectionListener = (ActionEvent e) -> {
             role_panel.setBorder(BorderFactory.createTitledBorder(
@@ -47,15 +49,16 @@ public class Register extends javax.swing.JFrame {
     }
     
     private void setDefaultBorders() {
-    username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    email_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-    TitledBorder roleBorder = BorderFactory.createTitledBorder(
-        BorderFactory.createLineBorder(Color.BLACK, 1), "Role"
-    );
-    roleBorder.setTitleFont(new Font("Arial", Font.BOLD, 11));
-    role_panel.setBorder(roleBorder);
+        name_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        email_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        password1_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        TitledBorder roleBorder = BorderFactory.createTitledBorder(
+            BorderFactory.createLineBorder(Color.BLACK, 1), "Role"
+        );
+        roleBorder.setTitleFont(new Font("Arial", Font.BOLD, 11));
+        role_panel.setBorder(roleBorder);
     }
     
     private void unFocus(){
@@ -111,6 +114,8 @@ public class Register extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         to_login = new javax.swing.JLabel();
+        name_input = new javax.swing.JTextField();
+        name_pic = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -125,13 +130,13 @@ public class Register extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Registration");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 320, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 320, 40));
 
         user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 30, 30));
+        jPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 150, 30, 30));
 
         pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/padlock.png"))); // NOI18N
-        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 230, 30, 30));
+        jPanel2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 30, 30));
 
         username_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         username_input.setForeground(new java.awt.Color(153, 153, 153));
@@ -149,11 +154,11 @@ public class Register extends javax.swing.JFrame {
                 username_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(username_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 200, 30));
+        jPanel2.add(username_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 200, 30));
 
         register_button.setBackground(new java.awt.Color(255, 255, 255));
         register_button.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
-        register_button.setText("Fuck off");
+        register_button.setText("Register");
         register_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 register_buttonMouseClicked(evt);
@@ -173,7 +178,7 @@ public class Register extends javax.swing.JFrame {
                 register_buttonActionPerformed(evt);
             }
         });
-        jPanel2.add(register_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 430, 200, -1));
+        jPanel2.add(register_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 450, 200, -1));
 
         show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -181,7 +186,7 @@ public class Register extends javax.swing.JFrame {
                 show_passMouseClicked(evt);
             }
         });
-        jPanel2.add(show_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 230, 30, 30));
+        jPanel2.add(show_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 250, 30, 30));
 
         password_input.setText(" Enter password...");
         password_input.setEchoChar((char) 0);
@@ -195,7 +200,7 @@ public class Register extends javax.swing.JFrame {
                 password_inputFocusLost(evt);
             }
         });
-        jPanel2.add(password_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 230, 200, 30));
+        jPanel2.add(password_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 200, 30));
 
         email_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         email_input.setForeground(new java.awt.Color(153, 153, 153));
@@ -213,10 +218,10 @@ public class Register extends javax.swing.JFrame {
                 email_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 200, 30));
+        jPanel2.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 200, 30));
 
         email_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/email.png"))); // NOI18N
-        jPanel2.add(email_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
+        jPanel2.add(email_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, 30, 30));
 
         show_pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -224,7 +229,7 @@ public class Register extends javax.swing.JFrame {
                 show_pass1MouseClicked(evt);
             }
         });
-        jPanel2.add(show_pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, 30, 30));
+        jPanel2.add(show_pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 300, 30, 30));
 
         password1_input.setText(" Confirm password...");
         password1_input.setEchoChar((char) 0);
@@ -248,10 +253,10 @@ public class Register extends javax.swing.JFrame {
                 password1_inputActionPerformed(evt);
             }
         });
-        jPanel2.add(password1_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 200, 30));
+        jPanel2.add(password1_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 200, 30));
 
         pass1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/access.png"))); // NOI18N
-        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 30, 30));
+        jPanel2.add(pass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 30, 30));
 
         role_panel.setBackground(new java.awt.Color(0, 0, 0));
         role_panel.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(""), "Role", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Arial", 1, 11))); // NOI18N
@@ -284,15 +289,15 @@ public class Register extends javax.swing.JFrame {
         role_panel.add(user_role);
         user_role.setBounds(20, 20, 60, 30);
 
-        jPanel2.add(role_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 200, 70));
+        jPanel2.add(role_panel, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 200, 70));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/setting.png"))); // NOI18N
-        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 330, 30, 30));
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, 30, 30));
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Already have an account?");
-        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 460, 160, -1));
+        jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 480, 160, -1));
 
         to_login.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         to_login.setForeground(new java.awt.Color(0, 0, 204));
@@ -309,7 +314,23 @@ public class Register extends javax.swing.JFrame {
                 to_loginMouseExited(evt);
             }
         });
-        jPanel2.add(to_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 70, -1));
+        jPanel2.add(to_login, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 480, 70, -1));
+
+        name_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
+        name_input.setForeground(new java.awt.Color(153, 153, 153));
+        name_input.setText(" Enter full name...");
+        name_input.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                name_inputFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                name_inputFocusLost(evt);
+            }
+        });
+        jPanel2.add(name_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 200, 30));
+
+        name_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/id-card.png"))); // NOI18N
+        jPanel2.add(name_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 30, 30));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
@@ -368,8 +389,8 @@ public class Register extends javax.swing.JFrame {
             password_input.setEchoChar('•');
             password_input.setForeground(Color.BLACK);
             password_input.setFont(new Font("Arial", Font.PLAIN, 10));
-            password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         }   
+        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }//GEN-LAST:event_password_inputFocusGained
 
     private void password_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusLost
@@ -484,63 +505,50 @@ public class Register extends javax.swing.JFrame {
 
     private void register_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_buttonMouseClicked
         
+        String name = name_input.getText().trim();
         String username = username_input.getText().trim();
         String email = email_input.getText().trim();
         String password = new String(password_input.getPassword());
         String password1 = new String(password1_input.getPassword());
-        String role = "";
+        String role = admin_role.isSelected() ? "admin" : "user";
         
-        if(username.isEmpty() || username.equals("Enter username...")) {
-            username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        String hashedPassword = PasswordUtil.hashPassword(password);
         
-        if(password.isEmpty() || password.equals(" Enter password...") || password.length() < 8) {
-            password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        if(name.isEmpty() || name.equals("Enter full name...")) name_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(username.isEmpty() || username.equals("Enter username...")) username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(password.isEmpty() || password.equals(" Enter password...") || password.length() < 8) password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)) email_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(password1.isEmpty() || password.equals(" Enter password...")) password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         
-        if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)) {
-            email_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
+        boolean pass_confirmed = Arrays.equals(password_input.getPassword(), password1_input.getPassword());
+        if(!pass_confirmed) password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
         
-        if(password1.isEmpty() || password.equals(" Enter password...")) {
-            password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }   
-
         if(!user_role.isSelected() && !admin_role.isSelected()) {
             role_panel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(Color.RED, 2), "Role"
             ));
         }
         
-        boolean pass_confirmed = Arrays.equals(password_input.getPassword(), password1_input.getPassword());
-        if(!pass_confirmed){
-            password1_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        }
-        
-        if (user_role.isSelected()) {
-            role = "user";
-        } else if (admin_role.isSelected()) {
-            role = "admin";
-        }
-        
-        // idk wtf is ts tbh..
+        // idk wtf is ts tbh...
         try {
-            if(username.isEmpty() || username.equals("Enter username...")){
-            JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.ERROR_MESSAGE);
+            if(name.isEmpty() || name.equals("Enter full name...")){
+                   JOptionPane.showMessageDialog(null, "Please Enter your Name!", "Error", JOptionPane.WARNING_MESSAGE);
+            }else if(username.isEmpty() || username.equals("Enter username...")){
+                JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.WARNING_MESSAGE);
             }else if(email.isEmpty() || email.equals("Enter email...") || !isValidEmail(email)){
                 if(email.isEmpty() || email.equals("Enter email...")){
-                    JOptionPane.showMessageDialog(null, "Please Enter an Email!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please Enter an Email!", "Error", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please Enter a Valid Email!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Please Enter a Valid Email!", "Error", JOptionPane.WARNING_MESSAGE);
                 }
             }else if(password.isEmpty() || password.equals(" Enter password...")){
-                JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.WARNING_MESSAGE);
             }else if(password.length() < 8) {
-                JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!", "Error", JOptionPane.WARNING_MESSAGE);
             }else if(!pass_confirmed){
-                JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Passwords do not match!", "Error", JOptionPane.WARNING_MESSAGE);
             }else if(!user_role.isSelected() && !admin_role.isSelected()) {
-                JOptionPane.showMessageDialog(null, "Please select a role!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Please select a role!", "Error", JOptionPane.WARNING_MESSAGE);
             }else if(conn.fieldExists("username", username) || conn.fieldExists("email", email)){
                 if(conn.fieldExists("username", username)){
                     username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
@@ -550,14 +558,12 @@ public class Register extends javax.swing.JFrame {
                 }
                 
                 if(conn.fieldExists("username", username)){
-                    JOptionPane.showMessageDialog(null, "Username already taken!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Username already taken!", "Error", JOptionPane.WARNING_MESSAGE);
                 }else if(conn.fieldExists("email", email)){
-                    JOptionPane.showMessageDialog(null, "Email already used!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Email already used!", "Error", JOptionPane.WARNING_MESSAGE);
                 }
-                
             }else{
-
-                conn.insertData("INSERT INTO `user` (`username`, `email`, `password`, `role`) VALUES ('"+username+"', '"+email+"', '"+password+"', '"+role+"')");
+                conn.insertData("INSERT INTO `user` (name, username, email, password, role) VALUES ('"+name+"','"+username+"', '"+email+"', '"+hashedPassword+"', '"+role+"')");
                 JOptionPane.showMessageDialog(null, "Registered Successfully!");
                 
                 if(user_role.isSelected()){
@@ -575,6 +581,21 @@ public class Register extends javax.swing.JFrame {
     private void role_panelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_role_panelFocusGained
         
     }//GEN-LAST:event_role_panelFocusGained
+
+    private void name_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_name_inputFocusGained
+        if (name_input.getText().equals(" Enter full name...")) {
+            name_input.setText("");  
+            name_input.setForeground(Color.BLACK); 
+        }
+        name_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+    }//GEN-LAST:event_name_inputFocusGained
+
+    private void name_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_name_inputFocusLost
+        if (name_input.getText().isEmpty()) {
+            name_input.setText(" Enter full name...");
+            name_input.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_name_inputFocusLost
     
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -625,6 +646,8 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;
+    private javax.swing.JTextField name_input;
+    private javax.swing.JLabel name_pic;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel pass1;
     private javax.swing.JPasswordField password1_input;

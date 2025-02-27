@@ -4,7 +4,7 @@ package theShop;
 public class User_Dashboard extends javax.swing.JFrame {
 
     /**
-     * Creates new form Admin_Dashboard
+     * Creates new form User_Dashboard
      */
     public User_Dashboard() {
         initComponents();
@@ -61,7 +61,7 @@ public class User_Dashboard extends javax.swing.JFrame {
 
         jLabel2.setText("USER DASHBOARD");
         jPanel1.add(jLabel2);
-        jLabel2.setBounds(481, 510, 100, 20);
+        jLabel2.setBounds(481, 510, 120, 20);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
