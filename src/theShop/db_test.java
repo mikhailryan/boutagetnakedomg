@@ -23,8 +23,7 @@ public class db_test extends javax.swing.JFrame {
             test_table.setModel(DbUtils.resultSetToTableModel(result));
         } catch (SQLException e) {
             System.out.println("Can't Connect to Database: " + e.getMessage());
-        }
-        
+        } 
     }
 
     /**

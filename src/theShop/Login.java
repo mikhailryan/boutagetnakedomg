@@ -17,6 +17,9 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class Login extends javax.swing.JFrame {
     
@@ -34,11 +37,27 @@ public class Login extends javax.swing.JFrame {
         leek.setIcon(resizeImage("/images/leeeek.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
         
-        setDefaultBorder();
+        resetBorder(username_input);
+        resetBorder(password_input);
     }
     
-    private void setDefaultBorder(){
-        
+    private void resetBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(new Color(19,122,127), 1),
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
+    }
+    
+    public void setInvalidBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Color.RED, 2), 
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
+    }
+    
+    private void displayError(JLabel field, String message) {
+        field.setText(message);
+        field.setForeground(java.awt.Color.RED);
     }
     
     private ImageIcon resizeImage(String path, JLabel label) {
@@ -64,8 +83,6 @@ public class Login extends javax.swing.JFrame {
             public Component getComponentAfter(Container focusCycleRoot, Component aComponent) { return null; }
             @Override
             public Component getComponentBefore(Container focusCycleRoot, Component aComponent) { return null; }
-
-            
         });
     }
 
@@ -78,6 +95,7 @@ public class Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        name_error = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -89,7 +107,13 @@ public class Login extends javax.swing.JFrame {
         show_pass = new javax.swing.JLabel();
         password_input = new javax.swing.JPasswordField();
         registration1 = new javax.swing.JLabel();
+        password_error = new javax.swing.JLabel();
+        username_error = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
+
+        name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        name_error.setForeground(new java.awt.Color(255, 0, 0));
+        name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,7 +140,7 @@ public class Login extends javax.swing.JFrame {
 
         username_input.setFont(new java.awt.Font("Arial", 3, 10)); // NOI18N
         username_input.setForeground(new java.awt.Color(153, 153, 153));
-        username_input.setText(" Enter username...");
+        username_input.setText("Enter username...");
         username_input.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 username_inputFocusGained(evt);
@@ -182,7 +206,7 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(show_pass);
         show_pass.setBounds(250, 230, 30, 30);
 
-        password_input.setText(" Enter password...");
+        password_input.setText("Enter password...");
         password_input.setEchoChar((char) 0);
         password_input.setForeground(Color.GRAY);
         password_input.setFont(new Font("Arial", Font.ITALIC, 10));
@@ -224,6 +248,18 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(registration1);
         registration1.setBounds(70, 310, 160, 20);
 
+        password_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        password_error.setForeground(new java.awt.Color(255, 0, 0));
+        password_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(password_error);
+        password_error.setBounds(130, 220, 140, 10);
+
+        username_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        username_error.setForeground(new java.awt.Color(255, 0, 0));
+        username_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(username_error);
+        username_error.setBounds(130, 170, 140, 10);
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
         leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
@@ -249,19 +285,19 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_username_inputActionPerformed
 
     private void username_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusGained
-        if (username_input.getText().equals(" Enter username...")) {
+        if (username_input.getText().trim().equals("Enter username...")) {
             username_input.setText("");  
             username_input.setForeground(Color.BLACK); 
         }
-        username_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     }//GEN-LAST:event_username_inputFocusGained
 
     private void username_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_username_inputFocusLost
-        if (username_input.getText().isEmpty()) {
-            username_input.setText(" Enter username...");
+        if (username_input.getText().trim().isEmpty()) {
+            username_input.setText("Enter username...");
             username_input.setForeground(Color.GRAY);
         }
-        
+        displayError(username_error, "");
+        resetBorder(username_input);
     }//GEN-LAST:event_username_inputFocusLost
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
@@ -285,22 +321,23 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_registrationMouseExited
 
     private void password_inputFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusGained
-        if (password_input.getText().equals(" Enter password...")) {
+        if (password_input.getText().trim().equals("Enter password...")) {
             password_input.setText("");
             password_input.setEchoChar('•');
             password_input.setForeground(Color.BLACK);
             password_input.setFont(new Font("Arial", Font.PLAIN, 10));
-        }   
-        password_input.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        } 
     }//GEN-LAST:event_password_inputFocusGained
 
     private void password_inputFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_password_inputFocusLost
-        if (password_input.getText().isEmpty()) {
-            password_input.setText(" Enter password...");
+        if (password_input.getText().trim().isEmpty()) {
+            password_input.setText("Enter password...");
             password_input.setEchoChar((char) 0);
             password_input.setForeground(Color.GRAY);
             password_input.setFont(new Font("Arial", Font.ITALIC, 10));
         }
+        displayError(password_error, "");
+        resetBorder(password_input);
     }//GEN-LAST:event_password_inputFocusLost
 
     private void registrationMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registrationMousePressed
@@ -347,30 +384,43 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_registration1MousePressed
 
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
+        
+        boolean valid_to_login = true;
+        
         String username = username_input.getText().trim();
         String password = new String(password_input.getPassword());
         
-        if(username.isEmpty() || username.equals("Enter username...")) username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-        if(password.isEmpty() || password.equals(" Enter password...")) password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+        if(username.isEmpty() || username.equals("Enter username...")) {
+            setInvalidBorder(username_input);
+            displayError(username_error, "Field Required!");
+            valid_to_login = false;
+        }
+        if(password.isEmpty() || password.equals("Enter password...")) {
+            setInvalidBorder(password_input);
+            displayError(password_error, "Field Required!");
+            valid_to_login = false;
+        }
         
         String hashedPassword = PasswordUtil.hashPassword(password);
         
-        if(username.isEmpty() || username.equals("Enter username...")){
-            JOptionPane.showMessageDialog(null, "Please Enter a Username!", "Error", JOptionPane.ERROR_MESSAGE);
-        }else if(password.isEmpty() || password.equals(" Enter password...")){
-            JOptionPane.showMessageDialog(null, "Please Enter a Password!", "Error", JOptionPane.ERROR_MESSAGE);
-        }else {
+        if(valid_to_login) {
             try {
-                ResultSet result = conn.getData("SELECT role FROM user WHERE username = '"+username+"' AND password = '"+hashedPassword+"'");
+                ResultSet result = conn.getData("SELECT role, status FROM user WHERE username = '"+username+"' AND password = '"+hashedPassword+"'");
                 
-                if (result.next()) {
-                    String role = result.getString("role");
-                    if (role.equals("admin")){
-                        new Admin_Dashboard().setVisible(true);
-                    }else{
-                        new User_Dashboard().setVisible(true);
+                if(result.next()) {
+                    String role = result.getString("role"); 
+                    String status = result.getString("status");
+                    
+                    if(!status.equals("pending")){
+                        if(role.equals("admin")){
+                            new Admin_Dashboard().setVisible(true);
+                        }else{
+                            new User_Dashboard().setVisible(true);
+                        }
+                        this.dispose();
+                    }else {
+                        JOptionPane.showMessageDialog(null, "Account is Not Yet Approved!", "Pending Approval", JOptionPane.INFORMATION_MESSAGE);
                     }
-                    this.dispose();
                 }else{
                     username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
                     password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
@@ -380,6 +430,7 @@ public class Login extends javax.swing.JFrame {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
     }//GEN-LAST:event_LoginButtonMouseClicked
     
     public static void main(String args[]) {
@@ -418,12 +469,15 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;
+    private javax.swing.JLabel name_error;
     private javax.swing.JLabel pass;
+    private javax.swing.JLabel password_error;
     private javax.swing.JPasswordField password_input;
     private javax.swing.JLabel registration;
     private javax.swing.JLabel registration1;
     private javax.swing.JLabel show_pass;
     private javax.swing.JLabel user;
+    private javax.swing.JLabel username_error;
     private javax.swing.JTextField username_input;
     // End of variables declaration//GEN-END:variables
 

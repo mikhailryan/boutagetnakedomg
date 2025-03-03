@@ -1,6 +1,11 @@
 
 package theShop;
 
+import config.db_connector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.proteanit.sql.DbUtils;
+
 public class Admin_Dashboard extends javax.swing.JFrame {
 
     /**
@@ -8,7 +13,23 @@ public class Admin_Dashboard extends javax.swing.JFrame {
      */
     public Admin_Dashboard() {
         initComponents();
-        
+        display_data();
+    }
+    
+    private void display_data(){
+        try {
+            db_connector dbcon = new db_connector();
+            ResultSet result = dbcon.getData("SELECT id AS 'ID', name AS 'Full Name', username AS 'Username', email AS 'Email Address', status AS 'Account Status' FROM user WHERE role = 'user'");
+            users_table.setModel(DbUtils.resultSetToTableModel(result));
+            
+            users_table.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
+            users_table.getColumnModel().getColumn(1).setPreferredWidth(120); // Full Name
+            users_table.getColumnModel().getColumn(2).setPreferredWidth(120); // Username
+            users_table.getColumnModel().getColumn(3).setPreferredWidth(200); // Email Address
+            users_table.getColumnModel().getColumn(4).setPreferredWidth(100); // Account Status
+        } catch (SQLException e) {
+            System.out.println("Can't Connect to Database: " + e.getMessage());
+        } 
     }
 
     /**
@@ -26,6 +47,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
+        users_table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,10 +62,10 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel1.setText("the Shop");
         jLabel1.setToolTipText("");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 220, 110));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 110));
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 260, 530);
+        jPanel2.setBounds(0, 0, 200, 530);
 
         jPanel3.setBackground(new java.awt.Color(134, 206, 203));
 
@@ -64,8 +86,23 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel2.setText("ADMIN DASHBOARD");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(480, 510, 130, 20);
+
+        users_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+            }
+        ));
+        jScrollPane1.setViewportView(users_table);
+
         jPanel1.add(jScrollPane1);
-        jScrollPane1.setBounds(290, 220, 480, 290);
+        jScrollPane1.setBounds(220, 220, 560, 290);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -122,5 +159,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable users_table;
     // End of variables declaration//GEN-END:variables
 }
