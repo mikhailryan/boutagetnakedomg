@@ -22,6 +22,8 @@ public class User_Dashboard extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        logout_button = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
 
@@ -39,6 +41,28 @@ public class User_Dashboard extends javax.swing.JFrame {
         jLabel1.setToolTipText("");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 220, 110));
+
+        logout_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout_buttonMouseClicked(evt);
+            }
+        });
+
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Logout");
+
+        javax.swing.GroupLayout logout_buttonLayout = new javax.swing.GroupLayout(logout_button);
+        logout_button.setLayout(logout_buttonLayout);
+        logout_buttonLayout.setHorizontalGroup(
+            logout_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+        );
+        logout_buttonLayout.setVerticalGroup(
+            logout_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, -1, 30));
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 260, 530);
@@ -77,6 +101,11 @@ public class User_Dashboard extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logout_buttonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -117,8 +146,10 @@ public class User_Dashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel logout_button;
     // End of variables declaration//GEN-END:variables
 }

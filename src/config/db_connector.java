@@ -3,7 +3,8 @@ package config;
 import java.sql.*;
 
 public class db_connector {
-    private Connection conn;
+
+    private static Connection conn;
     
     public db_connector(){
         String url = "jdbc:mysql://localhost:3306/isthisadatabase";
@@ -42,6 +43,16 @@ public class db_connector {
         ResultSet result = pstmt.executeQuery();
 
         return result.next(); 
+    }
+    
+    
+    public static void updateDatabase(String sql) {
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error in Updating: " + e.getMessage());
+        }
     }
 
     
