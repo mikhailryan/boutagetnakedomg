@@ -65,7 +65,7 @@ public class User_Dashboard extends javax.swing.JFrame {
         jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 480, -1, 30));
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 260, 530);
+        jPanel2.setBounds(0, 0, 240, 530);
 
         jPanel3.setBackground(new java.awt.Color(134, 206, 203));
 

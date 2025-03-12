@@ -1,6 +1,6 @@
 package theShop;
 
-import config.PasswordUtil;
+import config.Utility;
 import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -34,8 +35,11 @@ public class Login extends javax.swing.JFrame {
         
         user.setIcon(resizeImage("/images/user.png", user));
         pass.setIcon(resizeImage("/images/padlock.png", user));
-        leek.setIcon(resizeImage("/images/leeeek.png", leek));
+        leek.setIcon(resizeImage("/images/somelogoidkfck.png", leek));
         show_pass.setIcon(resizeImage("/images/hidden.png", show_pass));
+        
+        minimize_button.setIcon(resizeImage("/images/minimize-sign.png", minimize_button));
+        close_button.setIcon(resizeImage("/images/close.png", close_button));
         
         resetBorder(username_input);
         resetBorder(password_input);
@@ -62,7 +66,13 @@ public class Login extends javax.swing.JFrame {
     
     private ImageIcon resizeImage(String path, JLabel label) {
         ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(label.getWidth() - 17, label.getHeight() - 17, Image.SCALE_SMOOTH);
+        Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
+    }
+    
+    private ImageIcon resizeImageClickable(String path, JLabel label) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
     
@@ -109,6 +119,9 @@ public class Login extends javax.swing.JFrame {
         registration1 = new javax.swing.JLabel();
         password_error = new javax.swing.JLabel();
         username_error = new javax.swing.JLabel();
+        minimize_button = new javax.swing.JLabel();
+        close_button = new javax.swing.JLabel();
+        error = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
         name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -116,6 +129,7 @@ public class Login extends javax.swing.JFrame {
         name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(19, 122, 127));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -223,11 +237,6 @@ public class Login extends javax.swing.JFrame {
                 password_inputActionPerformed(evt);
             }
         });
-        password_input.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                password_inputKeyReleased(evt);
-            }
-        });
         jPanel2.add(password_input);
         password_input.setBounds(70, 230, 200, 30);
 
@@ -260,10 +269,34 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(username_error);
         username_error.setBounds(130, 170, 140, 10);
 
+        minimize_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimize-sign.png"))); // NOI18N
+        minimize_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimize_buttonMouseClicked(evt);
+            }
+        });
+        jPanel2.add(minimize_button);
+        minimize_button.setBounds(260, 0, 30, 30);
+
+        close_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close.png"))); // NOI18N
+        close_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                close_buttonMouseClicked(evt);
+            }
+        });
+        jPanel2.add(close_button);
+        close_button.setBounds(290, 0, 30, 30);
+
+        error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        error.setForeground(new java.awt.Color(255, 0, 0));
+        error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel2.add(error);
+        error.setBounds(70, 260, 200, 10);
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
-        leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
-        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 240, 220));
+        leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/somelogoidkfck.png"))); // NOI18N
+        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 500, 460));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -367,10 +400,6 @@ public class Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_show_passMouseClicked
 
-    private void password_inputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_inputKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_password_inputKeyReleased
-
     private void registration1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_registration1MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_registration1MouseEntered
@@ -384,7 +413,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_registration1MousePressed
 
     private void LoginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LoginButtonMouseClicked
-        
+        displayError(error, "");
         boolean valid_to_login = true;
         
         String username = username_input.getText().trim();
@@ -401,7 +430,7 @@ public class Login extends javax.swing.JFrame {
             valid_to_login = false;
         }
         
-        String hashedPassword = PasswordUtil.hashPassword(password);
+        String hashedPassword = Utility.hashPassword(password);
         
         if(valid_to_login) {
             try {
@@ -419,12 +448,12 @@ public class Login extends javax.swing.JFrame {
                         }
                         this.dispose();
                     }else {
-                        JOptionPane.showMessageDialog(null, "Account is Not Yet Approved!", "Pending Approval", JOptionPane.INFORMATION_MESSAGE);
+                        displayError(error, "Account Not Yet Approved!");
                     }
                 }else{
                     username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
                     password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-                    JOptionPane.showMessageDialog(null, "Invalid Username or Password!", "Error", JOptionPane.ERROR_MESSAGE);
+                    displayError(error, "Invalid Username or Password!");
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -432,6 +461,14 @@ public class Login extends javax.swing.JFrame {
         }
         
     }//GEN-LAST:event_LoginButtonMouseClicked
+
+    private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
+        setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_minimize_buttonMouseClicked
+
+    private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_close_buttonMouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -465,10 +502,13 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton LoginButton;
+    private javax.swing.JLabel close_button;
+    private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;
+    private javax.swing.JLabel minimize_button;
     private javax.swing.JLabel name_error;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel password_error;

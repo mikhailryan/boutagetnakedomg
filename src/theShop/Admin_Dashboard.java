@@ -1,10 +1,12 @@
 
 package theShop;
 
-import config.db_connector;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import net.proteanit.sql.DbUtils;
+import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class Admin_Dashboard extends javax.swing.JFrame {
 
@@ -13,8 +15,32 @@ public class Admin_Dashboard extends javax.swing.JFrame {
      */
     public Admin_Dashboard() {
         initComponents();
-        menu menu = new menu();
-        main_desktop.add(menu).setVisible(true);
+        
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                System.out.println("Pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
+            }
+        });
+        
+        JLabel[] labels = {logo, close_button, minimize_button};
+        String[] paths = {"leeeek.png", "close.png", "minimize-sign.png"};
+        setIcons(labels, paths);
+        
+        users_table users_table = new users_table();
+        main_desktop.add(users_table).setVisible(true);
+    }
+    
+    private void setIcons(JLabel[] labels, String[] paths) {
+        for (int i = 0; i < labels.length; i++) {
+            labels[i].setIcon(resizeImage("/images/" + paths[i], labels[i]));
+        }
+    }
+    
+    private ImageIcon resizeImage(String path, JLabel label) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
     }
 
     /**
@@ -31,26 +57,28 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         logout_button = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
+        minimize_button = new javax.swing.JLabel();
+        close_button = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(190, 200, 209));
         jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(19, 122, 127));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText(" the Shop");
+        jLabel1.setText("DropXchange");
         jLabel1.setToolTipText("");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 150, 100));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 120, 40));
 
         logout_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -72,57 +100,19 @@ public class Admin_Dashboard extends javax.swing.JFrame {
             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
         );
 
-        jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, -1, 30));
+        jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 480, -1, 30));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
+        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 130));
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(0, 0, 150, 530);
+        jPanel2.setBounds(0, 0, 190, 530);
 
         jPanel3.setBackground(new java.awt.Color(134, 206, 203));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel4MouseClicked(evt);
-            }
-        });
-
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Display Users");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-        );
-
-        jLabel5.setText("ignore lang sa ang design sir haha");
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(205, 205, 205)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(194, Short.MAX_VALUE))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(47, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jLabel5.setText(" ignore lang sa ang design sir haha");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 47, 401, -1));
 
         jPanel1.add(jPanel3);
         jPanel3.setBounds(0, 30, 800, 120);
@@ -133,7 +123,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         main_desktop.setLayout(main_desktopLayout);
         main_desktopLayout.setHorizontalGroup(
             main_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 650, Short.MAX_VALUE)
+            .addGap(0, 610, Short.MAX_VALUE)
         );
         main_desktopLayout.setVerticalGroup(
             main_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,7 +131,25 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         );
 
         jPanel1.add(main_desktop);
-        main_desktop.setBounds(150, 150, 650, 380);
+        main_desktop.setBounds(190, 150, 610, 380);
+
+        minimize_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/minimize-sign.png"))); // NOI18N
+        minimize_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimize_buttonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(minimize_button);
+        minimize_button.setBounds(740, 0, 30, 30);
+
+        close_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/close.png"))); // NOI18N
+        close_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                close_buttonMouseClicked(evt);
+            }
+        });
+        jPanel1.add(close_button);
+        close_button.setBounds(770, 0, 30, 30);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,16 +166,18 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-        users_table users_table = new users_table();
-        
-        main_desktop.add(users_table).setVisible(true);
-    }//GEN-LAST:event_jPanel4MouseClicked
-
     private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_logout_buttonMouseClicked
+
+    private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
+        setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_minimize_buttonMouseClicked
+
+    private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_close_buttonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -203,17 +213,16 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel close_button;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel logo;
     private javax.swing.JPanel logout_button;
     private javax.swing.JDesktopPane main_desktop;
+    private javax.swing.JLabel minimize_button;
     // End of variables declaration//GEN-END:variables
 }

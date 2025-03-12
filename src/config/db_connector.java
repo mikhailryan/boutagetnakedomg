@@ -46,12 +46,14 @@ public class db_connector {
     }
     
     
-    public static void updateDatabase(String sql) {
+    public static boolean updateDatabase(String sql) {
         try {
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.executeUpdate();
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
         } catch (SQLException e) {
             System.out.println("Error in Updating: " + e.getMessage());
+            return false;
         }
     }
 

@@ -1,7 +1,7 @@
 package theShop;
 
 
-import config.PasswordUtil;
+import config.Utility;
 import config.db_connector;
 import java.awt.*;
 import java.awt.event.*;
@@ -30,7 +30,7 @@ public class Register extends javax.swing.JFrame {
         setBorders(name_input, username_input, email_input, password_input, password1_input);
 
         JLabel[] labels = {user, pass, leek, show_pass, email_pic, show_pass1, pass1, jLabel2, name_pic};
-        String[] paths = {"user.png", "padlock.png", "leeeek.png", "hidden.png", "email.png", "hidden.png", "access.png", "setting.png", "id-card.png"};
+        String[] paths = {"user.png", "padlock.png", "somelogoidkfck.png", "hidden.png", "email.png", "hidden.png", "access.png", "setting.png", "id-card.png"};
         setIcons(labels, paths);
         
         ActionListener roleSelectionListener = (ActionEvent e) -> {
@@ -42,6 +42,9 @@ public class Register extends javax.swing.JFrame {
 
         user_role.addActionListener(roleSelectionListener);
         admin_role.addActionListener(roleSelectionListener);
+        
+        minimize_button.setIcon(resizeImage("/images/minimize-sign.png", minimize_button));
+        close_button.setIcon(resizeImage("/images/close.png", close_button));
     }
     
     private void setIcons(JLabel[] labels, String[] paths) {
@@ -53,6 +56,12 @@ public class Register extends javax.swing.JFrame {
     private ImageIcon resizeImage(String path, JLabel label) {
         ImageIcon icon = new ImageIcon(getClass().getResource(path));
         Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
+        return new ImageIcon(img);
+    }
+    
+    private ImageIcon resizeImageClickable(String path, JLabel label) {
+        ImageIcon icon = new ImageIcon(getClass().getResource(path));
+        Image img = icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
     
@@ -145,9 +154,12 @@ public class Register extends javax.swing.JFrame {
         password_error = new javax.swing.JLabel();
         username_error = new javax.swing.JLabel();
         password1_error = new javax.swing.JLabel();
+        close_button = new javax.swing.JLabel();
+        minimize_button = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(19, 122, 127));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -392,10 +404,24 @@ public class Register extends javax.swing.JFrame {
         password1_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jPanel2.add(password1_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 290, 160, 10));
 
+        close_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                close_buttonMouseClicked(evt);
+            }
+        });
+        jPanel2.add(close_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 0, 30, 30));
+
+        minimize_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimize_buttonMouseClicked(evt);
+            }
+        });
+        jPanel2.add(minimize_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 0, 30, 30));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
-        leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
-        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 240, 220));
+        leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/somelogoidkfck.png"))); // NOI18N
+        jPanel1.add(leek, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 500, 460));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -580,7 +606,7 @@ public class Register extends javax.swing.JFrame {
         String role = admin_role.isSelected() ? "admin" : "user";
         String status = "pending";
         
-        String hashedPassword = PasswordUtil.hashPassword(password);
+        String hashedPassword = Utility.hashPassword(password);
         
         if(name.isEmpty() || name.equals("Enter full name...")) {
             setInvalidBorder(name_input);
@@ -686,6 +712,14 @@ public class Register extends javax.swing.JFrame {
         resetBorder(name_input);
         displayError(name_error, "");
     }//GEN-LAST:event_name_inputFocusLost
+
+    private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_close_buttonMouseClicked
+
+    private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
+        setState(JFrame.ICONIFIED);
+    }//GEN-LAST:event_minimize_buttonMouseClicked
     
     private boolean isValidEmail(String email) {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -728,6 +762,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JRadioButton admin_role;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JLabel close_button;
     private javax.swing.JLabel email_error;
     private javax.swing.JTextField email_input;
     private javax.swing.JLabel email_pic;
@@ -737,6 +772,7 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;
+    private javax.swing.JLabel minimize_button;
     private javax.swing.JLabel name_error;
     private javax.swing.JTextField name_input;
     private javax.swing.JLabel name_pic;
