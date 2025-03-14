@@ -1,4 +1,4 @@
-package theShop;
+package InternalFrames;
 
 import config.Utility;
 import config.db_connector;

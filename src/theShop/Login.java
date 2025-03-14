@@ -434,9 +434,10 @@ public class Login extends javax.swing.JFrame {
         
         if(valid_to_login) {
             try {
-                ResultSet result = conn.getData("SELECT role, status FROM user WHERE username = '"+username+"' AND password = '"+hashedPassword+"'");
+                ResultSet result = conn.getData("SELECT id, role, status FROM user WHERE username = '"+username+"' AND password = '"+hashedPassword+"'");
                 
                 if(result.next()) {
+                    int id = result.getInt("id");
                     String role = result.getString("role"); 
                     String status = result.getString("status");
                     
@@ -444,7 +445,7 @@ public class Login extends javax.swing.JFrame {
                         if(role.equals("admin")){
                             new Admin_Dashboard().setVisible(true);
                         }else{
-                            new User_Dashboard().setVisible(true);
+                            new User_Dashboard(id).setVisible(true);
                         }
                         this.dispose();
                     }else {

@@ -1,9 +1,8 @@
 
 package theShop;
 
+import InternalFrames.users_table;
 import java.awt.Image;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -15,13 +14,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
      */
     public Admin_Dashboard() {
         initComponents();
-        
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                System.out.println("Pressed: " + KeyEvent.getKeyText(e.getKeyCode()));
-            }
-        });
         
         JLabel[] labels = {logo, close_button, minimize_button};
         String[] paths = {"leeeek.png", "close.png", "minimize-sign.png"};
@@ -59,7 +51,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
         minimize_button = new javax.swing.JLabel();
         close_button = new javax.swing.JLabel();
@@ -75,10 +66,11 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("DropXchange");
         jLabel1.setToolTipText("");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 120, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
 
         logout_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -110,10 +102,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(134, 206, 203));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel5.setText(" ignore lang sa ang design sir haha");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 47, 401, -1));
-
         jPanel1.add(jPanel3);
         jPanel3.setBounds(0, 30, 800, 120);
 
@@ -216,7 +204,6 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -59,12 +59,6 @@ public class Register extends javax.swing.JFrame {
         return new ImageIcon(img);
     }
     
-    private ImageIcon resizeImageClickable(String path, JLabel label) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-        return new ImageIcon(img);
-    }
-    
     public void setInvalidBorder(JTextField field) {
         field.setBorder(BorderFactory.createCompoundBorder(
             new LineBorder(Color.RED, 2), 
