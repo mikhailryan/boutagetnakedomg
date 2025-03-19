@@ -6,6 +6,11 @@
 package InternalFrames;
 
 import config.Utility;
+import config.db_connector;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -13,16 +18,56 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author SCC-COLLEGE
  */
 public class account_profile extends javax.swing.JInternalFrame {
-
+    
+    int id = 0;
+    String name = "";
+    String email = "";
+    String username = "";
+    
+    db_connector conn = new db_connector();
+    
     /**
      * Creates new form account_profile
+     * @param id
      */
-    public account_profile() {
+    public account_profile(int id) {
         initComponents();
+        
+        this.id = id;
+        getData();
+        
+        name_label.setText((!this.name.isEmpty()) ? this.name : "Unknown User");
+        email_label.setText((!this.email.isEmpty()) ? this.email : "Unknown User");
+        
+        setLabels();
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
         bi.setNorthPane(null);
+    }
+    
+    private void getData(){
+        String sql = "SELECT * FROM user WHERE id = " + id;
+        try {
+            ResultSet result = conn.getData(sql);
+            
+            if (result.next()) {
+                this.name = result.getString("name");
+                this.email = result.getString("email");
+                this.username = result.getString("username");
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());        
+        }
+    }
+    
+    private void setLabels(){
+        JLabel[] labels = {user_pic};
+        String[] paths = {"user.png"};
+        SwingUtilities.invokeLater(() -> {
+            Utility.setIcons(labels, paths);
+        });
     }
 
     /**
@@ -35,31 +80,63 @@ public class account_profile extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        user_pic = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        name_label = new javax.swing.JLabel();
+        email_label = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
 
-        setPreferredSize(new java.awt.Dimension(610, 380));
+        setPreferredSize(new java.awt.Dimension(610, 500));
 
-        jPanel1.setBackground(Utility.pink);
+        jPanel1.setBackground(Utility.miku);
+        jPanel1.setPreferredSize(new java.awt.Dimension(610, 410));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 594, Short.MAX_VALUE)
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        user_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
+        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 50, 50));
+
+        jPanel4.setBackground(Utility.darkermiku);
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 410, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 350, Short.MAX_VALUE)
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 70, Short.MAX_VALUE)
         );
+
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 70));
+
+        name_label.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
+        name_label.setText("Name");
+        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 220, 30));
+
+        email_label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        email_label.setText("Email");
+        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 220, 30));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 390));
+
+        jPanel2.setBackground(Utility.blackish);
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 610, 100));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 594, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, Short.MAX_VALUE)
         );
 
         pack();
@@ -67,6 +144,12 @@ public class account_profile extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel email_label;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel name_label;
+    private javax.swing.JLabel user_pic;
     // End of variables declaration//GEN-END:variables
 }

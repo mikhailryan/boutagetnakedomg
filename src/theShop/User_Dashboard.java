@@ -4,19 +4,17 @@ package theShop;
 import InternalFrames.*;
 import config.Utility;
 import config.db_connector;
-import java.awt.Image;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.ImageIcon;
+import java.beans.PropertyVetoException;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JInternalFrame;
 
 public class User_Dashboard extends javax.swing.JFrame {
     
+    private JInternalFrame activeFrame = null;
+    
     db_connector conn = new db_connector();
     
-    String fullname;
-    
+    private static int id;
     /**
      * Creates new form User_Dashboard
      * @param id
@@ -24,40 +22,22 @@ public class User_Dashboard extends javax.swing.JFrame {
     public User_Dashboard(int id) {
         initComponents();
         
-        this.fullname = getUsernameById(id);
-        welcome_label.setText("Welcome, "+ this.fullname);
+        User_Dashboard.id = id;
         
-        minimize_button.setIcon(resizeImage("/images/minimize-sign.png", minimize_button));
-        close_button.setIcon(resizeImage("/images/close.png", close_button));
+        minimize_button.setIcon(Utility.resizeImage("/images/minimize-sign.png", minimize_button));
+        close_button.setIcon(Utility.resizeImage("/images/close.png", close_button));
+        profile_pic.setIcon(Utility.resizeImage("/images/user.png", profile_pic));
         
-        account_profile profile = new account_profile();
+        account_profile profile = new account_profile(id);
         main_desktop.add(profile).setVisible(true);
+        profile_button.setBackground(Utility.miku);
+        activeFrame = profile;
     }
     
-    private String getUsernameById(int id) {
-        String name = "Unknown User";
-        String sql = "SELECT name FROM user WHERE id = " + id;
-
-        try {
-            ResultSet result = conn.getData(sql);
-
-            if (result.next()) {
-                name = result.getString("name"); 
-            }
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-
-        return name;
+    private void resetButtonColors() {
+        profile_button.setBackground(Utility.darkermiku);
+//        users_button.setBackground(Utility.darkermiku);
     }
-    
-    private ImageIcon resizeImage(String path, JLabel label) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
-        return new ImageIcon(img);
-    }
-
-    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,8 +54,9 @@ public class User_Dashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        welcome_label = new javax.swing.JLabel();
+        profile_button = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        profile_pic = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         close_button = new javax.swing.JLabel();
         minimize_button = new javax.swing.JLabel();
@@ -84,7 +65,7 @@ public class User_Dashboard extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        jPanel1.setBackground(new java.awt.Color(204, 255, 255));
+        jPanel1.setBackground(Utility.grayish);
         jPanel1.setLayout(null);
 
         jPanel2.setBackground(new java.awt.Color(19, 122, 127));
@@ -133,19 +114,30 @@ public class User_Dashboard extends javax.swing.JFrame {
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
 
+        profile_button.setBackground(Utility.darkermiku);
+        profile_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseExited(evt);
+            }
+        });
+        profile_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Account Profile");
+        profile_button.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 130, 40));
+        profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
+
+        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 40));
+
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 190, 530);
-
-        jPanel3.setBackground(new java.awt.Color(134, 206, 203));
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        welcome_label.setFont(new java.awt.Font("Courier New", 0, 24)); // NOI18N
-        welcome_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        welcome_label.setText("Welcome, ");
-        jPanel3.add(welcome_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 590, 60));
-
-        jPanel1.add(jPanel3);
-        jPanel3.setBounds(0, 30, 800, 120);
 
         jLabel2.setText("USER DASHBOARD");
         jPanel1.add(jLabel2);
@@ -177,11 +169,11 @@ public class User_Dashboard extends javax.swing.JFrame {
         );
         main_desktopLayout.setVerticalGroup(
             main_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 380, Short.MAX_VALUE)
+            .addGap(0, 500, Short.MAX_VALUE)
         );
 
         jPanel1.add(main_desktop);
-        main_desktop.setBounds(190, 150, 610, 380);
+        main_desktop.setBounds(190, 30, 610, 500);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -191,7 +183,7 @@ public class User_Dashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 534, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE)
         );
 
         pack();
@@ -219,19 +211,93 @@ public class User_Dashboard extends javax.swing.JFrame {
         logout_button.setBackground(Utility.darkermiku);
     }//GEN-LAST:event_logout_buttonMouseExited
 
+    private void profile_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseClicked
+        resetButtonColors();
+        profile_button.setBackground(Utility.miku);
 
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof account_profile) {
+                try {
+                    frame.setSelected(true); // Bring it to front
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        account_profile acc = new account_profile(id);
+        main_desktop.add(acc);
+        acc.setVisible(true);
+
+        try {
+            acc.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = acc;
+    }//GEN-LAST:event_profile_buttonMouseClicked
+
+    private void profile_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+            profile_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseEntered
+
+    private void profile_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+            profile_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseExited
+    
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Admin_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Admin_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Admin_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Admin_Dashboard.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new User_Dashboard(User_Dashboard.id).setVisible(true);
+        });
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel logout_button;
     private javax.swing.JDesktopPane main_desktop;
     private javax.swing.JLabel minimize_button;
-    private javax.swing.JLabel welcome_label;
+    private javax.swing.JPanel profile_button;
+    private javax.swing.JLabel profile_pic;
     // End of variables declaration//GEN-END:variables
 }

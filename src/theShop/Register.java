@@ -27,11 +27,11 @@ public class Register extends javax.swing.JFrame {
         );
         roleBorder.setTitleFont(new Font("Arial", Font.BOLD, 11));
         role_panel.setBorder(roleBorder);
-        setBorders(name_input, username_input, email_input, password_input, password1_input);
+        Utility.setBorders(name_input, username_input, email_input, password_input, password1_input);
 
         JLabel[] labels = {user, pass, leek, show_pass, email_pic, show_pass1, pass1, jLabel2, name_pic};
         String[] paths = {"user.png", "padlock.png", "somelogoidkfck.png", "hidden.png", "email.png", "hidden.png", "access.png", "setting.png", "id-card.png"};
-        setIcons(labels, paths);
+        Utility.setIcons(labels, paths);
         
         ActionListener roleSelectionListener = (ActionEvent e) -> {
             role_panel.setBorder(BorderFactory.createTitledBorder(
@@ -45,12 +45,6 @@ public class Register extends javax.swing.JFrame {
         
         minimize_button.setIcon(resizeImage("/images/minimize-sign.png", minimize_button));
         close_button.setIcon(resizeImage("/images/close.png", close_button));
-    }
-    
-    private void setIcons(JLabel[] labels, String[] paths) {
-        for (int i = 0; i < labels.length; i++) {
-            labels[i].setIcon(resizeImage("/images/" + paths[i], labels[i]));
-        }
     }
 
     private ImageIcon resizeImage(String path, JLabel label) {
@@ -71,15 +65,6 @@ public class Register extends javax.swing.JFrame {
             new LineBorder(new Color(19,122,127), 1),
             new EmptyBorder(0, 3, 0, 0) 
         ));
-    }
-    
-    private void setBorders(JTextField... fields) {
-        for (JTextField field : fields) {
-            field.setBorder(BorderFactory.createCompoundBorder(
-                new LineBorder(new Color(19,122,127), 1), 
-                new EmptyBorder(0, 3, 0, 0)
-            ));
-        }
     }
     
     private void displayError(JLabel field, String message) {
@@ -616,7 +601,7 @@ public class Register extends javax.swing.JFrame {
             setInvalidBorder(email_input); 
             displayError(email_error, "Field Required!");
             valid_to_register = false;
-        } else if(!isValidEmail(email)) { 
+        } else if(!Utility.isValidEmail(email)) { 
             setInvalidBorder(email_input); 
             displayError(email_error, "Invalid Email!");
             valid_to_register = false;
@@ -714,13 +699,7 @@ public class Register extends javax.swing.JFrame {
     private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
         setState(JFrame.ICONIFIED);
     }//GEN-LAST:event_minimize_buttonMouseClicked
-    
-    private boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return email.matches(emailRegex);
-    }
-
-    
+      
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

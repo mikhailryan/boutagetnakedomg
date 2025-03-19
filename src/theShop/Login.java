@@ -1,24 +1,12 @@
 package theShop;
 
+import javax.swing.*;
+import java.awt.*;;
+import java.sql.*;
 import config.Utility;
 import config.db_connector;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FocusTraversalPolicy;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Window;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
@@ -67,12 +55,6 @@ public class Login extends javax.swing.JFrame {
     private ImageIcon resizeImage(String path, JLabel label) {
         ImageIcon icon = new ImageIcon(getClass().getResource(path));
         Image img = icon.getImage().getScaledInstance(label.getWidth() - 15, label.getHeight() - 15, Image.SCALE_SMOOTH);
-        return new ImageIcon(img);
-    }
-    
-    private ImageIcon resizeImageClickable(String path, JLabel label) {
-        ImageIcon icon = new ImageIcon(getClass().getResource(path));
-        Image img = icon.getImage().getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
     
@@ -443,7 +425,7 @@ public class Login extends javax.swing.JFrame {
                     
                     if(!status.equals("pending")){
                         if(role.equals("admin")){
-                            new Admin_Dashboard().setVisible(true);
+                            new Admin_Dashboard(id).setVisible(true);
                         }else{
                             new User_Dashboard(id).setVisible(true);
                         }
