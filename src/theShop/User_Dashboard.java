@@ -27,6 +27,7 @@ public class User_Dashboard extends javax.swing.JFrame {
         minimize_button.setIcon(Utility.resizeImage("/images/minimize-sign.png", minimize_button));
         close_button.setIcon(Utility.resizeImage("/images/close.png", close_button));
         profile_pic.setIcon(Utility.resizeImage("/images/user.png", profile_pic));
+        logo.setIcon(Utility.resizeImage("/images/leeeek.png", logo));
         
         account_profile profile = new account_profile(id);
         main_desktop.add(profile).setVisible(true);

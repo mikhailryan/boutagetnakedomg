@@ -7,6 +7,13 @@ package InternalFrames;
 
 import config.Utility;
 import config.db_connector;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FocusTraversalPolicy;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JLabel;
@@ -18,6 +25,8 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  * @author SCC-COLLEGE
  */
 public class account_profile extends javax.swing.JInternalFrame {
+    
+    private String originalText1, originalText2, originalText3;
     
     int id = 0;
     String name = "";
@@ -32,6 +41,8 @@ public class account_profile extends javax.swing.JInternalFrame {
      */
     public account_profile(int id) {
         initComponents();
+        addPanelMouseListener();
+        unFocus();
         
         this.id = id;
         getData();
@@ -40,6 +51,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         email_label.setText((!this.email.isEmpty()) ? this.email : "Unknown User");
         
         setLabels();
+        Utility.setBorders(name_field, email_field, username_field);
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
@@ -60,6 +72,10 @@ public class account_profile extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());        
         }
+        
+        name_field.setText(this.name);
+        email_field.setText(this.email);
+        username_field.setText(this.username);
     }
     
     private void setLabels(){
@@ -67,6 +83,39 @@ public class account_profile extends javax.swing.JInternalFrame {
         String[] paths = {"user.png"};
         SwingUtilities.invokeLater(() -> {
             Utility.setIcons(labels, paths);
+        });
+    }
+    
+    private void addPanelMouseListener() {
+        save_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!save_button.isEnabled()) {
+                    return; 
+                }
+
+                System.out.println("Save button clicked!"); 
+            }
+        });
+    }
+    
+    private void unFocus(){
+        setFocusTraversalPolicy(new FocusTraversalPolicy() {
+            @Override
+            public Component getInitialComponent(Window window) {
+                return null; 
+            }
+
+            @Override
+            public Component getFirstComponent(Container focusCycleRoot) { return null; }
+            @Override
+            public Component getLastComponent(Container focusCycleRoot) { return null; }
+            @Override
+            public Component getDefaultComponent(Container focusCycleRoot) { return null; }
+            @Override
+            public Component getComponentAfter(Container focusCycleRoot, Component aComponent) { return null; }
+            @Override
+            public Component getComponentBefore(Container focusCycleRoot, Component aComponent) { return null; }
         });
     }
 
@@ -79,15 +128,33 @@ public class account_profile extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         user_pic = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         name_label = new javax.swing.JLabel();
         email_label = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        save_button = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        name_field = new javax.swing.JTextField();
+        email_field = new javax.swing.JTextField();
+        username_field = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
+        jLabel1.setText("jLabel1");
+
         setPreferredSize(new java.awt.Dimension(610, 500));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
 
         jPanel1.setBackground(Utility.miku);
         jPanel1.setPreferredSize(new java.awt.Dimension(610, 410));
@@ -97,7 +164,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         user_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 50, 50));
+        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 80, 80));
 
         jPanel4.setBackground(Utility.darkermiku);
 
@@ -105,24 +172,94 @@ public class account_profile extends javax.swing.JInternalFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 410, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 70, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 70));
+        jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 90));
 
         name_label.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
         name_label.setText("Name");
-        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 220, 30));
+        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 220, 30));
 
         email_label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         email_label.setText("Email");
-        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 220, 30));
+        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 220, 30));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 390));
+        jLabel3.setText("Name");
+        jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 160, 30));
+
+        jLabel4.setText("Email");
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, 30));
+
+        jLabel5.setText("Username");
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
+
+        save_button.setBackground(new java.awt.Color(255, 255, 255));
+        save_button.setEnabled(false);
+        save_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                save_buttonMouseEntered(evt);
+            }
+        });
+        save_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Segoe UI Semibold", 1, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Save Changes");
+        save_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
+
+        jPanel3.add(save_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 90, 30));
+
+        name_field.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        name_field.setText("Name");
+        name_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldsChanged(evt);
+            }
+        });
+        jPanel3.add(name_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 190, 220, 30));
+
+        email_field.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        email_field.setText("Email");
+        email_field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                email_fieldActionPerformed(evt);
+            }
+        });
+        email_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldsChanged(evt);
+            }
+        });
+        jPanel3.add(email_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 220, 30));
+
+        username_field.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        username_field.setText("Username");
+        username_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fieldsChanged(evt);
+            }
+        });
+        jPanel3.add(username_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 220, 30));
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 1, 10)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Undo Changes");
+        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 70, 30));
+
+        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 400));
 
         jPanel2.setBackground(Utility.blackish);
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -142,14 +279,54 @@ public class account_profile extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void fieldsChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldsChanged
+        boolean changed = !name_field.getText().equals(originalText1) ||
+                        !email_field.getText().equals(originalText2) ||
+                        !username_field.getText().equals(originalText3);
+
+      save_button.setEnabled(changed);
+
+      if (changed) {
+          save_button.setBackground(Utility.blackish); 
+          jLabel2.setForeground(Color.WHITE);
+      } else {
+          save_button.setBackground(Color.WHITE);
+          jLabel2.setForeground(Color.WHITE);
+      }
+    }//GEN-LAST:event_fieldsChanged
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        originalText1 = name_field.getText();
+        originalText2 = email_field.getText();
+        originalText3 = username_field.getText();
+    }//GEN-LAST:event_formComponentShown
+
+    private void email_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_email_fieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_email_fieldActionPerformed
+
+    private void save_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save_buttonMouseEntered
+        System.out.println("hover");
+    }//GEN-LAST:event_save_buttonMouseEntered
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField email_field;
     private javax.swing.JLabel email_label;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JTextField name_field;
     private javax.swing.JLabel name_label;
+    private javax.swing.JPanel save_button;
     private javax.swing.JLabel user_pic;
+    private javax.swing.JTextField username_field;
     // End of variables declaration//GEN-END:variables
 }

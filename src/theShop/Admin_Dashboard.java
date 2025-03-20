@@ -22,8 +22,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     public Admin_Dashboard(int id) {
         initComponents();
         
-        JLabel[] labels = {logo, close_button, minimize_button, users_manage_pic, profile_pic};
-        String[] paths = {"leeeek.png", "close.png", "minimize-sign.png", "management.png", "user.png"};
+        JLabel[] labels = {logo, close_button, minimize_button, users_manage_pic, profile_pic, logout_pic};
+        String[] paths = {"leeeek.png", "close.png", "minimize-sign.png", "management.png", "user.png", "logout.png"};
         Utility.setIcons(labels, paths);
         
         users_table users_table = new users_table();
@@ -57,6 +57,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         profile_pic = new javax.swing.JLabel();
         logout_button = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
+        logout_pic = new javax.swing.JLabel();
         users_button = new javax.swing.JPanel();
         users_manage_pic = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -101,7 +102,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Account Profile");
-        profile_button.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 130, 40));
+        profile_button.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 110, 40));
         profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
 
         jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 40));
@@ -122,7 +123,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Logout");
-        logout_button.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 98, 40));
+        logout_button.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 80, 40));
+        logout_button.add(logout_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
 
         jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 190, 40));
 
@@ -144,7 +146,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Users Management");
-        users_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 130, 40));
+        users_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 110, 40));
 
         jPanel2.add(users_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 40));
 
@@ -363,6 +365,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel logo;
     private javax.swing.JPanel logout_button;
+    private javax.swing.JLabel logout_pic;
     private javax.swing.JDesktopPane main_desktop;
     private javax.swing.JLabel minimize_button;
     private javax.swing.JPanel profile_button;
