@@ -582,7 +582,7 @@ public class Register extends javax.swing.JFrame {
         String email = email_input.getText().trim();
         String password = new String(password_input.getPassword());
         String password1 = new String(password1_input.getPassword());
-        String role = admin_role.isSelected() ? "admin" : "user";
+        String role = admin_role.isSelected() ? "Admin" : "User";
         String status = "pending";
         
         String hashedPassword = Utility.hashPassword(password);

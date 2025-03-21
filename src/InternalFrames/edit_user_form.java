@@ -1,29 +1,92 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package InternalFrames;
 
-import config.*;
-import javax.swing.*;
-import java.awt.*;
+import config.CustomComboBoxUI;
+import config.Utility;
+import config.db_connector;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.FocusTraversalPolicy;
+import java.awt.Point;
+import java.awt.Window;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.BorderFactory;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-public class add_user_form extends javax.swing.JDialog {
-    private static add_user_form instance;  
+/**
+ *
+ * @author SCC-COLLEGE
+ */
+public class edit_user_form extends javax.swing.JDialog {
+    private static edit_user_form instance;  
     private final db_connector conn = new db_connector();
+    static String userId = "0";
+    
+    String name = "";
+    String email = "";
+    String username = "";
+    String role = "";
+    String status = "";
     
     /**
-     * Creates new form add_user_form
+     * Creates new form edit_user_form
      * @param parent
      * @param modal
+     * @param id
      */
-    public add_user_form(java.awt.Frame parent, boolean modal) {
+    public edit_user_form(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
+        getData(this.userId);
+        
         setLabels();
-        Utility.setBorders(name_input, username_input, email_input, password_input);
+        Utility.setBorders(name_input, username_input, email_input);
         
         unFocus();
+    }
+    
+    private void getData(String id){
+        if (id == null || id.trim().isEmpty()) {
+            System.out.println("Error: Invalid user ID.");
+            return;
+        }
+        
+        String sql = "SELECT * FROM user WHERE id = " + id;
+        try {
+            ResultSet result = conn.getData(sql);
+            
+            if (result.next()) {
+                this.name = result.getString("name");
+                this.email = result.getString("email");
+                this.username = result.getString("username");
+                this.status = result.getString("status");
+                this.role = result.getString("role");
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());        
+        }
+        
+        name_input.setText(this.name);
+        email_input.setText(this.email);
+        username_input.setText(this.username);
+        roles_selection.setSelectedItem(this.role);
+        status_selection.setSelectedItem(this.status);
+        System.out.println(role);
     }
     
     private void setLabels() {
@@ -53,12 +116,13 @@ public class add_user_form extends javax.swing.JDialog {
         field.setText(message);
     }
     
-    public static void addUserDialog(JDesktopPane desktopPane) {
-        if (instance == null) { 
+    public static void editUserDialog(JDesktopPane desktopPane, String id) {
+        userId = id;
+        if (instance == null) {
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(desktopPane);
             if (parentFrame != null) {
-                instance = new add_user_form(parentFrame, true);
-                centerDialog(desktopPane);
+                instance = new edit_user_form(parentFrame, true);
+                centerDialog(desktopPane); 
             } else {
                 System.err.println("Error: Parent frame not found!");
                 return;
@@ -69,6 +133,8 @@ public class add_user_form extends javax.swing.JDialog {
             centerDialog(desktopPane);
             instance.setVisible(true);
         }
+        
+        
     }
 
     private static void centerDialog(JDesktopPane desktopPane) {
@@ -107,7 +173,6 @@ public class add_user_form extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -117,7 +182,6 @@ public class add_user_form extends javax.swing.JDialog {
         jLabel11 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         cancel_button = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -134,23 +198,11 @@ public class add_user_form extends javax.swing.JDialog {
         email_error = new javax.swing.JLabel();
         name_error = new javax.swing.JLabel();
         password_error = new javax.swing.JLabel();
-        password_input = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         status_selection = new javax.swing.JComboBox<>();
         status_selection.setUI(new CustomComboBoxUI());
         role_error = new javax.swing.JLabel();
         minimize_button = new javax.swing.JLabel();
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -160,12 +212,12 @@ public class add_user_form extends javax.swing.JDialog {
         jPanel1.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Courier New", 1, 30)); // NOI18N
-        jLabel1.setText("Add User");
+        jLabel1.setText("Edit User");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(20, 30, 280, 30);
 
         jLabel2.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
-        jLabel2.setText("Enter User Details");
+        jLabel2.setText("Modify User Details");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(20, 60, 280, 20);
 
@@ -176,7 +228,7 @@ public class add_user_form extends javax.swing.JDialog {
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel3.setText("New User");
+        jLabel3.setText("Edit User");
         jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 134, 50));
         jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 30, 30));
 
@@ -190,13 +242,9 @@ public class add_user_form extends javax.swing.JDialog {
         jLabel5.setText("Username");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 70, 30));
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
-        jLabel7.setText("Password");
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 70, 30));
-
         jLabel8.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel8.setText("Status");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 70, 30));
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 70, 30));
 
         cancel_button.setBackground(new java.awt.Color(255, 255, 255));
         cancel_button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -303,7 +351,7 @@ public class add_user_form extends javax.swing.JDialog {
                 roles_selectionItemStateChanged(evt);
             }
         });
-        jPanel3.add(roles_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 180, 30));
+        jPanel3.add(roles_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 180, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel6.setText("Email");
@@ -334,16 +382,9 @@ public class add_user_form extends javax.swing.JDialog {
         password_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jPanel3.add(password_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 150, 10));
 
-        password_input.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                password_inputKeyTyped(evt);
-            }
-        });
-        jPanel3.add(password_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 180, 30));
-
         jLabel12.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel12.setText("Role");
-        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 70, 30));
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 70, 30));
 
         status_selection.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         status_selection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select status", "Pending", "Active" }));
@@ -352,7 +393,7 @@ public class add_user_form extends javax.swing.JDialog {
                 status_selectionItemStateChanged(evt);
             }
         });
-        jPanel3.add(status_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, 180, 30));
+        jPanel3.add(status_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 180, 30));
 
         role_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         role_error.setForeground(new java.awt.Color(255, 0, 0));
@@ -375,7 +416,7 @@ public class add_user_form extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,35 +424,34 @@ public class add_user_form extends javax.swing.JDialog {
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
-        this.setVisible(false);
-    }//GEN-LAST:event_minimize_buttonMouseClicked
+    private void cancel_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseClicked
+        this.dispose();
+        instance = null;
+    }//GEN-LAST:event_cancel_buttonMouseClicked
 
-    private void add_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseEntered
-        add_button.setBackground(Utility.darkermiku);
-    }//GEN-LAST:event_add_buttonMouseEntered
+    private void cancel_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseEntered
+        cancel_button.setBackground(new Color(204,0,0));
+        jLabel9.setForeground(Color.WHITE);
+    }//GEN-LAST:event_cancel_buttonMouseEntered
 
-    private void add_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseExited
-        add_button.setBackground(Utility.blackish);
-    }//GEN-LAST:event_add_buttonMouseExited
+    private void cancel_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseExited
+        cancel_button.setBackground(Color.WHITE);
+        jLabel9.setForeground(Color.BLACK);
+    }//GEN-LAST:event_cancel_buttonMouseExited
 
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
         unFocus();
-        
+
         boolean valid_to_add = true;
-        
+
         String name = name_input.getText().trim();
         String username = username_input.getText().trim();
         String email = email_input.getText().trim();
-        String password = password_input.getText().trim();
         String role = (String)roles_selection.getSelectedItem();
         String status = (String)status_selection.getSelectedItem();
-        
-        String hashedPassword = Utility.hashPassword(password);
-        
+
         if(name.isEmpty() || name.equals("Enter full name...")) {
             setInvalidBorder(name_input);
             displayError(name_error, "Field Required!");
@@ -422,22 +462,13 @@ public class add_user_form extends javax.swing.JDialog {
             displayError(username_error, "Field Required!");
             valid_to_add = false;
         }
-        if(email.isEmpty() || email.equals("Enter email...")) { 
-            setInvalidBorder(email_input); 
+        if(email.isEmpty() || email.equals("Enter email...")) {
+            setInvalidBorder(email_input);
             displayError(email_error, "Field Required!");
             valid_to_add = false;
-        } else if(!Utility.isValidEmail(email)) { 
-            setInvalidBorder(email_input); 
+        } else if(!Utility.isValidEmail(email)) {
+            setInvalidBorder(email_input);
             displayError(email_error, "Invalid Email!");
-            valid_to_add = false;
-        }
-        if(password.isEmpty() || password.equals("Enter password...")) {
-            setInvalidBorder(password_input);
-            displayError(password_error, "Field Required!");
-            valid_to_add = false;
-        } else if(password.length() < 8) {
-            setInvalidBorder(password_input);
-            displayError(password_error, "Password Too Short!");
             valid_to_add = false;
         }
         if(role.equals("Select role")){
@@ -451,58 +482,46 @@ public class add_user_form extends javax.swing.JDialog {
             valid_to_add = false;
         }
         
-        // idk wtf is ts tbh...
         try {
-            if(conn.fieldExists("username", username) || conn.fieldExists("email", email)){
-                if(conn.fieldExists("username", username)){
-                    setInvalidBorder(username_input);
-                    displayError(username_error, "Username Already Taken!");
-                    valid_to_add = false;
-                }
-                if(conn.fieldExists("email", email)){
-                    setInvalidBorder(email_input);
-                    displayError(email_error, "Email Already Taken!");
-                    valid_to_add = false;
-                }
-            }else{
-                if(valid_to_add) {
-                    conn.insertData("INSERT INTO `user` (name, username, email, password, role, status) VALUES ('"+name+"','"+username+"', '"+email+"', '"+hashedPassword+"', '"+role+"', '"+status+"')");
-                    JOptionPane.showMessageDialog(null, "User Inserted Successfully!");
-                    this.dispose();
-                }
+            if(conn.fieldExists("username", username)){
+                setInvalidBorder(username_input);
+                displayError(username_error, "Field Required!");
+                valid_to_add = false;
             }
+            if(conn.fieldExists("email", email)){
+                setInvalidBorder(email_input);
+                displayError(email_error, "Invalid Email!");
+                valid_to_add = false;
+            }
+            
         } catch (SQLException e) {
-            System.out.println("Can't Connect to Database: " + e.getMessage());
         }
+        
+        if(valid_to_add) {
+            conn.insertData("UPDATE `user` SET "
+                                + "name = '"+name+"', "
+                                + "username = '"+username+"', "
+                                + "email = '"+email+"', "
+                                + "role = '"+role+"', "
+                                + "status = '"+status+"' "
+                                    + "WHERE id = '"+userId+"'");
+
+            JOptionPane.showMessageDialog(null, "User Edited Successfully!");
+            this.dispose();
+        }
+
     }//GEN-LAST:event_add_buttonMouseClicked
 
-    private void cancel_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseEntered
-        cancel_button.setBackground(new Color(204,0,0));
-        jLabel9.setForeground(Color.WHITE);
-    }//GEN-LAST:event_cancel_buttonMouseEntered
+    private void add_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseEntered
+        add_button.setBackground(Utility.darkermiku);
+    }//GEN-LAST:event_add_buttonMouseEntered
 
-    private void cancel_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseExited
-        cancel_button.setBackground(Color.WHITE);
-        jLabel9.setForeground(Color.BLACK);
-    }//GEN-LAST:event_cancel_buttonMouseExited
-
-    private void cancel_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseClicked
-         this.dispose(); 
-        instance = null; 
-    }//GEN-LAST:event_cancel_buttonMouseClicked
-
-    private void roles_selectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roles_selectionItemStateChanged
-        roles_selection.setBorder(BorderFactory.createLineBorder(Utility.darkermiku, 1));
-        displayError(role_error, "");
-    }//GEN-LAST:event_roles_selectionItemStateChanged
-
-    private void status_selectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_status_selectionItemStateChanged
-        status_selection.setBorder(BorderFactory.createLineBorder(Utility.darkermiku, 1));
-        displayError(status_error, "");
-    }//GEN-LAST:event_status_selectionItemStateChanged
+    private void add_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseExited
+        add_button.setBackground(Utility.blackish);
+    }//GEN-LAST:event_add_buttonMouseExited
 
     private void name_inputCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_name_inputCaretPositionChanged
-        
+
     }//GEN-LAST:event_name_inputCaretPositionChanged
 
     private void name_inputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_name_inputKeyTyped
@@ -520,14 +539,21 @@ public class add_user_form extends javax.swing.JDialog {
         displayError(email_error, "");
     }//GEN-LAST:event_email_inputKeyTyped
 
-    private void password_inputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_inputKeyTyped
-        resetBorder(password_input);
-        displayError(password_error, "");
-    }//GEN-LAST:event_password_inputKeyTyped
+    private void roles_selectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roles_selectionItemStateChanged
+        roles_selection.setBorder(BorderFactory.createLineBorder(Utility.darkermiku, 1));
+        displayError(role_error, "");
+    }//GEN-LAST:event_roles_selectionItemStateChanged
 
-    /**
-     * @param args the command line arguments
-     */
+    private void status_selectionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_status_selectionItemStateChanged
+        status_selection.setBorder(BorderFactory.createLineBorder(Utility.darkermiku, 1));
+        displayError(status_error, "");
+    }//GEN-LAST:event_status_selectionItemStateChanged
+
+    private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
+        this.dispose();
+        instance = null;
+    }//GEN-LAST:event_minimize_buttonMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel add_button;
@@ -543,18 +569,15 @@ public class add_user_form extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JLabel minimize_button;
     private javax.swing.JLabel name_error;
     private javax.swing.JTextField name_input;
     private javax.swing.JLabel password_error;
-    private javax.swing.JTextField password_input;
     private javax.swing.JLabel role_error;
     private javax.swing.JComboBox<String> roles_selection;
     private javax.swing.JLabel status_error;

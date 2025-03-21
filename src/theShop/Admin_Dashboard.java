@@ -278,11 +278,10 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         resetButtonColors();
         users_button.setBackground(Utility.miku);
 
-        // Check if the frame is already open
         for (JInternalFrame frame : main_desktop.getAllFrames()) {
             if (frame instanceof users_table) { 
                 try {
-                    frame.setSelected(true); // Bring it to front
+                    frame.setSelected(true); 
                 } catch (PropertyVetoException e) {
                     System.out.println(e.getMessage());
                 }
@@ -290,12 +289,10 @@ public class Admin_Dashboard extends javax.swing.JFrame {
             }
         }
 
-        // Close the currently active frame before opening a new one
         if (activeFrame != null) {
             activeFrame.dispose();
         }
 
-        // Open new users_table frame
         users_table users = new users_table();
         main_desktop.add(users);
         users.setVisible(true);

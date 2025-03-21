@@ -76,7 +76,7 @@ public class users_table extends javax.swing.JInternalFrame {
             
             users_table.getTableHeader().setBackground(new Color(19,122,127));
             
-            String[] statuses = {"pending", "inactive", "active"};
+            String[] statuses = {"Pending", "Inactive", "Active"};
             JComboBox<String> statusComboBox = new JComboBox<>(statuses);
             TableColumn statusColumn = users_table.getColumnModel().getColumn(4);
             DefaultCellEditor editor = new DefaultCellEditor(statusComboBox);
@@ -216,7 +216,7 @@ public class users_table extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         users_table = new javax.swing.JTable();
         delete_button = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -228,6 +228,8 @@ public class users_table extends javax.swing.JInternalFrame {
         filter_btn = new javax.swing.JPanel();
         filter_pic = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        edit_button = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -285,7 +287,7 @@ public class users_table extends javax.swing.JInternalFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, -1, 380));
 
-        delete_button.setBackground(new java.awt.Color(134, 206, 203));
+        delete_button.setBackground(Utility.miku);
         delete_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 delete_buttonMouseClicked(evt);
@@ -297,42 +299,29 @@ public class users_table extends javax.swing.JInternalFrame {
                 delete_buttonMouseExited(evt);
             }
         });
+        delete_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Delete");
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Delete");
+        delete_button.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
 
-        javax.swing.GroupLayout delete_buttonLayout = new javax.swing.GroupLayout(delete_button);
-        delete_button.setLayout(delete_buttonLayout);
-        delete_buttonLayout.setHorizontalGroup(
-            delete_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(delete_buttonLayout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        delete_buttonLayout.setVerticalGroup(
-            delete_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, delete_buttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        jPanel1.add(delete_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 10, 90, 30));
+        jPanel1.add(delete_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 20, 90, 30));
 
         jLabel2.setFont(new java.awt.Font("Courier New", 1, 27)); // NOI18N
         jLabel2.setText("User Management");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 370, 40));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 330, 40));
 
         jLabel3.setFont(new java.awt.Font("Courier New", 1, 12)); // NOI18N
         jLabel3.setText("View, manage, and update user accounts");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 290, 30));
 
-        jPanel2.setBackground(new java.awt.Color(134, 206, 255));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 153));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         users_count.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         users_count.setText("All Users: ");
-        jPanel2.add(users_count, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 110, 30));
+        jPanel2.add(users_count, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 110, 30));
         jPanel2.add(search_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, 30, 30));
 
         search_bar.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -382,7 +371,28 @@ public class users_table extends javax.swing.JInternalFrame {
 
         jPanel2.add(filter_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 80, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 600, 50));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 50));
+
+        edit_button.setBackground(Utility.miku);
+        edit_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                edit_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                edit_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                edit_buttonMouseExited(evt);
+            }
+        });
+        edit_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("Times New Roman", 1, 13)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Edit");
+        edit_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
+
+        jPanel1.add(edit_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -472,18 +482,44 @@ public class users_table extends javax.swing.JInternalFrame {
     private void add_user_btnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_user_btnMouseExited
         // TODO add your handling code here:
     }//GEN-LAST:event_add_user_btnMouseExited
+            
+    private void edit_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edit_buttonMouseClicked
+        int row = users_table.getSelectedRow(); 
+
+        if (row == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String id = users_table.getValueAt(row, 0).toString();
+        
+        JDesktopPane desktopPane = this.getDesktopPane();
+        if (desktopPane != null) {
+            edit_user_form.editUserDialog(desktopPane, id);
+        }
+    }//GEN-LAST:event_edit_buttonMouseClicked
+
+    private void edit_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edit_buttonMouseEntered
+        edit_button.setBackground(new Color(19,122,127));
+    }//GEN-LAST:event_edit_buttonMouseEntered
+
+    private void edit_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_edit_buttonMouseExited
+        edit_button.setBackground(new Color(134,206,203));
+    }//GEN-LAST:event_edit_buttonMouseExited
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel add_user_btn;
     private javax.swing.JPanel delete_button;
+    private javax.swing.JPanel edit_button;
     private javax.swing.JPanel filter_btn;
     private javax.swing.JLabel filter_pic;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
