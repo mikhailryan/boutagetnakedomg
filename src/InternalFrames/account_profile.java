@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class account_profile extends javax.swing.JInternalFrame {
     
-    private String originalText1, originalText2, originalText3;
+    private String original_name, original_email, original_username;
     
     int id = 0;
     String name = "";
@@ -290,9 +290,9 @@ public class account_profile extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldsChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldsChanged
-        boolean changed = !name_field.getText().equals(originalText1) ||
-                        !email_field.getText().equals(originalText2) ||
-                        !username_field.getText().equals(originalText3);
+        boolean changed = !name_field.getText().trim().equals(original_name) ||
+                        !email_field.getText().trim().equals(original_email) ||
+                        !username_field.getText().trim().equals(original_username);
 
       save_button.setEnabled(changed);
 
@@ -306,9 +306,9 @@ public class account_profile extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_fieldsChanged
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        originalText1 = name_field.getText();
-        originalText2 = email_field.getText();
-        originalText3 = username_field.getText();
+        original_name = name_field.getText();
+        original_email = email_field.getText();
+        original_username = username_field.getText();
     }//GEN-LAST:event_formComponentShown
 
     private void email_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_email_fieldActionPerformed

@@ -53,6 +53,10 @@ public class users_table extends javax.swing.JInternalFrame {
         ));
     }
     
+    public void refreshData(){
+        display_data();
+    }
+    
     private void display_data(){
         try {
             db_connector dbcon = new db_connector();

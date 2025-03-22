@@ -86,7 +86,6 @@ public class edit_user_form extends javax.swing.JDialog {
         username_input.setText(this.username);
         roles_selection.setSelectedItem(this.role);
         status_selection.setSelectedItem(this.status);
-        System.out.println(role);
     }
     
     private void setLabels() {
@@ -236,15 +235,15 @@ public class edit_user_form extends javax.swing.JDialog {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel4.setText("Name");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 70, 30));
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 70, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel5.setText("Username");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 70, 30));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 70, 30));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel8.setText("Status");
-        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 230, 70, 30));
+        jPanel3.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 70, 30));
 
         cancel_button.setBackground(new java.awt.Color(255, 255, 255));
         cancel_button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -326,7 +325,7 @@ public class edit_user_form extends javax.swing.JDialog {
                 name_inputKeyTyped(evt);
             }
         });
-        jPanel3.add(name_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 180, 30));
+        jPanel3.add(name_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 180, 30));
 
         username_input.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         username_input.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -334,7 +333,7 @@ public class edit_user_form extends javax.swing.JDialog {
                 username_inputKeyTyped(evt);
             }
         });
-        jPanel3.add(username_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 180, 30));
+        jPanel3.add(username_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 130, 180, 30));
 
         email_input.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         email_input.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -342,7 +341,7 @@ public class edit_user_form extends javax.swing.JDialog {
                 email_inputKeyTyped(evt);
             }
         });
-        jPanel3.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 180, 30));
+        jPanel3.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 180, 30));
 
         roles_selection.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         roles_selection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select role", "Admin", "User" }));
@@ -351,40 +350,40 @@ public class edit_user_form extends javax.swing.JDialog {
                 roles_selectionItemStateChanged(evt);
             }
         });
-        jPanel3.add(roles_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 190, 180, 30));
+        jPanel3.add(roles_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 210, 180, 30));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel6.setText("Email");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 70, 30));
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 70, 30));
 
         status_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         status_error.setForeground(new java.awt.Color(255, 0, 0));
         status_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(status_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 260, 150, 10));
+        jPanel3.add(status_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 280, 150, 10));
 
         username_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         username_error.setForeground(new java.awt.Color(255, 0, 0));
         username_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 150, 10));
+        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 150, 10));
 
         email_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         email_error.setForeground(new java.awt.Color(255, 0, 0));
         email_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(email_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 140, 150, 10));
+        jPanel3.add(email_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 160, 150, 10));
 
         name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         name_error.setForeground(new java.awt.Color(255, 0, 0));
         name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 150, 10));
+        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 80, 150, 10));
 
         password_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         password_error.setForeground(new java.awt.Color(255, 0, 0));
         password_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(password_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 180, 150, 10));
+        jPanel3.add(password_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, 150, 10));
 
         jLabel12.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel12.setText("Role");
-        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 70, 30));
+        jPanel3.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, 70, 30));
 
         status_selection.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         status_selection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select status", "Pending", "Active" }));
@@ -393,12 +392,12 @@ public class edit_user_form extends javax.swing.JDialog {
                 status_selectionItemStateChanged(evt);
             }
         });
-        jPanel3.add(status_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 230, 180, 30));
+        jPanel3.add(status_selection, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 180, 30));
 
         role_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         role_error.setForeground(new java.awt.Color(255, 0, 0));
         role_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(role_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 220, 150, 10));
+        jPanel3.add(role_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 240, 150, 10));
 
         jPanel1.add(jPanel3);
         jPanel3.setBounds(60, 110, 320, 360);
@@ -442,8 +441,7 @@ public class edit_user_form extends javax.swing.JDialog {
     }//GEN-LAST:event_cancel_buttonMouseExited
 
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
-        unFocus();
-
+  
         boolean valid_to_add = true;
 
         String name = name_input.getText().trim();
@@ -451,7 +449,7 @@ public class edit_user_form extends javax.swing.JDialog {
         String email = email_input.getText().trim();
         String role = (String)roles_selection.getSelectedItem();
         String status = (String)status_selection.getSelectedItem();
-
+        
         if(name.isEmpty() || name.equals("Enter full name...")) {
             setInvalidBorder(name_input);
             displayError(name_error, "Field Required!");
@@ -483,33 +481,42 @@ public class edit_user_form extends javax.swing.JDialog {
         }
         
         try {
-            if(conn.fieldExists("username", username)){
+            if(conn.fieldExists("username", username) && !username.equals(this.username)){
                 setInvalidBorder(username_input);
-                displayError(username_error, "Field Required!");
+                displayError(username_error, "Username Already Taken!");
                 valid_to_add = false;
             }
-            if(conn.fieldExists("email", email)){
+            if(conn.fieldExists("email", email) && !email.equals(this.email)){
                 setInvalidBorder(email_input);
-                displayError(email_error, "Invalid Email!");
+                displayError(email_error, "Email Already Exist!");
                 valid_to_add = false;
             }
             
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        
+        if((name.equals(this.name) && email.equals(this.email) && username.equals(this.username) && role.equals(this.role) && status.equals(this.status))) {
+            this.dispose();
+            instance = null;
+            return;
         }
         
         if(valid_to_add) {
-            conn.insertData("UPDATE `user` SET "
-                                + "name = '"+name+"', "
-                                + "username = '"+username+"', "
-                                + "email = '"+email+"', "
-                                + "role = '"+role+"', "
-                                + "status = '"+status+"' "
-                                    + "WHERE id = '"+userId+"'");
+            db_connector.updateDatabase("UPDATE `user` SET "
+                                    + "name = '"+name+"', "
+                                    + "username = '"+username+"', "
+                                    + "email = '"+email+"', "
+                                    + "role = '"+role+"', "
+                                    + "status = '"+status+"' "
+                                        + "WHERE id = '"+userId+"'");
 
             JOptionPane.showMessageDialog(null, "User Edited Successfully!");
+            new users_table().refreshData();
             this.dispose();
+            instance = null;
         }
-
+        
     }//GEN-LAST:event_add_buttonMouseClicked
 
     private void add_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseEntered
