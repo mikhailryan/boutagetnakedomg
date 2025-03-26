@@ -1,5 +1,7 @@
 package InternalFrames;
 
+import Dialogs.edit_user_form;
+import Dialogs.add_user_form;
 import config.CustomScrollBarUI;
 import config.Utility;
 import config.db_connector;

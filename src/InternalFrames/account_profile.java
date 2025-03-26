@@ -5,6 +5,8 @@
  */
 package InternalFrames;
 
+import Dialogs.change_pass;
+import Dialogs.edit_user_form;
 import config.Utility;
 import config.db_connector;
 import java.awt.Color;
@@ -16,7 +18,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
@@ -93,8 +97,26 @@ public class account_profile extends javax.swing.JInternalFrame {
                 if (!save_button.isEnabled()) {
                     return; 
                 }
+                
+                String name = name_field.getText().trim();
+                String email = email_field.getText().trim();
+                String username = username_field.getText().trim();
+                
+                db_connector.updateDatabase("UPDATE `user` SET "
+                                    + "name = '"+name+"', "
+                                    + "username = '"+username+"', "
+                                    + "email = '"+email+"' "
+                                        + "WHERE id = '"+id+"'");
 
-                System.out.println("Save button clicked!"); 
+                JOptionPane.showMessageDialog(null, "Edited Successfully!");
+            
+                original_name = name;
+                original_email = email;
+                original_username = username;
+
+                save_button.setEnabled(false);
+                save_button.setBackground(Color.WHITE);
+                jLabel2.setForeground(Color.WHITE);
             }
         });
     }
@@ -260,14 +282,14 @@ public class account_profile extends javax.swing.JInternalFrame {
 
         jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel7.setText("Change Password");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel7MouseClicked(evt);
             }
         });
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 110, -1));
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 100, 20));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 400));
 
@@ -320,7 +342,10 @@ public class account_profile extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_save_buttonMouseEntered
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
+        JDesktopPane desktopPane = this.getDesktopPane();
+        if (desktopPane != null) {
+            change_pass.changePassDialog(desktopPane);
+        }
     }//GEN-LAST:event_jLabel7MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
