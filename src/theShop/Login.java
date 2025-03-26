@@ -104,6 +104,7 @@ public class Login extends javax.swing.JFrame {
         minimize_button = new javax.swing.JLabel();
         close_button = new javax.swing.JLabel();
         error = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         leek = new javax.swing.JLabel();
 
         name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -150,6 +151,11 @@ public class Login extends javax.swing.JFrame {
                 username_inputActionPerformed(evt);
             }
         });
+        username_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                username_inputKeyReleased(evt);
+            }
+        });
         jPanel2.add(username_input);
         username_input.setBounds(70, 180, 200, 30);
 
@@ -173,7 +179,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(LoginButton);
-        LoginButton.setBounds(70, 280, 200, 30);
+        LoginButton.setBounds(70, 290, 200, 30);
 
         registration.setFont(new java.awt.Font("Arial", 1, 10)); // NOI18N
         registration.setForeground(new java.awt.Color(0, 0, 204));
@@ -191,7 +197,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(registration);
-        registration.setBounds(190, 310, 80, 20);
+        registration.setBounds(190, 320, 80, 20);
 
         show_pass.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hidden.png"))); // NOI18N
         show_pass.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -219,6 +225,11 @@ public class Login extends javax.swing.JFrame {
                 password_inputActionPerformed(evt);
             }
         });
+        password_input.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                password_inputKeyReleased(evt);
+            }
+        });
         jPanel2.add(password_input);
         password_input.setBounds(70, 230, 200, 30);
 
@@ -237,7 +248,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
         jPanel2.add(registration1);
-        registration1.setBounds(70, 310, 160, 20);
+        registration1.setBounds(70, 320, 160, 20);
 
         password_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         password_error.setForeground(new java.awt.Color(255, 0, 0));
@@ -275,6 +286,13 @@ public class Login extends javax.swing.JFrame {
         jPanel2.add(error);
         error.setBounds(70, 260, 200, 10);
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("Forgot Password");
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(180, 270, 90, 20);
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 0, 320, 530));
 
         leek.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/somelogoidkfck.png"))); // NOI18N
@@ -311,8 +329,7 @@ public class Login extends javax.swing.JFrame {
             username_input.setText("Enter username...");
             username_input.setForeground(Color.GRAY);
         }
-        displayError(username_error, "");
-        resetBorder(username_input);
+        
     }//GEN-LAST:event_username_inputFocusLost
 
     private void LoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginButtonActionPerformed
@@ -434,8 +451,8 @@ public class Login extends javax.swing.JFrame {
                         displayError(error, "Account Not Yet Approved!");
                     }
                 }else{
-                    username_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
-                    password_input.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+                    setInvalidBorder(username_input);
+                    setInvalidBorder(password_input);
                     displayError(error, "Invalid Username or Password!");
                 }
             } catch (SQLException ex) {
@@ -452,6 +469,19 @@ public class Login extends javax.swing.JFrame {
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
         System.exit(0);
     }//GEN-LAST:event_close_buttonMouseClicked
+
+    private void username_inputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_username_inputKeyReleased
+        displayError(username_error, "");
+        displayError(error, "");
+        resetBorder(username_input);
+        
+    }//GEN-LAST:event_username_inputKeyReleased
+
+    private void password_inputKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_password_inputKeyReleased
+        displayError(password_error, "");
+        displayError(error, "");
+        resetBorder(password_input);
+    }//GEN-LAST:event_password_inputKeyReleased
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -488,6 +518,7 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel leek;

@@ -280,9 +280,9 @@ public class account_profile extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldsChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldsChanged
-        boolean changed = !name_field.getText().equals(originalText1) ||
-                        !email_field.getText().equals(originalText2) ||
-                        !username_field.getText().equals(originalText3);
+        boolean changed = !name_field.getText().trim().equals(originalText1) ||
+                        !email_field.getText().trim().equals(originalText2) ||
+                        !username_field.getText().trim().equals(originalText3);
 
       save_button.setEnabled(changed);
 
@@ -306,7 +306,7 @@ public class account_profile extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_email_fieldActionPerformed
 
     private void save_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save_buttonMouseEntered
-        System.out.println("hover");
+        
     }//GEN-LAST:event_save_buttonMouseEntered
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
