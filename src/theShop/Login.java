@@ -440,8 +440,8 @@ public class Login extends javax.swing.JFrame {
                     String role = result.getString("role"); 
                     String status = result.getString("status");
                     
-                    if(!status.equals("pending")){
-                        if(role.equals("admin")){
+                    if(!status.equals("Pending")){
+                        if(role.equals("Admin")){
                             new Admin_Dashboard(id).setVisible(true);
                         }else{
                             new User_Dashboard(id).setVisible(true);

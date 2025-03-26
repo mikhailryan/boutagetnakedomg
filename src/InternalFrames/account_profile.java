@@ -26,7 +26,7 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class account_profile extends javax.swing.JInternalFrame {
     
-    private String originalText1, originalText2, originalText3;
+    private String original_name, original_email, original_username;
     
     int id = 0;
     String name = "";
@@ -145,6 +145,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         username_field = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
         jLabel1.setText("jLabel1");
@@ -259,6 +260,15 @@ public class account_profile extends javax.swing.JInternalFrame {
 
         jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
 
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setText("Change Password");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, 110, -1));
+
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 400));
 
         jPanel2.setBackground(Utility.blackish);
@@ -280,9 +290,9 @@ public class account_profile extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldsChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldsChanged
-        boolean changed = !name_field.getText().trim().equals(originalText1) ||
-                        !email_field.getText().trim().equals(originalText2) ||
-                        !username_field.getText().trim().equals(originalText3);
+        boolean changed = !name_field.getText().trim().equals(original_name) ||
+                        !email_field.getText().trim().equals(original_email) ||
+                        !username_field.getText().trim().equals(original_username);
 
       save_button.setEnabled(changed);
 
@@ -296,9 +306,9 @@ public class account_profile extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_fieldsChanged
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        originalText1 = name_field.getText();
-        originalText2 = email_field.getText();
-        originalText3 = username_field.getText();
+        original_name = name_field.getText();
+        original_email = email_field.getText();
+        original_username = username_field.getText();
     }//GEN-LAST:event_formComponentShown
 
     private void email_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_email_fieldActionPerformed
@@ -309,6 +319,10 @@ public class account_profile extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_save_buttonMouseEntered
 
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField email_field;
     private javax.swing.JLabel email_label;
@@ -318,6 +332,7 @@ public class account_profile extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

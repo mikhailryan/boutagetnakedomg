@@ -11,6 +11,17 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/theShop/Admin_Dashboard.java</file>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/InternalFrames/account_profile.java</file>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/theShop/Register.java</file>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/InternalFrames/edit_user_form.java</file>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/InternalFrames/users_table.java</file>
+            <file>file:/C:/Users/Mercy/Documents/NetBeans/boutagetnakedomg/src/config/db_connector.java</file>
+        </group>
+>>>>>>> 048e1e4694b07fe8d6d76c0df5b60171e461c43f
     </open-files>
 </project-private>
