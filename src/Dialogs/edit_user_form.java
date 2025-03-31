@@ -503,6 +503,11 @@ public class edit_user_form extends javax.swing.JDialog {
         }
         
         if(valid_to_add) {
+            boolean confirmed = CustomYesNoDialog.showConfirm(null, "Save Changes?", "Confirm Edit");
+            if(!confirmed){
+                return;
+            }
+            
             db_connector.updateDatabase("UPDATE `user` SET "
                                     + "name = '"+name+"', "
                                     + "username = '"+username+"', "
@@ -511,7 +516,7 @@ public class edit_user_form extends javax.swing.JDialog {
                                     + "status = '"+status+"' "
                                         + "WHERE id = '"+userId+"'");
 
-            JOptionPane.showMessageDialog(null, "User Edited Successfully!");
+            CustomMessageDialog.showMessage(null, "User Edited Successfully!", "Edit User");
             new users_table().refreshData();
             this.dispose();
             instance = null;

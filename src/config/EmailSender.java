@@ -1,14 +1,19 @@
 package config;
 
+import java.io.UnsupportedEncodingException;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.util.Properties;
 
 public class EmailSender {
     public static void main(String[] args) {
-        // Your Gmail credentials (use your App Password here)
-        final String username = "mikhailryanmuralla@gmail.com";
-        final String password = "lyqzgvvguxaxfjps";
+        final String username = "mikufromsomewhere@gmail.com";
+        final String password = "sfndygstjowtuaun";
+
+        String receiverAddress = "mikhailryanmuralla@gmail.com";
+        String senderName = "DropXchange Support";
+
+        int resetCode = 69420;
 
         // Gmail SMTP server settings
         Properties props = new Properties();
@@ -16,12 +21,9 @@ public class EmailSender {
         props.put("mail.smtp.port", "587");                 // TLS port
         props.put("mail.smtp.auth", "true");                // Enable authentication
         props.put("mail.smtp.starttls.enable", "true");     // Secure connection
-        props.put("mail.debug", "true");
-        props.put("mail.smtp.debug", "true");
-        
+        props.put("X-Priority", "1");                       // High priority
 
-        // Create a mail session with authentication
-        Session session = Session.getInstance(props, new Authenticator() {
+        javax.mail.Session session = javax.mail.Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
@@ -29,18 +31,28 @@ public class EmailSender {
         });
 
         try {
-            // message
+            // Create message
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("mikhailryanmuralla@gmail.com")); // sender
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("ashbalbz04@gmail.com")); // recepient
-            message.setSubject("Urgent");
-            message.setText("Greetings, palihug kog screenshot if nadawat nimo then i send nako HAHAHA");
+            InternetAddress fromAddress = new InternetAddress(username, senderName);
+            message.setFrom(fromAddress);
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(receiverAddress));
+            message.setReplyTo(InternetAddress.parse("support@dropxchange.com"));
+            message.setSubject("Password Reset Request");
+
+            String emailBody = "<h2>Password Reset Request</h2>"
+                    + "<p>Hello,</p>"
+                    + "<p>We received a request to reset your password. Use the code below to proceed:</p>"
+                    + "<h3 style='color: #2E86C1;'>" + resetCode + "</h3>"
+                    + "<p>If you did not request this, you can ignore this message.</p>"
+                    + "<br><p>Thanks,<br>DropXchange Support Team</p>";
+
+            message.setContent(emailBody, "text/html; charset=utf-8");
 
             Transport.send(message);
 
             System.out.println("Email sent successfully!");
 
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             System.out.println("Error: " + e.getMessage());
         }
     }

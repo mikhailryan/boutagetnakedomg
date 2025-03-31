@@ -1,12 +1,13 @@
 
 package theShop;
 
+import Dialogs.CustomYesNoDialog;
+import InternalFrames.account_main_page;
 import InternalFrames.account_profile;
 import InternalFrames.users_table;
+import config.Session;
 import config.Utility;
-import java.awt.Image;
 import java.beans.PropertyVetoException;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -17,9 +18,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
      * Creates new form Admin_Dashboard
      */
     private JInternalFrame activeFrame = null;
-    static int id;
     
-    public Admin_Dashboard(int id) {
+    public Admin_Dashboard() {
         initComponents();
         
         JLabel[] labels = {logo, close_button, minimize_button, users_manage_pic, profile_pic, logout_pic};
@@ -28,10 +28,10 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         
         users_table users_table = new users_table();
         main_desktop.add(users_table).setVisible(true);
+        
         users_button.setBackground(Utility.miku);
         activeFrame = users_table;
         
-        Admin_Dashboard.id = id;
     }
     
     private void resetButtonColors() {
@@ -216,11 +216,10 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         resetButtonColors(); 
         profile_button.setBackground(Utility.miku);
 
-        // Check if the frame is already open
         for (JInternalFrame frame : main_desktop.getAllFrames()) {
-            if (frame instanceof account_profile) { 
+            if (frame instanceof account_main_page) { 
                 try {
-                    frame.setSelected(true); // Bring it to front
+                    frame.setSelected(true); 
                 } catch (PropertyVetoException e) {
                     System.out.println(e.getMessage());
                 }
@@ -228,13 +227,11 @@ public class Admin_Dashboard extends javax.swing.JFrame {
             }
         }
 
-        // Close the currently active frame before opening a new one
         if (activeFrame != null) {
             activeFrame.dispose();
         }
 
-        // Open new profile frame
-        account_profile acc = new account_profile(id);
+        account_main_page acc = new account_main_page();
         main_desktop.add(acc);
         acc.setVisible(true);
 
@@ -254,12 +251,20 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_profile_buttonMouseEntered
 
     private void profile_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseExited
-        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
             profile_button.setBackground(Utility.darkermiku);
         }
     }//GEN-LAST:event_profile_buttonMouseExited
 
     private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
+        boolean confirmed = CustomYesNoDialog.showConfirm(this, "Are you sure you want to Logout?", "Confirm Logout");
+        if(!confirmed){
+            return;
+        }
+        
+        Session session = Session.getInstance();
+        session.clearSession();
+        
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_logout_buttonMouseClicked
@@ -348,7 +353,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Admin_Dashboard(Admin_Dashboard.id).setVisible(true);
+            new Admin_Dashboard().setVisible(true);
         });
     }
 

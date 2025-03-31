@@ -5,23 +5,16 @@
  */
 package InternalFrames;
 
+import java.awt.*;
+import javax.swing.*;
+import config.*;
 import Dialogs.change_pass;
-import Dialogs.edit_user_form;
-import config.Utility;
-import config.db_connector;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.FocusTraversalPolicy;
-import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JDesktopPane;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 /**
@@ -30,29 +23,23 @@ import javax.swing.plaf.basic.BasicInternalFrameUI;
  */
 public class account_profile extends javax.swing.JInternalFrame {
     
-    private String original_name, original_email, original_username;
-    
-    int id = 0;
+    int id = Session.getInstance().getUserId();
     String name = "";
-    String email = "";
+    String email = "";  
     String username = "";
     
     db_connector conn = new db_connector();
     
     /**
      * Creates new form account_profile
-     * @param id
      */
-    public account_profile(int id) {
+    public account_profile() {
         initComponents();
-        addPanelMouseListener();
         unFocus();
         
-        this.id = id;
         getData();
+        addPanelMouseListener();
         
-        name_label.setText((!this.name.isEmpty()) ? this.name : "Unknown User");
-        email_label.setText((!this.email.isEmpty()) ? this.email : "Unknown User");
         
         setLabels();
         Utility.setBorders(name_field, email_field, username_field);
@@ -77,6 +64,9 @@ public class account_profile extends javax.swing.JInternalFrame {
             System.out.println("Error: " + ex.getMessage());        
         }
         
+        name_label.setText(this.name);
+        email_label.setText(this.email);
+        
         name_field.setText(this.name);
         email_field.setText(this.email);
         username_field.setText(this.username);
@@ -90,6 +80,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         });
     }
     
+    boolean valid_to_save = true;
     private void addPanelMouseListener() {
         save_button.addMouseListener(new MouseAdapter() {
             @Override
@@ -102,23 +93,73 @@ public class account_profile extends javax.swing.JInternalFrame {
                 String email = email_field.getText().trim();
                 String username = username_field.getText().trim();
                 
-                db_connector.updateDatabase("UPDATE `user` SET "
-                                    + "name = '"+name+"', "
-                                    + "username = '"+username+"', "
-                                    + "email = '"+email+"' "
-                                        + "WHERE id = '"+id+"'");
+             
+                if(valid_to_save) {
+                    db_connector.updateDatabase("UPDATE `user` SET "
+                            + "name = '"+name+"', "
+                            + "username = '"+username+"', "
+                            + "email = '"+email+"' "
+                                + "WHERE id = '"+id+"'");
 
-                JOptionPane.showMessageDialog(null, "Edited Successfully!");
-            
-                original_name = name;
-                original_email = email;
-                original_username = username;
-
-                save_button.setEnabled(false);
-                save_button.setBackground(Color.WHITE);
-                jLabel2.setForeground(Color.WHITE);
+                    JOptionPane.showMessageDialog(null, "Edited Successfully!");
+                    getData();
+                    disableButtons();
+                }
             }
         });
+        
+        reset_button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!reset_button.isEnabled()) {
+                    return; 
+                }
+                
+                name_field.setText(name);
+                email_field.setText(email);
+                username_field.setText(username);
+                
+                disableButtons();
+                
+                resetBorder(name_field);
+                resetBorder(username_field);
+                resetBorder(email_field);
+                
+                displayError(name_error, "");
+                displayError(email_error, "");
+                displayError(username_error, "");
+                
+                
+            }
+        });
+    }
+    
+    private void setInvalidBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Color.RED, 2), 
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
+    }
+    
+    private void displayError(JLabel field, String message) {
+        field.setText(message);
+    }
+    
+    public void resetBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Utility.darkermiku, 1),
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
+    }
+    
+    private void disableButtons(){
+        save_button.setEnabled(false);
+        save_button.setBackground(Color.WHITE);
+        jLabel2.setForeground(Color.WHITE);
+        
+        reset_button.setEnabled(false);
+        reset_button.setBackground(Color.WHITE);
+        jLabel2.setForeground(Color.WHITE);
     }
     
     private void unFocus(){
@@ -165,29 +206,26 @@ public class account_profile extends javax.swing.JInternalFrame {
         name_field = new javax.swing.JTextField();
         email_field = new javax.swing.JTextField();
         username_field = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
+        reset_button = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        change_pass_btn = new javax.swing.JLabel();
+        email_error = new javax.swing.JLabel();
+        username_error = new javax.swing.JLabel();
+        name_error = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
-        setPreferredSize(new java.awt.Dimension(610, 500));
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                formComponentShown(evt);
-            }
-        });
+        setPreferredSize(new java.awt.Dimension(410, 400));
 
-        jPanel1.setBackground(Utility.miku);
-        jPanel1.setPreferredSize(new java.awt.Dimension(610, 410));
+        jPanel1.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel1.setPreferredSize(new java.awt.Dimension(410, 400));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         user_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
-        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 80, 80));
+        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 100));
 
         jPanel4.setBackground(Utility.darkermiku);
 
@@ -206,28 +244,26 @@ public class account_profile extends javax.swing.JInternalFrame {
 
         name_label.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
         name_label.setText("Name");
-        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 220, 30));
+        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 350, 30));
 
         email_label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         email_label.setText("Email");
-        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 220, 30));
+        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 330, 30));
 
+        jLabel3.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel3.setText("Name");
         jPanel3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 160, 30));
 
+        jLabel4.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel4.setText("Email");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, 30));
 
+        jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel5.setText("Username");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
 
         save_button.setBackground(new java.awt.Color(255, 255, 255));
         save_button.setEnabled(false);
-        save_button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                save_buttonMouseEntered(evt);
-            }
-        });
         save_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -271,84 +307,154 @@ public class account_profile extends javax.swing.JInternalFrame {
         });
         jPanel3.add(username_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 220, 30));
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        reset_button.setBackground(new java.awt.Color(255, 255, 255));
+        reset_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Segoe UI Semibold", 1, 10)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel6.setText("Undo Changes");
-        jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 70, 30));
+        reset_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 70, 30));
 
-        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
+        jPanel3.add(reset_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
 
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel7.setText("Change Password");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+        change_pass_btn.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
+        change_pass_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        change_pass_btn.setText("Change Password");
+        change_pass_btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
+                change_pass_btnMouseClicked(evt);
             }
         });
-        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 350, 100, 20));
+        jPanel3.add(change_pass_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, 110, 20));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 50, 410, 400));
+        email_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        email_error.setForeground(new java.awt.Color(255, 0, 0));
+        email_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel3.add(email_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 270, 170, 10));
 
-        jPanel2.setBackground(Utility.blackish);
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 610, 100));
+        username_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        username_error.setForeground(new java.awt.Color(255, 0, 0));
+        username_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 170, 10));
+
+        name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        name_error.setForeground(new java.awt.Color(255, 0, 0));
+        name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 220, 170, 10));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 400));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 594, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 471, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldsChanged(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldsChanged
-        boolean changed = !name_field.getText().trim().equals(original_name) ||
-                        !email_field.getText().trim().equals(original_email) ||
-                        !username_field.getText().trim().equals(original_username);
+        
+        String namee = name_field.getText().trim();
+        String emaill = email_field.getText().trim();
+        String usernamee = username_field.getText().trim();
+        
+        boolean valid_name = true;
+        boolean valid_email = true;
+        boolean valid_username = true;
+        
+        try {
 
-      save_button.setEnabled(changed);
+            if(conn.fieldExists("username", usernamee) && !usernamee.equals(username)){
+                setInvalidBorder(username_field);
+                displayError(username_error, "Username Already Taken!");
+                valid_username = false;
+            }else if(usernamee.isEmpty()){
+                setInvalidBorder(username_field);
+                displayError(username_error, "Field Required!");
+                valid_username = false;
+            }else {
+                resetBorder(username_field);
+                displayError(username_error, "");
+                valid_username = true;
+            }
 
-      if (changed) {
-          save_button.setBackground(Utility.blackish); 
-          jLabel2.setForeground(Color.WHITE);
-      } else {
-          save_button.setBackground(Color.WHITE);
-          jLabel2.setForeground(Color.WHITE);
-      }
+            if(conn.fieldExists("email", emaill) && !emaill.equals(email)){
+                setInvalidBorder(email_field);
+                displayError(email_error, "Email Already Exist!");
+                valid_email = false;
+            }else if(emaill.isEmpty()){
+                setInvalidBorder(email_field);
+                displayError(email_error, "Field Required!");
+                valid_email = false;
+            }else {
+                resetBorder(email_field);
+                displayError(email_error, "");
+                valid_email = true;
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        
+        if(namee.isEmpty()){
+            setInvalidBorder(name_field);
+            displayError(name_error, "Field Required!");
+            valid_name = false;
+        }else {
+            resetBorder(name_field);
+            displayError(name_error, "");
+            valid_name = true;
+        }
+        
+        valid_to_save = valid_username && valid_email && valid_name;
+        
+        boolean changed = !name_field.getText().trim().equals(this.name) ||
+                            !email_field.getText().trim().equals(this.email) ||
+                            !username_field.getText().trim().equals(this.username);
+
+        save_button.setEnabled(changed && valid_to_save);
+        reset_button.setEnabled(changed || !valid_to_save);
+        
+        if(changed && valid_to_save) {
+            save_button.setBackground(Utility.blackish);
+            jLabel2.setForeground(Color.WHITE);
+        }else {
+            save_button.setBackground(Color.WHITE);
+            jLabel2.setForeground(Color.WHITE);
+        }
+        
+        if(changed || !valid_to_save) {
+            reset_button.setBackground(Utility.blackish);
+            reset_button.setForeground(Color.WHITE);
+        }else {
+            reset_button.setBackground(Color.WHITE);
+            jLabel6.setForeground(Color.WHITE);
+        }
     }//GEN-LAST:event_fieldsChanged
-
-    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
-        original_name = name_field.getText();
-        original_email = email_field.getText();
-        original_username = username_field.getText();
-    }//GEN-LAST:event_formComponentShown
 
     private void email_fieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_email_fieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_email_fieldActionPerformed
 
-    private void save_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_save_buttonMouseEntered
-        
-    }//GEN-LAST:event_save_buttonMouseEntered
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+    private void change_pass_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_change_pass_btnMouseClicked
         JDesktopPane desktopPane = this.getDesktopPane();
         if (desktopPane != null) {
             change_pass.changePassDialog(desktopPane);
         }
-    }//GEN-LAST:event_jLabel7MouseClicked
+    }//GEN-LAST:event_change_pass_btnMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel change_pass_btn;
+    private javax.swing.JLabel email_error;
     private javax.swing.JTextField email_field;
     private javax.swing.JLabel email_label;
     private javax.swing.JLabel jLabel1;
@@ -357,16 +463,16 @@ public class account_profile extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
+    private javax.swing.JLabel name_error;
     private javax.swing.JTextField name_field;
     private javax.swing.JLabel name_label;
+    private javax.swing.JPanel reset_button;
     private javax.swing.JPanel save_button;
     private javax.swing.JLabel user_pic;
+    private javax.swing.JLabel username_error;
     private javax.swing.JTextField username_field;
     // End of variables declaration//GEN-END:variables
 }

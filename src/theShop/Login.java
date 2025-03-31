@@ -1,8 +1,29 @@
 package theShop;
 
+import Dialogs.CustomMessageDialog;
+import Dialogs.CustomYesNoDialog;
+import config.Session;
 import javax.swing.*;
 import java.awt.*;;
 import java.sql.*;
+import config.Utility;
+import config.db_connector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;import java.sql.*;
+import config.Utility;
+import config.db_connector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;import java.sql.*;
+import config.Utility;
+import config.db_connector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;import java.sql.*;
 import config.Utility;
 import config.db_connector;
 import java.util.logging.Level;
@@ -430,6 +451,7 @@ public class Login extends javax.swing.JFrame {
         }
         
         String hashedPassword = Utility.hashPassword(password);
+        Session session = Session.getInstance();
         
         if(valid_to_login) {
             try {
@@ -441,11 +463,16 @@ public class Login extends javax.swing.JFrame {
                     String status = result.getString("status");
                     
                     if(!status.equals("Pending")){
-                        if(role.equals("Admin")){
-                            new Admin_Dashboard(id).setVisible(true);
+                        
+                        session.setUserId(id);
+                        
+                        if(role.equals("Admin")){ 
+                            new Admin_Dashboard().setVisible(true);
                         }else{
-                            new User_Dashboard(id).setVisible(true);
+                            new User_Dashboard().setVisible(true);
                         }
+                        
+                        CustomMessageDialog.showMessage(this, "Login Successful!", "Login");
                         this.dispose();
                     }else {
                         displayError(error, "Account Not Yet Approved!");

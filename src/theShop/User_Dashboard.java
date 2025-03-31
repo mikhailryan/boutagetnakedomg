@@ -1,7 +1,9 @@
 
 package theShop;
 
+import Dialogs.CustomYesNoDialog;
 import InternalFrames.*;
+import config.Session;
 import config.Utility;
 import config.db_connector;
 import java.beans.PropertyVetoException;
@@ -17,19 +19,16 @@ public class User_Dashboard extends javax.swing.JFrame {
     private static int id;
     /**
      * Creates new form User_Dashboard
-     * @param id
      */
-    public User_Dashboard(int id) {
+    public User_Dashboard() {
         initComponents();
-        
-        User_Dashboard.id = id;
         
         minimize_button.setIcon(Utility.resizeImage("/images/minimize-sign.png", minimize_button));
         close_button.setIcon(Utility.resizeImage("/images/close.png", close_button));
         profile_pic.setIcon(Utility.resizeImage("/images/user.png", profile_pic));
         logo.setIcon(Utility.resizeImage("/images/leeeek.png", logo));
         
-        account_profile profile = new account_profile(id);
+        account_main_page profile = new account_main_page();
         main_desktop.add(profile).setVisible(true);
         profile_button.setBackground(Utility.miku);
         activeFrame = profile;
@@ -192,6 +191,14 @@ public class User_Dashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
+        boolean confirmed = CustomYesNoDialog.showConfirm(this, "Are you sure you want to Logout?", "Confirm Logout");
+        if(!confirmed){
+            return;
+        }
+        
+        Session session = Session.getInstance();
+        session.clearSession();
+        
         new Login().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_logout_buttonMouseClicked
@@ -217,9 +224,9 @@ public class User_Dashboard extends javax.swing.JFrame {
         profile_button.setBackground(Utility.miku);
 
         for (JInternalFrame frame : main_desktop.getAllFrames()) {
-            if (frame instanceof account_profile) {
+            if (frame instanceof account_main_page) {
                 try {
-                    frame.setSelected(true); // Bring it to front
+                    frame.setSelected(true);
                 } catch (PropertyVetoException e) {
                     System.out.println(e.getMessage());
                 }
@@ -231,7 +238,7 @@ public class User_Dashboard extends javax.swing.JFrame {
             activeFrame.dispose();
         }
 
-        account_profile acc = new account_profile(id);
+        account_main_page acc = new account_main_page();
         main_desktop.add(acc);
         acc.setVisible(true);
 
@@ -282,7 +289,7 @@ public class User_Dashboard extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new User_Dashboard(User_Dashboard.id).setVisible(true);
+            new User_Dashboard().setVisible(true);
         });
     }
     

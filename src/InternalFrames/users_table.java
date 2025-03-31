@@ -1,5 +1,7 @@
 package InternalFrames;
 
+import Dialogs.CustomMessageDialog;
+import Dialogs.CustomYesNoDialog;
 import Dialogs.edit_user_form;
 import Dialogs.add_user_form;
 import config.CustomScrollBarUI;
@@ -62,7 +64,7 @@ public class users_table extends javax.swing.JInternalFrame {
     private void display_data(){
         try {
             db_connector dbcon = new db_connector();
-            ResultSet result = dbcon.getData("SELECT id AS 'ID', name AS 'Full Name', username AS 'Username', email AS 'Email Address', status AS 'Account Status' FROM user WHERE role = 'user' ORDER BY status");
+            ResultSet result = dbcon.getData("SELECT id AS 'ID', name AS 'Full Name', username AS 'Username', email AS 'Email Address', role AS 'Role', status AS 'Status' FROM user WHERE role = 'user' ORDER BY status");
             
             int rowCount = 0;
 
@@ -76,15 +78,16 @@ public class users_table extends javax.swing.JInternalFrame {
             
             users_table.getColumnModel().getColumn(0).setPreferredWidth(50);  // ID
             users_table.getColumnModel().getColumn(1).setPreferredWidth(120); // Full Name
-            users_table.getColumnModel().getColumn(2).setPreferredWidth(120); // Username
-            users_table.getColumnModel().getColumn(3).setPreferredWidth(200); // Email Address
-            users_table.getColumnModel().getColumn(4).setPreferredWidth(100); // Account Status
+            users_table.getColumnModel().getColumn(2).setPreferredWidth(150); // Username
+            users_table.getColumnModel().getColumn(3).setPreferredWidth(250); // Email Address
+            users_table.getColumnModel().getColumn(4).setPreferredWidth(80); // Role
+            users_table.getColumnModel().getColumn(5).setPreferredWidth(80); // Account Status
             
             users_table.getTableHeader().setBackground(new Color(19,122,127));
             
             String[] statuses = {"Pending", "Inactive", "Active"};
             JComboBox<String> statusComboBox = new JComboBox<>(statuses);
-            TableColumn statusColumn = users_table.getColumnModel().getColumn(4);
+            TableColumn statusColumn = users_table.getColumnModel().getColumn(5);
             DefaultCellEditor editor = new DefaultCellEditor(statusComboBox);
             statusColumn.setCellEditor(editor);
             
@@ -120,10 +123,7 @@ public class users_table extends javax.swing.JInternalFrame {
                 }
 
                 @Override
-                public void editingCanceled(ChangeEvent ce) {
-                    
-                }
-
+                public void editingCanceled(ChangeEvent ce) {}
             });
         } catch (SQLException e) {
             System.out.println("Can't Connect to Database: " + e.getMessage());
@@ -441,12 +441,12 @@ public class users_table extends javax.swing.JInternalFrame {
         int row = users_table.getSelectedRow(); 
 
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to delete.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            CustomMessageDialog.showMessage(null, "Please select a row to delete.", "No Selection");
             return;
         }
 
-        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Delete", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) {
+        boolean confirm = CustomYesNoDialog.showConfirm(null, "Are you sure you want to delete this user?", "Confirm Delete");
+        if (!confirm) {
             return;
         }
 
@@ -454,9 +454,9 @@ public class users_table extends javax.swing.JInternalFrame {
 
         if (db_connector.updateDatabase("DELETE FROM user WHERE id = '" + id + "'")) {
             display_data();
-            JOptionPane.showMessageDialog(this, "User deleted successfully.", "Deleted", JOptionPane.INFORMATION_MESSAGE);
+            CustomMessageDialog.showMessage(null, "User deleted successfully.", "Deleted");
         } else {
-            JOptionPane.showMessageDialog(this, "Failed to delete user.", "Error", JOptionPane.ERROR_MESSAGE);
+            CustomMessageDialog.showMessage(null, "Failed to delete user.", "Error");
         }
     }//GEN-LAST:event_delete_buttonMouseClicked
 
@@ -493,7 +493,7 @@ public class users_table extends javax.swing.JInternalFrame {
         int row = users_table.getSelectedRow(); 
 
         if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to edit.", "No Selection", JOptionPane.WARNING_MESSAGE);
+            CustomMessageDialog.showMessage(null, "Please select a row to edit.", "No Selection");
             return;
         }
 

@@ -23,6 +23,7 @@ public class db_connector {
     public ResultSet getData(String sql) throws SQLException{
         Statement statement = conn.createStatement();
         ResultSet result = statement.executeQuery(sql);
+            
         return result;
     }
     
