@@ -11,6 +11,7 @@ import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Cursor;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Point;
 import java.awt.Window;
@@ -21,7 +22,6 @@ import javax.swing.SwingUtilities;
 import java.sql.*;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -65,6 +65,8 @@ public class change_pass extends javax.swing.JDialog {
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
+        
+        change_button.setEnabled(false);
     }
     
     private void setInvalidBorder(JTextField field) {
@@ -246,7 +248,7 @@ public class change_pass extends javax.swing.JDialog {
         currentPass_field.setEchoChar((char) '•');
         currentPass_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldUpdate(evt);
+                currentPass_fieldKeyReleased(evt);
             }
         });
         jPanel1.add(currentPass_field);
@@ -256,8 +258,7 @@ public class change_pass extends javax.swing.JDialog {
         newPass_field.setEchoChar((char) '•');
         newPass_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                fieldUpdate(evt);
-                newPassFieldUpdate(evt);
+                newPass_fieldKeyReleased(evt);
             }
         });
         jPanel1.add(newPass_field);
@@ -266,7 +267,7 @@ public class change_pass extends javax.swing.JDialog {
         newPass2_field.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         newPass2_field.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                newPassFieldUpdate(evt);
+                newPass2_fieldKeyReleased(evt);
             }
         });
         newPass2_field.setEchoChar((char) '•');
@@ -422,164 +423,45 @@ public class change_pass extends javax.swing.JDialog {
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
         this.dispose();
     }//GEN-LAST:event_close_buttonMouseClicked
-     
-    private void fieldUpdate(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fieldUpdate
-        String current_pass_input = new String(currentPass_field.getPassword());
-        String hashed_pass_input = Utility.hashPassword(current_pass_input);
-        
-        if(current_pass_input.isEmpty()){
-            setInvalidBorder(currentPass_field);
-            displayError(currentPass_error, "Please Enter Old Password");
-        }else if(!hashed_pass_input.equals(current_pass)){
-            setInvalidBorder(currentPass_field);
-            displayError(currentPass_error, "Wrong Password!");
-        }else {
-            valid_to_change = true;
-            resetBorder(currentPass_field);
-            displayError(currentPass_error, "");
-        }
- 
-    }//GEN-LAST:event_fieldUpdate
-    
-    String newPass_input = "";
-    private void newPassFieldUpdate(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newPassFieldUpdate
-        newPass_input = new String(newPass_field.getPassword());
-        String newPass2_input = new String(newPass2_field.getPassword());
-        
-        if (newPass_input.isEmpty()) {
-            setInvalidBorder(newPass_field);
-            displayError(newPass_error, "Field Required!");
-            valid = false;
-        } else if (newPass_input.length() < 8) {
-            setInvalidBorder(newPass_field);
-            displayError(newPass_error, "New Password Too Short!");
-            valid = false;
-        } else {
-            resetBorder(newPass_field);
-            displayError(newPass_error, "");
-        }
-
-        if (newPass2_input.isEmpty()) {
-            setInvalidBorder(newPass2_field);
-            displayError(newPass2_error, "Field Required!");
-            valid = false;
-        } else {
-            resetBorder(newPass2_field);
-            displayError(newPass2_error, "");
-        }
-
-        if (!newPass_input.equals(newPass2_input)) {
-            setInvalidBorder(newPass2_field);
-            displayError(newPass2_error, "Passwords do not match!");
-            valid = false;
-        }
-    }//GEN-LAST:event_newPassFieldUpdate
-
+         
     private void change_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_change_buttonMouseClicked
-        
-        // old password part
-        String current_pass_input = new String(currentPass_field.getPassword());
-        String hashed_pass_input = Utility.hashPassword(current_pass_input);
-        
-        if(current_pass_input.isEmpty()){
-            valid_to_change = false;
-            setInvalidBorder(currentPass_field);
-            displayError(currentPass_error, "Please Enter Old Password");
-        }else if(!hashed_pass_input.equals(current_pass)){
-            valid_to_change = false;
-            setInvalidBorder(currentPass_field);
-            displayError(currentPass_error, "Wrong Password!");
-            
-        }else {
-            valid_to_change = true;
-            resetBorder(currentPass_field);
-            displayError(currentPass_error, "");
+        if (!change_button.isEnabled()) {
+            return; 
         }
         
-        // new pass and confirm part
-        if (!valid_to_change) {
-            setInvalidBorder(currentPass_field);
-            displayError(currentPass_error, "Enter Old Password First!");
-        }
-
-        valid = true;  
-
-        newPass_input = new String(newPass_field.getPassword());
-        String newPass2_input = new String(newPass2_field.getPassword());
-        
-        if (newPass_input.isEmpty()) {
-            setInvalidBorder(newPass_field);
-            displayError(newPass_error, "Field Required!");
-            valid = false;
-        } else if (newPass_input.length() < 8) {
-            setInvalidBorder(newPass_field);
-            displayError(newPass_error, "New Password Too Short!");
-            valid = false;
-        } else {
-            resetBorder(newPass_field);
-            displayError(newPass_error, "");
-        }
-
-        if (newPass2_input.isEmpty()) {
-            setInvalidBorder(newPass2_field);
-            displayError(newPass2_error, "Field Required!");
-            valid = false;
-        } else {
-            resetBorder(newPass2_field);
-            displayError(newPass2_error, "");
-        }
-
-        if (!newPass_input.equals(newPass2_input)) {
-            setInvalidBorder(newPass2_field);
-            displayError(newPass2_error, "Passwords do not match!");
-            valid = false;
-        }
-        
-        // main
-        if (!valid_to_change) {
-            JOptionPane.showMessageDialog(null, "Enter and verify your old password first!", "Error", JOptionPane.ERROR_MESSAGE);
-            
+        String hashedNewPass = Utility.hashPassword(newPass_field.getText().trim());
+        if (hashedNewPass.equals(current_pass)) {
+            CustomMessageDialog.showError(null, "New password cannot be the same as the old password. Please choose a different one.", "Error");
             return;
         }
         
-        String hashed_newPass = Utility.hashPassword(newPass_input);
-        
-        if (hashed_newPass.equals(current_pass)){
-            JOptionPane.showMessageDialog(null, "New password cannot be the same as the old password. Please choose a different one.", "Error", JOptionPane.WARNING_MESSAGE);
-            valid = false;
+        boolean confirmed = CustomYesNoDialog.showConfirm(null, "Changing your password will log you out.\nDo you want to continue?", "Confirm Change Password");
+        if (!confirmed) {
             return;
         }
 
-        if (valid) {
-            
-            boolean confirmed = CustomYesNoDialog.showConfirm(null, "Changing your password will log you out.\nDo you want to continue?", "Confirm Change Password");
-            if(!confirmed){
-                return;
+        String sql = "UPDATE user SET password = '" + hashedNewPass + "' WHERE id = '" + id + "'";
+        boolean success = db_connector.updateDatabase(sql);
+
+        if (success) {
+            CustomMessageDialog.showMessage(null, "Password Changed Successfully!\nLogging Out.", "Success");
+
+            Session session = Session.getInstance();
+            session.clearSession();
+
+            Window parentWindow = SwingUtilities.getWindowAncestor(change_button);
+            if (parentWindow instanceof JDialog) {
+                parentWindow.dispose();
             }
-            
-            String sql = "UPDATE user SET password = '"+ hashed_newPass +"' WHERE id = '"+ id + "'";
 
-            boolean success = db_connector.updateDatabase(sql);
-            if (success) {
-                CustomMessageDialog.showMessage(null, "Password Changed Successfully!\nLogging Out.", "Success");
-
-                Window parentWindow = SwingUtilities.getWindowAncestor(change_button);
-                if (parentWindow instanceof JDialog) {
-                    parentWindow.dispose();
-                }
-
-                JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(parentWindow);
-                if (mainFrame != null) {
-                    mainFrame.dispose();
-                }
-
-                Session session = Session.getInstance();
-                session.clearSession();
-
-                new Login().setVisible(true);
-            } else {
-                CustomMessageDialog.showMessage(null, "Failed to update password.\nTry again.", "Error");
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(parentWindow);
+            if (mainFrame != null) {
+                mainFrame.dispose();
             }
+
+            new Login().setVisible(true);
+        } else {
+            CustomMessageDialog.showMessage(null, "Failed to update password.\nTry again.", "Error");
         }
     }//GEN-LAST:event_change_buttonMouseClicked
     
@@ -617,6 +499,75 @@ public class change_pass extends javax.swing.JDialog {
             show_pass2.setIcon(Utility.resizeImage("/images/hidden.png", show_pass));
         }
     }//GEN-LAST:event_show_pass2MouseClicked
+
+    private void currentPass_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_currentPass_fieldKeyReleased
+        validateFields();
+    }//GEN-LAST:event_currentPass_fieldKeyReleased
+
+    private void newPass_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newPass_fieldKeyReleased
+        validateFields();
+    }//GEN-LAST:event_newPass_fieldKeyReleased
+
+    private void newPass2_fieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newPass2_fieldKeyReleased
+        validateFields();
+    }//GEN-LAST:event_newPass2_fieldKeyReleased
+    
+    private void validateFields() {
+        
+        boolean valid = true;
+
+        // Get input values
+        String currentPassInput = new String(currentPass_field.getPassword()).trim();
+        String hashedPassInput = Utility.hashPassword(currentPassInput);
+
+        String newPassInput = new String(newPass_field.getPassword()).trim();
+        String newPass2Input = new String(newPass2_field.getPassword()).trim();
+
+        if (currentPassInput.isEmpty()) {
+            valid = false;
+            setInvalidBorder(currentPass_field);
+            displayError(currentPass_error, "Please enter old password!");
+        } else if (!hashedPassInput.equals(current_pass)) {
+            valid = false;
+            setInvalidBorder(currentPass_field);
+            displayError(currentPass_error, "Wrong password!");
+        } else {
+            resetBorder(currentPass_field);
+            displayError(currentPass_error, "");
+        }
+
+        if (valid) {
+            if (newPassInput.isEmpty()) {
+                valid = false;
+                setInvalidBorder(newPass_field);
+                displayError(newPass_error, "Field required!");
+            } else if (newPassInput.length() < 8) {
+                valid = false;
+                setInvalidBorder(newPass_field);
+                displayError(newPass_error, "New password too short!");
+            } else {
+                resetBorder(newPass_field);
+                displayError(newPass_error, "");
+            }
+
+            if (newPass2Input.isEmpty()) {
+                valid = false;
+                setInvalidBorder(newPass2_field);
+                displayError(newPass2_error, "Field required!");
+            } else if (!newPassInput.equals(newPass2Input)) {
+                valid = false;
+                setInvalidBorder(newPass2_field);
+                displayError(newPass2_error, "Passwords do not match!");
+            } else {
+                resetBorder(newPass2_field);
+                displayError(newPass2_error, "");
+            }
+        }
+
+        change_button.setEnabled(valid);
+        change_button.setCursor(valid ? Cursor.getPredefinedCursor(Cursor.HAND_CURSOR) : Cursor.getDefaultCursor());
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel change_button;

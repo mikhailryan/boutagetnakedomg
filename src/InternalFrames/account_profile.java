@@ -212,6 +212,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         email_error = new javax.swing.JLabel();
         username_error = new javax.swing.JLabel();
         name_error = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -233,11 +234,11 @@ public class account_profile extends javax.swing.JInternalFrame {
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 410, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 90, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 90));
@@ -256,11 +257,11 @@ public class account_profile extends javax.swing.JInternalFrame {
 
         jLabel4.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel4.setText("Email");
-        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, 160, 30));
+        jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, 160, 30));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel5.setText("Username");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 160, 30));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 310, 160, 30));
 
         save_button.setBackground(new java.awt.Color(255, 255, 255));
         save_button.setEnabled(false);
@@ -273,7 +274,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         jLabel2.setText("Save Changes");
         save_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, 30));
 
-        jPanel3.add(save_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 90, 30));
+        jPanel3.add(save_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 90, 30));
 
         name_field.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         name_field.setText("Name");
@@ -296,7 +297,7 @@ public class account_profile extends javax.swing.JInternalFrame {
                 fieldsChanged(evt);
             }
         });
-        jPanel3.add(email_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 240, 220, 30));
+        jPanel3.add(email_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 250, 220, 30));
 
         username_field.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
         username_field.setText("Username");
@@ -305,7 +306,7 @@ public class account_profile extends javax.swing.JInternalFrame {
                 fieldsChanged(evt);
             }
         });
-        jPanel3.add(username_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 290, 220, 30));
+        jPanel3.add(username_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 310, 220, 30));
 
         reset_button.setBackground(new java.awt.Color(255, 255, 255));
         reset_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -316,7 +317,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         jLabel6.setText("Undo Changes");
         reset_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 70, 30));
 
-        jPanel3.add(reset_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 340, 90, 30));
+        jPanel3.add(reset_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 360, 90, 30));
 
         change_pass_btn.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
         change_pass_btn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -331,17 +332,31 @@ public class account_profile extends javax.swing.JInternalFrame {
         email_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         email_error.setForeground(new java.awt.Color(255, 0, 0));
         email_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(email_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 270, 170, 10));
+        jPanel3.add(email_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 240, 170, 10));
 
         username_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         username_error.setForeground(new java.awt.Color(255, 0, 0));
         username_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 320, 170, 10));
+        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 300, 170, 10));
 
         name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         name_error.setForeground(new java.awt.Color(255, 0, 0));
         name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(194, 220, 170, 10));
+        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 170, 10));
+
+        jLabel7.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 204));
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel7.setText("Email Not Verified. Verify Now");
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel7MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel7MouseExited(evt);
+            }
+        });
+        jPanel3.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 280, 220, -1));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 400));
 
@@ -390,6 +405,10 @@ public class account_profile extends javax.swing.JInternalFrame {
             if(conn.fieldExists("email", emaill) && !emaill.equals(email)){
                 setInvalidBorder(email_field);
                 displayError(email_error, "Email Already Exist!");
+                valid_email = false;
+            }else if(!Utility.isValidEmail(emaill)){
+                setInvalidBorder(email_field);
+                displayError(email_error, "Invalid!");
                 valid_email = false;
             }else if(emaill.isEmpty()){
                 setInvalidBorder(email_field);
@@ -452,6 +471,14 @@ public class account_profile extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_change_pass_btnMouseClicked
 
+    private void jLabel7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseEntered
+        jLabel7.setForeground(new Color(134,206,203));
+    }//GEN-LAST:event_jLabel7MouseEntered
+
+    private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
+        jLabel7.setForeground(new Color(0,0,204));
+    }//GEN-LAST:event_jLabel7MouseExited
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel change_pass_btn;
     private javax.swing.JLabel email_error;
@@ -463,6 +490,7 @@ public class account_profile extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;

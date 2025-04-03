@@ -311,6 +311,17 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 0, 204));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel2.setText("Forgot Password");
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel2MouseExited(evt);
+            }
+        });
         jPanel2.add(jLabel2);
         jLabel2.setBounds(180, 270, 90, 20);
 
@@ -509,6 +520,18 @@ public class Login extends javax.swing.JFrame {
         displayError(error, "");
         resetBorder(password_input);
     }//GEN-LAST:event_password_inputKeyReleased
+
+    private void jLabel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseEntered
+        jLabel2.setForeground(new Color(134,206,203));
+    }//GEN-LAST:event_jLabel2MouseEntered
+
+    private void jLabel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseExited
+        jLabel2.setForeground(new Color(0,0,204));
+    }//GEN-LAST:event_jLabel2MouseExited
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel2MouseClicked
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

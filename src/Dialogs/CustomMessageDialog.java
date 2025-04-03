@@ -7,14 +7,11 @@ package Dialogs;
 
 import config.Utility;
 import java.awt.Color;
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author manny
- */
 public class CustomMessageDialog extends javax.swing.JDialog {
 
     /**
@@ -34,6 +31,13 @@ public class CustomMessageDialog extends javax.swing.JDialog {
     
     public static void showMessage(JFrame parent, String message, String title) {
         CustomMessageDialog dialog = new CustomMessageDialog(parent, message, title);
+        dialog.setVisible(true);
+    }
+    
+    public static void showError(JFrame parent, String message, String title) {
+        CustomMessageDialog dialog = new CustomMessageDialog(parent, message, title);
+        dialog.jPanel1.setBorder(BorderFactory.createLineBorder(new Color(204, 0, 0), 6));
+        dialog.jPanel2.setBackground(new Color(204, 0, 0));
         dialog.setVisible(true);
     }
     
@@ -68,7 +72,7 @@ public class CustomMessageDialog extends javax.swing.JDialog {
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(134, 206, 203));
-        jPanel1.setBorder(new javax.swing.border.LineBorder(Utility.darkermiku, 3, true));
+        jPanel1.setBorder(new javax.swing.border.LineBorder(Utility.darkermiku, 6, true));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         message_label.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N

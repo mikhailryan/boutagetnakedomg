@@ -68,7 +68,7 @@ public class CustomYesNoDialog extends javax.swing.JDialog {
         setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(134, 206, 203));
-        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(Utility.darkermiku, 3));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(Utility.darkermiku, 6));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         message_label.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
