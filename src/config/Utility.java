@@ -58,8 +58,22 @@ public class Utility {
     }
     
     public static boolean isValidEmail(String email) {
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-za-z]{2,}$";
         return email.matches(emailRegex);
+    }
+    
+    public static void setInvalidBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Color.RED, 2), 
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
+    }
+
+    public static void resetBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Utility.darkermiku, 1),
+            new EmptyBorder(0, 3, 0, 0) 
+        ));
     }
     
 }

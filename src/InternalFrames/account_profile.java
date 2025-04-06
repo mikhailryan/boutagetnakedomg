@@ -9,10 +9,12 @@ import java.awt.*;
 import javax.swing.*;
 import config.*;
 import Dialogs.change_pass;
+import Dialogs.verify_email;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Random;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -39,7 +41,7 @@ public class account_profile extends javax.swing.JInternalFrame {
         
         getData();
         addPanelMouseListener();
-        
+        setEmail();
         
         setLabels();
         Utility.setBorders(name_field, email_field, username_field);
@@ -72,6 +74,16 @@ public class account_profile extends javax.swing.JInternalFrame {
         username_field.setText(this.username);
     }
     
+    public final void setEmail(){
+        if (Session.getInstance().isEmailVerified()) {
+            jLabel7.setText("Email Verified.");
+            jLabel7.setEnabled(false);
+        }else {
+            jLabel7.setText("Email Not Verified. Verify Now");
+            jLabel7.setEnabled(true);
+        }
+    }
+    
     private void setLabels(){
         JLabel[] labels = {user_pic};
         String[] paths = {"user.png"};
@@ -98,11 +110,14 @@ public class account_profile extends javax.swing.JInternalFrame {
                     db_connector.updateDatabase("UPDATE `user` SET "
                             + "name = '"+name+"', "
                             + "username = '"+username+"', "
-                            + "email = '"+email+"' "
+                            + "email = '"+email+"', "
+                            + "verification_code = NULL, "
+                            + "email_verified = '"+0+"' "
                                 + "WHERE id = '"+id+"'");
 
                     JOptionPane.showMessageDialog(null, "Edited Successfully!");
                     getData();
+                    setEmail();
                     disableButtons();
                 }
             }
@@ -349,6 +364,9 @@ public class account_profile extends javax.swing.JInternalFrame {
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel7.setText("Email Not Verified. Verify Now");
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 jLabel7MouseEntered(evt);
             }
@@ -478,6 +496,26 @@ public class account_profile extends javax.swing.JInternalFrame {
     private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
         jLabel7.setForeground(new Color(0,0,204));
     }//GEN-LAST:event_jLabel7MouseExited
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        if(!jLabel7.isEnabled()){
+            return;
+        }
+        
+        String code = null;
+        
+        code = Session.getInstance().getVerificationCode();
+        
+        if(code == null || code.isEmpty()){
+            code = String.format("%06d", new Random().nextInt(999999));
+            db_connector.updateDatabase("UPDATE user SET verification_code = '"+ code +"' WHERE id = '"+ id + "'");
+        }
+        
+        JDesktopPane desktopPane = this.getDesktopPane();
+        if (desktopPane != null) {
+            verify_email.verifyEmailDialog(desktopPane, this);
+        }
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel change_pass_btn;
