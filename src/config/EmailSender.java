@@ -1,13 +1,12 @@
 package config;
 
-import java.io.UnsupportedEncodingException;
-import javax.mail.*;
-import javax.mail.internet.*;
-import java.util.Properties;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class EmailSender {
-    private static final String sender_email = "mikufromsomewhere@gmail.com";
-    private static final String password = "sfndygstjowtuaun";
+    private static final String apiKey = "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";
+    private static final String senderEmail = "mikumikucarambinu@gmail.com";
     private static final String senderName = "DropXchange Support";
 
     public static boolean sendResetCodeEmail(String toEmail, int resetCode) {
@@ -19,41 +18,43 @@ public class EmailSender {
     }
 
     private static boolean sendCodeEmail(String toEmail, String subject, int code) {
-        Properties props = new Properties();
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("X-Priority", "1");
-
-        javax.mail.Session session = javax.mail.Session.getInstance(props, new Authenticator() {
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(sender_email, password);
-            }
-        });
+        String body = "{"
+                + "\"sender\": { \"name\": \"" + senderName + "\", \"email\": \"" + senderEmail + "\" },"
+                + "\"to\": [ { \"email\": \"" + toEmail + "\", \"name\": \"User\" } ],"
+                + "\"subject\": \"" + subject + "\","
+                + "\"htmlContent\": \"<h2>" + subject + "</h2><p>Hello,</p>"
+                + "<p>We received a request to " + subject.toLowerCase() + ". Use the code below to proceed:</p>"
+                + "<h3 style='color: #2E86C1;'>" + code + "</h3>"
+                + "<p>If you did not request this, you can ignore this message.</p>"
+                + "<br><p>Thanks,<br>DropXchange Support Team</p>\""
+                + "}";
 
         try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(sender_email, senderName));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-            message.setReplyTo(InternetAddress.parse("support@dropxchange.com"));
-            message.setSubject(subject);
+            URL url = new URL("https://api.brevo.com/v3/smtp/email");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("api-key", apiKey);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setDoOutput(true);
 
-            // Body content for the email
-            String emailBody = "<h2>" + subject + "</h2>"
-                    + "<p>Hello,</p>"
-                    + "<p>We received a request to " + subject.toLowerCase() + ". Use the code below to proceed:</p>"
-                    + "<h3 style='color: #2E86C1;'>" + code + "</h3>"
-                    + "<p>If you did not request this, you can ignore this message.</p>"
-                    + "<br><p>Thanks,<br>DropXchange Support Team</p>";
+            // Send the JSON body in the POST request
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = body.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
 
-            message.setContent(emailBody, "text/html; charset=utf-8");
-
-            Transport.send(message);
-            return true;
-
-        } catch (MessagingException | UnsupportedEncodingException e) {
-            System.out.println("Error sending email: " + e.getMessage());
+            // Get the response code
+            int responseCode = connection.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_CREATED) {
+                System.out.println("Email sent successfully!");
+                return true;
+            } else {
+                System.out.println("Error sending email. Response code: " + responseCode);
+                return false;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
             return false;
         }
     }

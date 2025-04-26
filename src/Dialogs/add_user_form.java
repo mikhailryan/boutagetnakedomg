@@ -414,6 +414,8 @@ public class add_user_form extends javax.swing.JDialog {
         
         String hashedPassword = Utility.hashPassword(password);
         
+        // idk wtf is ts tbh...
+
         if(name.isEmpty() || name.equals("Enter full name...")) {
             setInvalidBorder(name_input);
             displayError(name_error, "Field Required!");
@@ -453,7 +455,6 @@ public class add_user_form extends javax.swing.JDialog {
             valid_to_add = false;
         }
         
-        // idk wtf is ts tbh...
         try {
             if(conn.fieldExists("username", username) || conn.fieldExists("email", email)){
                 if(conn.fieldExists("username", username)){

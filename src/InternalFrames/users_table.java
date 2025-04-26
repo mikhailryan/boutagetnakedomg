@@ -115,7 +115,7 @@ public class users_table extends javax.swing.JInternalFrame {
                         return;
                     }
 
-                    String new_status = users_table.getValueAt(row, 4).toString(); 
+                    String new_status = users_table.getValueAt(row, 5).toString(); 
                     String id = users_table.getValueAt(row, 0).toString();
 
                     db_connector.updateDatabase("UPDATE user SET status = '"+ new_status +"' WHERE id = '"+ id +"'");

@@ -6,6 +6,7 @@
 package Dialogs;
 
 import InternalFrames.account_profile;
+import config.EmailSender;
 import config.Session;
 import config.Utility;
 import config.db_connector;
@@ -43,6 +44,8 @@ public class verify_email extends javax.swing.JDialog {
         setEmail();
         
         code_input.setText("Code");
+        
+       EmailSender.sendVerificationCodeEmail(Session.getInstance().getEmail(), Integer.valueOf(Session.getInstance().getVerificationCode()));
     }
     
     public void setEmail(){
@@ -189,6 +192,11 @@ public class verify_email extends javax.swing.JDialog {
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Resend Email");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, 160, 30));
 
         jPanel2.setBackground(new java.awt.Color(55, 59, 62));
@@ -285,6 +293,10 @@ public class verify_email extends javax.swing.JDialog {
             code_input.setForeground(Color.GRAY);
         }
     }//GEN-LAST:event_code_inputFocusLost
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel5MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel close_button;
