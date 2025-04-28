@@ -502,14 +502,8 @@ public class account_profile extends javax.swing.JInternalFrame {
             return;
         }
         
-        String code = null;
-        
-        code = Session.getInstance().getVerificationCode();
-        
-        if(code == null || code.isEmpty()){
-            code = String.format("%06d", new Random().nextInt(999999));
-            db_connector.updateDatabase("UPDATE user SET verification_code = '"+ code +"' WHERE id = '"+ id + "'");
-        }
+        String code = String.format("%06d", new Random().nextInt(999999));
+        db_connector.updateDatabase("UPDATE user SET verification_code = '"+ code +"' WHERE id = '"+ id + "'"); 
         
         JDesktopPane desktopPane = this.getDesktopPane();
         if (desktopPane != null) {

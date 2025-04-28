@@ -1,6 +1,8 @@
 package theShop;
 
 import Dialogs.CustomMessageDialog;
+import Dialogs.forgot_pass;
+import Dialogs.verify_email;
 import config.Session;
 import javax.swing.*;
 import java.awt.*;;
@@ -20,7 +22,8 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
 //        setResizable(false);
-        unFocus();
+        SwingUtilities.invokeLater(() -> getRootPane().requestFocus());
+        Session.getInstance().clearSession();
         
         user.setIcon(resizeImage("/images/user.png", user));
         pass.setIcon(resizeImage("/images/padlock.png", user));
@@ -510,7 +513,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel2MouseExited
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        // TODO add your handling code here:
+        forgot_pass.forgotPassDialog(this, username_input.getText());
     }//GEN-LAST:event_jLabel2MouseClicked
     
     public static void main(String args[]) {

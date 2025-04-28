@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Dialogs;
 
 import InternalFrames.account_profile;
@@ -45,8 +40,8 @@ public class verify_email extends javax.swing.JDialog {
         
         code_input.setText("Code");
         
-       EmailSender.sendVerificationCodeEmail(Session.getInstance().getEmail(), Integer.valueOf(Session.getInstance().getVerificationCode()));
-    }
+        EmailSender.sendVerificationCodeEmail(Session.getInstance().getEmail(), Integer.valueOf(Session.getInstance().getVerificationCode()));
+    }   
     
     public void setEmail(){
         email_label.setText(Session.getInstance().getEmail());
@@ -80,11 +75,10 @@ public class verify_email extends javax.swing.JDialog {
         
     }
 
-    private static void centerDialog(JDesktopPane desktopPane) {
-        Point desktopLocation = desktopPane.getLocationOnScreen();
-        int x = desktopLocation.x + (desktopPane.getWidth() - instance.getWidth()) / 2;
-        int y = desktopLocation.y + (desktopPane.getHeight() - instance.getHeight()) / 2;
-        instance.setLocation(x, y);
+    private static void centerDialog(JDesktopPane parentFrame) {
+        if (instance != null && parentFrame != null) {
+            instance.setLocationRelativeTo(parentFrame);
+        }
     }
     
     private void unFocus(){
@@ -191,13 +185,13 @@ public class verify_email extends javax.swing.JDialog {
         jPanel1.add(verify_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 340, 260, 40));
 
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Resend Email");
+        jLabel5.setText("Resend Code");
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel5MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, 160, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 380, 160, 20));
 
         jPanel2.setBackground(new java.awt.Color(55, 59, 62));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -242,6 +236,7 @@ public class verify_email extends javax.swing.JDialog {
 
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
         this.dispose();
+        instance = null;
     }//GEN-LAST:event_close_buttonMouseClicked
 
     private void verify_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_verify_buttonMouseClicked
@@ -260,6 +255,7 @@ public class verify_email extends javax.swing.JDialog {
                 CustomMessageDialog.showMessage(null, "Your email is now verified", "Email Verification");
                 acc.setEmail();
                 this.dispose();
+                instance = null;
             }
         }else {
             Utility.setInvalidBorder(code_input);

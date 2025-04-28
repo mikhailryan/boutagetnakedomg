@@ -3,9 +3,22 @@ package config;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Properties;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 public class EmailSender {
-    private static final String apiKey = "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";
+    private static final String apiKey;
+    static {
+        Properties props = new Properties();
+        try {
+            props.load(new FileInputStream("config.properties.txt"));
+            apiKey = props.getProperty("apiKey");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load API Key", e);
+        }
+    }
+    
     private static final String senderEmail = "mikumikucarambinu@gmail.com";
     private static final String senderName = "DropXchange Support";
 
@@ -54,7 +67,7 @@ public class EmailSender {
                 return false;
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
             return false;
         }
     }

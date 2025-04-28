@@ -53,16 +53,25 @@ public class Session {
         return false;
     }
     
-    public String getVerificationCode(){
+    public String getVerificationCode() {
         String code = "";
-        
-        try {
-            ResultSet result = conn.getData("SELECT verification_code FROM user WHERE id = '"+ userId + "'");
-            if(result.next()){
-                code = result.getString("verification_code");
+        int attempts = 0;
+
+        while (attempts < 3) { 
+            try {
+                ResultSet result = conn.getData("SELECT verification_code FROM user WHERE id = '" + userId + "'");
+                if (result.next()) {
+                    code = result.getString("verification_code");
+                    if (code != null && !code.isEmpty()) {
+                        return code;
+                    }
+                }
+                Thread.sleep(200);  
+                attempts++;
+            } catch (SQLException | InterruptedException ex) {
+                System.out.println("Error retrieving verification code: " + ex.getMessage());
+                break;
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
         }
         return code;
     }
