@@ -64,7 +64,7 @@ public class users_table extends javax.swing.JInternalFrame {
     private void display_data(){
         try {
             db_connector dbcon = new db_connector();
-            ResultSet result = dbcon.getData("SELECT id AS 'ID', name AS 'Full Name', username AS 'Username', email AS 'Email Address', role AS 'Role', status AS 'Status' FROM user WHERE role = 'user' ORDER BY status");
+            ResultSet result = dbcon.getData("SELECT id AS 'ID', name AS 'Full Name', username AS 'Username', email AS 'Email Address', role AS 'Role', status AS 'Status' FROM user WHERE role != 'Admin' ORDER BY status");
             
             int rowCount = 0;
 
@@ -100,7 +100,11 @@ public class users_table extends javax.swing.JInternalFrame {
                         comboBox.setSelectedItem(value);
                     }
 
-                    SwingUtilities.invokeLater(() -> comboBox.showPopup());
+                    SwingUtilities.invokeLater(() -> {
+                        if (comboBox.isShowing()) {
+                            comboBox.showPopup();
+                        }
+                    });
 
                     return comboBox;
                 }

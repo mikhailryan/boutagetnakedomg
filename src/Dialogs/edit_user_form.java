@@ -314,10 +314,10 @@ public class edit_user_form extends javax.swing.JDialog {
 
         name_input.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         name_input.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 name_inputCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         name_input.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -344,7 +344,7 @@ public class edit_user_form extends javax.swing.JDialog {
         jPanel3.add(email_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 180, 30));
 
         roles_selection.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        roles_selection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select role", "Admin", "User" }));
+        roles_selection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select role", "Manager", "Seller", "Reseller" }));
         roles_selection.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 roles_selectionItemStateChanged(evt);

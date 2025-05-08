@@ -460,11 +460,22 @@ public class Login extends javax.swing.JFrame {
                         
                         session.setUserId(id);
                         
-                        if(role.equals("Admin")){ 
+                        switch (role) {
+                        case "Admin":
+                        case "Manager":
                             new Admin_Dashboard().setVisible(true);
-                        }else{
+                            break;
+                        case "Seller":
+                            new Seller().setVisible(true);
+                            break;
+                        case "Reseller":
+                            new Reseeller().setVisible(true);
+                            break;
+                        default:
                             new User_Dashboard().setVisible(true);
-                        }
+                            break;
+                    }
+
                         
                         CustomMessageDialog.showMessage(this, "Login Successful!", "Login");
                         this.dispose();
