@@ -19,7 +19,7 @@ public class Reseeller extends javax.swing.JFrame {
      */
     public Reseeller() {
         initComponents();
-//        Session.getInstance().setUserId(112);
+        Session.getInstance().setUserId(112);
         greet.setText("Reseller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
         browse_prods prods = new browse_prods();
@@ -40,8 +40,10 @@ public class Reseeller extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         close_button = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        cart_button = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         greet = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
 
@@ -64,26 +66,47 @@ public class Reseeller extends javax.swing.JFrame {
         jPanel7.setPreferredSize(new java.awt.Dimension(190, 500));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(Utility.darkermiku);
-        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        cart_button.setBackground(Utility.darkermiku);
+        cart_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel3MouseClicked(evt);
+                cart_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                cart_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                cart_buttonMouseExited(evt);
             }
         });
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        cart_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Products");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 50));
+        jLabel2.setText("Cart");
+        cart_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 40));
 
-        jPanel7.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
+        jPanel7.add(cart_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 190, 40));
+
+        jPanel4.setBackground(Utility.miku);
+        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel4MouseClicked(evt);
+            }
+        });
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Products");
+        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 40));
+
+        jPanel7.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 530));
 
         greet.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         greet.setText("Reseller: ");
-        jPanel2.add(greet, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 300, 40));
+        jPanel2.add(greet, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 300, 40));
 
         javax.swing.GroupLayout main_desktopLayout = new javax.swing.GroupLayout(main_desktop);
         main_desktop.setLayout(main_desktopLayout);
@@ -93,10 +116,10 @@ public class Reseeller extends javax.swing.JFrame {
         );
         main_desktopLayout.setVerticalGroup(
             main_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
 
-        jPanel2.add(main_desktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 610, 440));
+        jPanel2.add(main_desktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 610, 470));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -117,11 +140,23 @@ public class Reseeller extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_close_buttonMouseClicked
 
-    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+    private void cart_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseClicked
         browse_prods prods = new browse_prods();
         main_desktop.add(prods);
         prods.setVisible(true);
-    }//GEN-LAST:event_jPanel3MouseClicked
+    }//GEN-LAST:event_cart_buttonMouseClicked
+
+    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel4MouseClicked
+
+    private void cart_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseEntered
+        cart_button.setBackground(Utility.miku); 
+    }//GEN-LAST:event_cart_buttonMouseEntered
+
+    private void cart_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseExited
+        cart_button.setBackground(Utility.darkermiku); 
+    }//GEN-LAST:event_cart_buttonMouseExited
 
     /**
      * @param args the command line arguments
@@ -159,11 +194,13 @@ public class Reseeller extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel cart_button;
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel greet;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JDesktopPane main_desktop;
     // End of variables declaration//GEN-END:variables

@@ -21,7 +21,7 @@ public class Seller extends javax.swing.JFrame {
     public Seller() {
         initComponents();
         
-//        Session.getInstance().setUserId(112);
+        Session.getInstance().setUserId(112);
         
         greet.setText("Seller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
@@ -68,7 +68,7 @@ public class Seller extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(190, 500));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(Utility.darkermiku);
+        jPanel3.setBackground(Utility.miku);
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel3MouseClicked(evt);
@@ -87,7 +87,7 @@ public class Seller extends javax.swing.JFrame {
 
         greet.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         greet.setText("Seller: ");
-        jPanel1.add(greet, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 30, 300, 40));
+        jPanel1.add(greet, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, 300, 40));
 
         javax.swing.GroupLayout main_desktopLayout = new javax.swing.GroupLayout(main_desktop);
         main_desktop.setLayout(main_desktopLayout);
@@ -97,10 +97,10 @@ public class Seller extends javax.swing.JFrame {
         );
         main_desktopLayout.setVerticalGroup(
             main_desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
         );
 
-        jPanel1.add(main_desktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 90, 610, 440));
+        jPanel1.add(main_desktop, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 610, 470));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, 530));
 

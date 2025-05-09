@@ -126,10 +126,11 @@ public class products_view extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         productScrollPane = new javax.swing.JScrollPane();
         products_table = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(610, 440));
 
-        jPanel1.setBackground(new java.awt.Color(19, 122, 127));
+        jPanel1.setBackground(new java.awt.Color(134, 206, 203));
         jPanel1.setPreferredSize(new java.awt.Dimension(610, 440));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -146,25 +147,49 @@ public class products_view extends javax.swing.JInternalFrame {
         ));
         productScrollPane.setViewportView(products_table);
 
-        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 600, 330));
+        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 350));
+
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        
+    }//GEN-LAST:event_jPanel2MouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane productScrollPane;
     private javax.swing.JTable products_table;
     // End of variables declaration//GEN-END:variables

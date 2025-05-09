@@ -19,7 +19,7 @@ public class QuantityActionPanel extends JPanel {
 
         // Styled Button
         button = new JButton("Add to Cart");
-        button.setBackground(new Color(60, 120, 180));
+        button.setBackground(Utility.darkermiku);
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -42,11 +42,11 @@ public class QuantityActionPanel extends JPanel {
         if (editor instanceof JSpinner.DefaultEditor) {
             JFormattedTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
             textField.setOpaque(true);
-            textField.setBackground(new Color(60, 60, 60));
-            textField.setForeground(Color.WHITE);
+            textField.setBackground(Utility.grayish);
+            textField.setForeground(Color.BLACK);
             textField.setCaretColor(Color.WHITE);
             textField.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
-            textField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            textField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
         }
 
         spinner.setOpaque(true);

@@ -25,6 +25,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
@@ -34,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -51,7 +53,8 @@ public class browse_prods extends javax.swing.JInternalFrame {
      */
     public browse_prods() {
         initComponents();
-        
+        SwingUtilities.invokeLater(() -> getRootPane().requestFocus());
+        setLabels();
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
@@ -60,6 +63,15 @@ public class browse_prods extends javax.swing.JInternalFrame {
         display_products();
         styleProductTable();
     }
+    
+    private void setLabels() {
+        JLabel[] labels = {search_pic};
+        String[] paths = {"search.png"};
+        SwingUtilities.invokeLater(() -> {
+            Utility.setIcons(labels, paths);
+        });
+        
+    } 
     
     private void display_products() {
         try {
@@ -123,7 +135,7 @@ public class browse_prods extends javax.swing.JInternalFrame {
                 area.setWrapStyleWord(true);
                 area.setLineWrap(true);
                 area.setEditable(false);
-                area.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                area.setFont(new Font("Segoe UI", Font.PLAIN, 12));
                 area.setForeground(Color.WHITE);
                 area.setBackground(new Color(45, 45, 45));
                 area.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
@@ -236,8 +248,15 @@ public class browse_prods extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         productScrollPane = new javax.swing.JScrollPane();
         products_table = new javax.swing.JTable();
+        search_pic = new javax.swing.JLabel();
+        search_bar = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        label1 = new java.awt.Label();
+        jPanel3 = new javax.swing.JPanel();
 
-        jPanel1.setBackground(new java.awt.Color(19, 122, 127));
+        setPreferredSize(new java.awt.Dimension(610, 430));
+
+        jPanel1.setBackground(new java.awt.Color(134, 206, 203));
         jPanel1.setPreferredSize(new java.awt.Dimension(610, 440));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -254,25 +273,100 @@ public class browse_prods extends javax.swing.JInternalFrame {
         ));
         productScrollPane.setViewportView(products_table);
 
-        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 600, 330));
+        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 610, 430));
+        jPanel1.add(search_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 30, 30));
+
+        search_bar.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        search_bar.setForeground(new java.awt.Color(153, 153, 153));
+        search_bar.setText("Search");
+        search_bar.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                search_barFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                search_barFocusLost(evt);
+            }
+        });
+        search_bar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                search_barActionPerformed(evt);
+            }
+        });
+        jPanel1.add(search_bar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 80, 200, 30));
+
+        jPanel2.setBackground(new java.awt.Color(19, 122, 127));
+        jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel2MouseClicked(evt);
+            }
+        });
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label1.setAlignment(java.awt.Label.CENTER);
+        label1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        label1.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        label1.setText("Refresh");
+        jPanel2.add(label1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 60, 30));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 80, 80, 30));
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 610, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 60, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 60));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 414, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void search_barFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusGained
+        if (search_bar.getText().trim().equals("Search")) {
+            search_bar.setText("");
+            search_bar.setForeground(Color.BLACK);
+        }
+    }//GEN-LAST:event_search_barFocusGained
+
+    private void search_barFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_search_barFocusLost
+        if (search_bar.getText().trim().isEmpty()) {
+            search_bar.setText("Search");
+            search_bar.setForeground(Color.GRAY);
+        }
+    }//GEN-LAST:event_search_barFocusLost
+
+    private void search_barActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_barActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_search_barActionPerformed
+
+    private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
+        display_products();
+    }//GEN-LAST:event_jPanel2MouseClicked
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private java.awt.Label label1;
     private javax.swing.JScrollPane productScrollPane;
     private javax.swing.JTable products_table;
+    private javax.swing.JTextField search_bar;
+    private javax.swing.JLabel search_pic;
     // End of variables declaration//GEN-END:variables
 }
