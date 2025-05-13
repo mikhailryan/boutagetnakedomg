@@ -5,14 +5,20 @@
  */
 package Dialogs;
 
+import config.Session;
 import config.Utility;
+import static config.Utility.setInvalidBorder;
 import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
 import java.awt.Window;
+import java.sql.SQLException;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
@@ -20,7 +26,7 @@ import javax.swing.SwingUtilities;
  * @author SCC-COLLEGE
  */
 public class add_product extends javax.swing.JDialog {
-    private static add_user_form instance;  
+    private static add_product instance;  
     private final db_connector conn = new db_connector();
 
     /**
@@ -35,6 +41,32 @@ public class add_product extends javax.swing.JDialog {
         Utility.setBorders(name_field, price_field, stocks_field);
         setLabels();
         
+    }
+    
+     public static void addProductDialog(JDesktopPane desktopPane) {
+        if (instance == null) { 
+            JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(desktopPane);
+            if (parentFrame != null) {
+                instance = new add_product(parentFrame, true);
+                instance.pack(); // ensure proper size
+            } else {
+                System.err.println("Error: Parent frame not found!");
+                return;
+            }
+        }   
+
+        if (!instance.isVisible()) {
+            centerDialog(desktopPane); // move this before setVisible
+            instance.setVisible(true);
+        }
+    }
+
+    private static void centerDialog(JDesktopPane desktopPane) {
+        if (instance != null && desktopPane != null) {
+            int x = desktopPane.getLocationOnScreen().x + (desktopPane.getWidth() - instance.getWidth()) / 2;
+            int y = desktopPane.getLocationOnScreen().y + (desktopPane.getHeight() - instance.getHeight()) / 2;
+            instance.setLocation(x, y);
+        }
     }
     
     private void setLabels() {
@@ -88,15 +120,17 @@ public class add_product extends javax.swing.JDialog {
         add_button = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         name_field = new javax.swing.JTextField();
-        username_error = new javax.swing.JLabel();
+        price_error = new javax.swing.JLabel();
         name_error = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         price_field = new javax.swing.JTextField();
         stocks_field = new javax.swing.JTextField();
+        stocks_error = new javax.swing.JLabel();
         minimize_button = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setUndecorated(true);
 
         jPanel1.setBackground(Utility.miku);
         jPanel1.setBorder(new javax.swing.border.LineBorder(Utility.blackish, 3, true));
@@ -198,10 +232,10 @@ public class add_product extends javax.swing.JDialog {
 
         name_field.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         name_field.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 name_fieldCaretPositionChanged(evt);
-            }
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         name_field.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -211,15 +245,15 @@ public class add_product extends javax.swing.JDialog {
         });
         jPanel3.add(name_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 180, 30));
 
-        username_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        username_error.setForeground(new java.awt.Color(255, 0, 0));
-        username_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(username_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 110, 150, 10));
+        price_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        price_error.setForeground(new java.awt.Color(255, 0, 0));
+        price_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel3.add(price_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 150, 150, 10));
 
         name_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
         name_error.setForeground(new java.awt.Color(255, 0, 0));
         name_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 150, 10));
+        jPanel3.add(name_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 150, 10));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel5.setText("Name");
@@ -230,6 +264,11 @@ public class add_product extends javax.swing.JDialog {
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 70, 30));
         jPanel3.add(price_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 180, 30));
         jPanel3.add(stocks_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 180, 30));
+
+        stocks_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
+        stocks_error.setForeground(new java.awt.Color(255, 0, 0));
+        stocks_error.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jPanel3.add(stocks_error, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 200, 150, 10));
 
         jPanel1.add(jPanel3);
         jPanel3.setBounds(60, 110, 320, 300);
@@ -255,6 +294,7 @@ public class add_product extends javax.swing.JDialog {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void cancel_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cancel_buttonMouseClicked
@@ -274,6 +314,61 @@ public class add_product extends javax.swing.JDialog {
 
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
         
+        unFocus();
+
+        boolean valid_to_add = true;
+
+        String name = name_field.getText().trim();
+        String priceStr = price_field.getText().trim();
+        String stocksStr = stocks_field.getText().trim();
+
+        // Validate product name
+        if(name.isEmpty() || name.equals("Enter product name...")) {
+            setInvalidBorder(name_field);
+            name_error.setText("Field Required!");
+            valid_to_add = false;
+        }
+
+        // Validate price (must be a valid number and greater than 0)
+        double price = 0.0;
+        try {
+            price = Double.parseDouble(priceStr);
+            if(price <= 0) {
+                setInvalidBorder(price_field);
+                price_error.setText("Price must be greater than 0!");
+                valid_to_add = false;
+            }
+        } catch (NumberFormatException e) {
+            setInvalidBorder(price_field);
+            price_error.setText("Invalid Price!");
+            valid_to_add = false;
+        }
+
+        // Validate stock (must be a valid integer and greater than or equal to 0)
+        int stocks = 0;
+        try {
+            stocks = Integer.parseInt(stocksStr);
+            if(stocks < 0) {
+                setInvalidBorder(stocks_field);
+                stocks_error.setText("Stock must be at least 0!"); 
+                valid_to_add = false;
+            }
+        } catch (NumberFormatException e) {
+            setInvalidBorder(stocks_field);
+            stocks_error.setText("Invalid Stock!");
+            valid_to_add = false;
+        }
+
+        if(valid_to_add) {
+            conn.insertData("INSERT INTO `products` (seller_id, name, price, stock) VALUES ('" + Session.getInstance().getUserId() + "', '" + name + "', '" + price + "', '" + stocks + "')");
+            CustomMessageDialog.showMessage(null, "Product Added Successfully!", "Succcess");
+            
+            name_field.setText("");
+            price_field.setText("");
+            stocks_field.setText("");
+            
+            this.dispose();
+        }
     }//GEN-LAST:event_add_buttonMouseClicked
 
     private void add_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseEntered
@@ -356,8 +451,9 @@ public class add_product extends javax.swing.JDialog {
     private javax.swing.JLabel minimize_button;
     private javax.swing.JLabel name_error;
     private javax.swing.JTextField name_field;
+    private javax.swing.JLabel price_error;
     private javax.swing.JTextField price_field;
+    private javax.swing.JLabel stocks_error;
     private javax.swing.JTextField stocks_field;
-    private javax.swing.JLabel username_error;
     // End of variables declaration//GEN-END:variables
 }

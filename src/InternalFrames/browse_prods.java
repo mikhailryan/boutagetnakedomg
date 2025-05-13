@@ -3,13 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package theShop;
+package InternalFrames;
 
 import config.CustomScrollBarUI;
+import config.ProductCardEditor;
+import config.ProductCardRenderer;
 import config.QuantityActionEditor;
 import config.QuantityActionPanel;
 import config.Utility;
 import config.db_connector;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -36,6 +39,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -55,6 +60,7 @@ public class browse_prods extends javax.swing.JInternalFrame {
         initComponents();
         SwingUtilities.invokeLater(() -> getRootPane().requestFocus());
         setLabels();
+        setBorder(search_bar);
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
@@ -81,11 +87,10 @@ public class browse_prods extends javax.swing.JInternalFrame {
                 "p.name AS product_name, " +
                 "p.price, " +
                 "p.stock, " +
-                "p.status, " +
                 "u.name AS seller_name " +
                 "FROM products p " +
                 "JOIN user u ON p.seller_id = u.id " +
-                "ORDER BY p.id ASC"
+                "ORDER BY p.seller_id DESC"
             );
 
             DefaultTableModel model = new DefaultTableModel(new Object[]{"Product", "Action"}, 0) {
@@ -99,14 +104,17 @@ public class browse_prods extends javax.swing.JInternalFrame {
                 String info = result.getString("product_name") +
                     "\n\n₱ " + result.getString("price") +
                     "\nStock: " + result.getString("stock") +
-                    "\nStatus: " + result.getString("status") +
                     "\nSeller: " + result.getString("seller_name");
 
                 model.addRow(new Object[]{info, ""});
             }
 
             products_table.setModel(model);
-
+            
+            SwingUtilities.invokeLater(() -> {
+                products_table.getColumnModel().getColumn(0).setPreferredWidth(300); // or whatever value fits your layout
+            });
+            
         } catch (SQLException e) {
             System.out.println("Can't Load Products: " + e.getMessage());
         }
@@ -119,43 +127,38 @@ public class browse_prods extends javax.swing.JInternalFrame {
     }
 
     private void styleProductTable() {
-        products_table.setRowHeight(150);
+        products_table.setRowHeight(130);
         products_table.setShowGrid(false);
         products_table.setTableHeader(null);
-        products_table.setBackground(new Color(30, 30, 30));
+        products_table.setBackground(Utility.blackish);
         products_table.setIntercellSpacing(new Dimension(0, 10));
 
-        // Left: Product info renderer
-        products_table.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                JTextArea area = new JTextArea(value.toString());
-                area.setWrapStyleWord(true);
-                area.setLineWrap(true);
-                area.setEditable(false);
-                area.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-                area.setForeground(Color.WHITE);
-                area.setBackground(new Color(45, 45, 45));
-                area.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-                return area;
-            }
+        // Product Info (Column 0)
+        products_table.getColumnModel().getColumn(0).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> {
+            JTextArea area = new JTextArea(value.toString());
+            area.setWrapStyleWord(true);
+            area.setLineWrap(true);
+            area.setEditable(false);
+            area.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+            area.setForeground(Color.WHITE);
+            area.setBackground(Utility.blackish);
+            area.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Utility.darkermiku, 1),
+                BorderFactory.createEmptyBorder(10, 12, 10, 12)
+            ));
+            return area;
         });
 
-        // Right: Button + Spinner Panel
-        products_table.getColumnModel().getColumn(1).setCellRenderer(new TableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                return new QuantityActionPanel(); // Render-only version
-            }
-        });
-
-        // Use custom editor
+        // Action Panel (Column 1)
         products_table.getColumnModel().getColumn(1).setCellRenderer((table, value, isSelected, hasFocus, row, column) -> new QuantityActionPanel());
         products_table.getColumnModel().getColumn(1).setCellEditor(new QuantityActionEditor(products_table));
+    }
+
+    private void setBorder(JTextField field) {
+        field.setBorder(BorderFactory.createCompoundBorder(
+            new LineBorder(Utility.darkermiku, 1),
+            new EmptyBorder(0, 35, 0, 0) 
+        ));
     }
 
 
@@ -273,7 +276,7 @@ public class browse_prods extends javax.swing.JInternalFrame {
         ));
         productScrollPane.setViewportView(products_table);
 
-        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 610, 430));
+        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 610, 400));
         jPanel1.add(search_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 30, 30));
 
         search_bar.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -331,7 +334,7 @@ public class browse_prods extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
         );
 
         pack();
@@ -357,6 +360,7 @@ public class browse_prods extends javax.swing.JInternalFrame {
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         display_products();
+        styleProductTable();
     }//GEN-LAST:event_jPanel2MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

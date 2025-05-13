@@ -59,6 +59,20 @@ public class EmailSender {
 
             // Get the response code
             int responseCode = connection.getResponseCode();
+            InputStream is = (responseCode >= 200 && responseCode < 300)
+                ? connection.getInputStream()
+                : connection.getErrorStream();
+
+            // Read and log the response
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line.trim());
+                }
+                System.out.println("Response: " + response);
+            }
+
             if (responseCode == HttpURLConnection.HTTP_CREATED) {
                 System.out.println("Email sent successfully!");
                 return true;

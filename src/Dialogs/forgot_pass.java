@@ -5,7 +5,6 @@
  */
 package Dialogs;
 
-import InternalFrames.account_profile;
 import config.Session;
 import config.Utility;
 import config.db_connector;

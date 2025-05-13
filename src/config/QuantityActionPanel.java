@@ -4,62 +4,63 @@ import javax.swing.*;
 import java.awt.*;
 
 public class QuantityActionPanel extends JPanel {
-    public final JSpinner spinner;
-    public final JButton button;
+    public final JSpinner quantitySpinner;
+    public final JButton addButton;
 
     public QuantityActionPanel() {
-        setLayout(new BorderLayout());
-        setBackground(new Color(45, 45, 45));
-        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setOpaque(false);
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
 
-        // Container to stack button and spinner vertically
-        JPanel vertical = new JPanel();
-        vertical.setLayout(new BoxLayout(vertical, BoxLayout.Y_AXIS));
-        vertical.setBackground(new Color(45, 45, 45));
+        quantitySpinner = new JSpinner(new SpinnerNumberModel(1, 1, 999, 1));
+        quantitySpinner.setMaximumSize(new Dimension(100, 35));
+        quantitySpinner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customizeSpinner();
 
-        // Styled Button
-        button = new JButton("Add to Cart");
-        button.setBackground(Utility.darkermiku);
-        button.setForeground(Color.WHITE);
-        button.setFocusPainted(false);
-        button.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addButton = new JButton("Add to Cart");
+        addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        customizeButton();
 
-        // Stretch button vertically
-        button.setMaximumSize(new Dimension(Integer.MAX_VALUE, 80));
-        button.setPreferredSize(new Dimension(120, 80));
-
-
-        // Styled Spinner
-        spinner = new JSpinner(new SpinnerNumberModel(1, 1, 99, 1));
-        spinner.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        spinner.setPreferredSize(new Dimension(100, 30));
-        spinner.setMaximumSize(new Dimension(Short.MAX_VALUE, 30));
-        spinner.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Ensure number is visible and background styled
-        JComponent editor = spinner.getEditor();
-        if (editor instanceof JSpinner.DefaultEditor) {
-            JFormattedTextField textField = ((JSpinner.DefaultEditor) editor).getTextField();
-            textField.setOpaque(true);
-            textField.setBackground(Utility.grayish);
-            textField.setForeground(Color.BLACK);
-            textField.setCaretColor(Color.WHITE);
-            textField.setBorder(BorderFactory.createEmptyBorder(4, 6, 4, 6));
-            textField.setFont(new Font("Segoe UI", Font.PLAIN, 12));
-        }
-
-        spinner.setOpaque(true);
-
-        // Add spacing and components
-        vertical.add(button);
-        vertical.add(Box.createVerticalStrut(10));
-        vertical.add(spinner);
-
-        add(vertical, BorderLayout.CENTER);
+        add(Box.createVerticalGlue());
+        add(addButton);
+        add(Box.createVerticalStrut(10));
+        add(quantitySpinner);
+        add(Box.createVerticalGlue());
     }
 
-    public int getQuantity() {
-        return (Integer) spinner.getValue();
+    private void customizeButton() {
+        addButton.setBackground(Utility.miku);
+        addButton.setForeground(Color.WHITE);
+        addButton.setFocusPainted(false);
+        addButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        addButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        addButton.setPreferredSize(new Dimension(140, 35));
+        addButton.setMaximumSize(new Dimension(160, 40));
+        addButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Utility.darkermiku, 2, true),
+            BorderFactory.createEmptyBorder(8, 20, 8, 20)
+        ));
+
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addButton.setBackground(Utility.darkermiku);
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addButton.setBackground(Utility.miku);
+            }
+        });
+    }
+
+    private void customizeSpinner() {
+        JComponent editor = quantitySpinner.getEditor();
+        JFormattedTextField tf = (JFormattedTextField) editor.getComponent(0);
+        tf.setBackground(Utility.grayish);
+        tf.setForeground(Color.BLACK);
+        tf.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        tf.setHorizontalAlignment(JTextField.CENTER);
+        tf.setBorder(BorderFactory.createEmptyBorder(6, 12, 6, 12));
+
+        quantitySpinner.setBorder(BorderFactory.createLineBorder(Utility.darkermiku, 2, true));
     }
 }

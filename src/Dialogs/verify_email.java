@@ -1,6 +1,6 @@
 package Dialogs;
 
-import InternalFrames.account_profile;
+import InternalFrames.account_main_page;
 import config.EmailSender;
 import config.Session;
 import config.Utility;
@@ -20,7 +20,7 @@ public class verify_email extends javax.swing.JDialog {
     
     private static verify_email instance;
     db_connector conn = new db_connector();
-    private account_profile acc;
+    private account_main_page acc;
     
     /**
      * Creates new form verify_email
@@ -28,7 +28,7 @@ public class verify_email extends javax.swing.JDialog {
      * @param modal
      * @param accRef
      */
-    public verify_email(java.awt.Frame parent, boolean modal, account_profile accRef) {
+    public verify_email(java.awt.Frame parent, boolean modal, account_main_page accRef) {
         super(parent, modal);
         initComponents();
         this.acc = accRef;
@@ -39,11 +39,11 @@ public class verify_email extends javax.swing.JDialog {
         setEmail();
         
         code_input.setText("Code");
-        
+        System.out.println(Session.getInstance().getEmail() + Integer.valueOf(Session.getInstance().getVerificationCode()));
         EmailSender.sendVerificationCodeEmail(Session.getInstance().getEmail(), Integer.valueOf(Session.getInstance().getVerificationCode()));
     }   
     
-    public void setEmail(){
+    public final void setEmail(){
         email_label.setText(Session.getInstance().getEmail());
     }
     
@@ -55,7 +55,7 @@ public class verify_email extends javax.swing.JDialog {
         });
     } 
     
-    public static void verifyEmailDialog(JDesktopPane desktopPane, account_profile accRef) {
+    public static void verifyEmailDialog(JDesktopPane desktopPane, account_main_page accRef) {
         if (instance == null) { 
             JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(desktopPane);
             if (parentFrame != null) {
@@ -253,7 +253,9 @@ public class verify_email extends javax.swing.JDialog {
             boolean success = db_connector.updateDatabase("UPDATE user SET email_verified = 1, verification_code = NULL WHERE id = '"+ Session.getInstance().getUserId() + "'");
             if(success){
                 CustomMessageDialog.showMessage(null, "Your email is now verified", "Email Verification");
-                acc.setEmail();
+                if (acc != null) {
+                    acc.setEmail();
+                } 
                 this.dispose();
                 instance = null;
             }

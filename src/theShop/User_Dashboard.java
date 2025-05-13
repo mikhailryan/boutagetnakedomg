@@ -252,13 +252,13 @@ public class User_Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_profile_buttonMouseClicked
 
     private void profile_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseEntered
-        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
             profile_button.setBackground(Utility.miku);
         }
     }//GEN-LAST:event_profile_buttonMouseEntered
 
     private void profile_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseExited
-        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
             profile_button.setBackground(Utility.darkermiku);
         }
     }//GEN-LAST:event_profile_buttonMouseExited

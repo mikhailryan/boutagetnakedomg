@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package theShop;
+package InternalFrames;
 
+import Dialogs.add_product;
+import Dialogs.verify_email;
 import config.CustomScrollBarUI;
 import config.Session;
 import config.Utility;
@@ -14,11 +16,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -38,6 +42,13 @@ public class products_view extends javax.swing.JInternalFrame {
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
+        
+        JLabel[] labels = {product_pic};
+        String[] paths = {"box.png"};
+        SwingUtilities.invokeLater(() -> {
+            Utility.setIcons(labels, paths);
+        });
+        
         bi.setNorthPane(null);
         
         display_products();
@@ -48,8 +59,8 @@ public class products_view extends javax.swing.JInternalFrame {
         try {
             db_connector dbcon = new db_connector();
             ResultSet result = dbcon.getData(
-                "SELECT id AS 'ID', name AS 'Product Name', price AS 'Price', stock AS 'Stock', status AS 'Status' " +
-                "FROM products WHERE seller_id = '" + Session.getInstance().getUserId() + "' ORDER BY id ASC"
+                "SELECT id AS 'ID', name AS 'Product Name', price AS 'Price', stock AS 'Stock' " +
+                "FROM products WHERE seller_id = '" + Session.getInstance().getUserId() + "'"
             );
 
             products_table.setModel(DbUtils.resultSetToTableModel(result));
@@ -58,7 +69,6 @@ public class products_view extends javax.swing.JInternalFrame {
             products_table.getColumnModel().getColumn(1).setPreferredWidth(200);  // Product Name
             products_table.getColumnModel().getColumn(2).setPreferredWidth(90);   // Price
             products_table.getColumnModel().getColumn(3).setPreferredWidth(90);   // Stock
-            products_table.getColumnModel().getColumn(4).setPreferredWidth(90);   // Status
 
             products_table.getTableHeader().setBackground(new Color(19,122,127));
 
@@ -127,8 +137,10 @@ public class products_view extends javax.swing.JInternalFrame {
         productScrollPane = new javax.swing.JScrollPane();
         products_table = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
+        product_pic = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
-        setPreferredSize(new java.awt.Dimension(610, 440));
+        setPreferredSize(new java.awt.Dimension(610, 470));
 
         jPanel1.setBackground(new java.awt.Color(134, 206, 203));
         jPanel1.setPreferredSize(new java.awt.Dimension(610, 440));
@@ -147,26 +159,22 @@ public class products_view extends javax.swing.JInternalFrame {
         ));
         productScrollPane.setViewportView(products_table);
 
-        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 350));
+        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 410));
 
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jPanel2MouseClicked(evt);
             }
         });
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel2.add(product_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 30, 30));
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
-        );
+        jLabel2.setFont(new java.awt.Font("Arial", 1, 12)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Add");
+        jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 60, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 20, -1, 30));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -176,7 +184,7 @@ public class products_view extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
         );
 
         pack();
@@ -184,13 +192,19 @@ public class products_view extends javax.swing.JInternalFrame {
 
     private void jPanel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseClicked
         
+        JDesktopPane desktopPane = this.getDesktopPane();
+        if (desktopPane != null) {
+            add_product.addProductDialog(desktopPane);
+        }
     }//GEN-LAST:event_jPanel2MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane productScrollPane;
+    private javax.swing.JLabel product_pic;
     private javax.swing.JTable products_table;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,15 +5,22 @@
  */
 package theShop;
 
+import InternalFrames.browse_prods;
+import InternalFrames.account_main_page;
 import config.Session;
 import config.Utility;
+import java.beans.PropertyVetoException;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 
 /**
  *
  * @author Mercy
  */
 public class Reseeller extends javax.swing.JFrame {
-
+    
+    private JInternalFrame activeFrame = null;
+    
     /**
      * Creates new form Reseeller
      */
@@ -22,10 +29,22 @@ public class Reseeller extends javax.swing.JFrame {
         Session.getInstance().setUserId(112);
         greet.setText("Reseller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
+        JLabel[] labels = {logo, close_button};
+        String[] paths = {"leeeek.png", "close.png"};
+        Utility.setIcons(labels, paths);
+        
         browse_prods prods = new browse_prods();
         main_desktop.add(prods);
         prods.setVisible(true);
         
+        activeFrame = prods;
+        
+    }
+    
+    private void resetButtonColors() {
+        profile_button.setBackground(Utility.darkermiku);
+        products_button.setBackground(Utility.darkermiku);
+        cart_button.setBackground(Utility.darkermiku);
     }
 
     /**
@@ -42,8 +61,13 @@ public class Reseeller extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         cart_button = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        products_button = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        profile_button = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        profile_pic = new javax.swing.JLabel();
         greet = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
 
@@ -60,7 +84,7 @@ public class Reseeller extends javax.swing.JFrame {
                 close_buttonMouseClicked(evt);
             }
         });
-        jPanel2.add(close_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, 40, 40));
+        jPanel2.add(close_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 0, 30, 30));
 
         jPanel7.setBackground(new java.awt.Color(19, 122, 127));
         jPanel7.setPreferredSize(new java.awt.Dimension(190, 500));
@@ -83,24 +107,63 @@ public class Reseeller extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Cart");
-        cart_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 40));
+        cart_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 109, 40));
 
         jPanel7.add(cart_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 190, 40));
 
-        jPanel4.setBackground(Utility.miku);
-        jPanel4.addMouseListener(new java.awt.event.MouseAdapter() {
+        products_button.setBackground(Utility.miku);
+        products_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel4MouseClicked(evt);
+                products_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                products_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                products_buttonMouseExited(evt);
             }
         });
-        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        products_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Products");
-        jPanel4.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 40));
+        products_button.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 109, 40));
 
-        jPanel7.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
+        jPanel7.add(products_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
+        jPanel7.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 130));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("DropXchange");
+        jLabel1.setToolTipText("");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel7.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
+
+        profile_button.setBackground(Utility.darkermiku);
+        profile_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseExited(evt);
+            }
+        });
+        profile_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Account Profile");
+        profile_button.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 130, 40));
+        profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
+
+        jPanel7.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 190, 40));
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 530));
 
@@ -141,14 +204,40 @@ public class Reseeller extends javax.swing.JFrame {
     }//GEN-LAST:event_close_buttonMouseClicked
 
     private void cart_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseClicked
-        browse_prods prods = new browse_prods();
-        main_desktop.add(prods);
-        prods.setVisible(true);
+        
     }//GEN-LAST:event_cart_buttonMouseClicked
 
-    private void jPanel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel4MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jPanel4MouseClicked
+    private void products_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseClicked
+        resetButtonColors();
+        products_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof browse_prods) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        browse_prods prod = new browse_prods();
+        main_desktop.add(prod);
+        prod.setVisible(true);
+
+        try {
+            prod.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = prod;
+    }//GEN-LAST:event_products_buttonMouseClicked
 
     private void cart_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseEntered
         cart_button.setBackground(Utility.miku); 
@@ -157,6 +246,62 @@ public class Reseeller extends javax.swing.JFrame {
     private void cart_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseExited
         cart_button.setBackground(Utility.darkermiku); 
     }//GEN-LAST:event_cart_buttonMouseExited
+
+    private void profile_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseClicked
+        resetButtonColors();
+        profile_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof account_main_page) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        account_main_page acc = new account_main_page();
+        main_desktop.add(acc);
+        acc.setVisible(true);
+
+        try {
+            acc.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = acc;
+    }//GEN-LAST:event_profile_buttonMouseClicked
+
+    private void profile_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
+            profile_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseEntered
+
+    private void profile_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
+            profile_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseExited
+
+    private void products_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof browse_prods)) {
+            products_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_products_buttonMouseEntered
+
+    private void products_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof browse_prods)) {
+            products_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_products_buttonMouseExited
 
     /**
      * @param args the command line arguments
@@ -197,11 +342,16 @@ public class Reseeller extends javax.swing.JFrame {
     private javax.swing.JPanel cart_button;
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel greet;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel logo;
     private javax.swing.JDesktopPane main_desktop;
+    private javax.swing.JPanel products_button;
+    private javax.swing.JPanel profile_button;
+    private javax.swing.JLabel profile_pic;
     // End of variables declaration//GEN-END:variables
 }

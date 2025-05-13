@@ -3,7 +3,6 @@ package theShop;
 
 import Dialogs.CustomYesNoDialog;
 import InternalFrames.account_main_page;
-import InternalFrames.account_profile;
 import InternalFrames.users_table;
 import config.Session;
 import config.Utility;
@@ -245,7 +244,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_profile_buttonMouseClicked
 
     private void profile_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseEntered
-        if (activeFrame == null || !(activeFrame instanceof account_profile)) {
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
             profile_button.setBackground(Utility.miku);
         }
     }//GEN-LAST:event_profile_buttonMouseEntered

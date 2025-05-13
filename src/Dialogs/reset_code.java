@@ -6,6 +6,7 @@
 package Dialogs;
 
 import static Dialogs.forgot_pass.usernamee;
+import config.EmailSender;
 import config.Session;
 import config.Utility;
 import config.db_connector;
@@ -37,6 +38,8 @@ public class reset_code extends javax.swing.JDialog {
         Utility.setBorders(code_field);
         
         Session.getInstance().setUserId(userId); 
+        EmailSender.sendVerificationCodeEmail(Session.getInstance().getEmail(), Integer.valueOf(Session.getInstance().getVerificationCode()));
+
     }
     
     public static void resetCodeDialog(Frame parentDialog, int id) {

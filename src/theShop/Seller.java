@@ -5,9 +5,11 @@
  */
 package theShop;
 
+import InternalFrames.products_view;
 import InternalFrames.account_main_page;
 import config.Session;
 import config.Utility;
+import javax.swing.JLabel;
 
 /**
  *
@@ -25,10 +27,16 @@ public class Seller extends javax.swing.JFrame {
         
         greet.setText("Seller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
+        JLabel[] labels = {logo, close_button};
+        String[] paths = {"leeeek.png", "close.png"};
+        Utility.setIcons(labels, paths);
+        
         products_view prods = new products_view();
         main_desktop.add(prods);
         prods.setVisible(true);
     }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,6 +52,8 @@ public class Seller extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
+        logo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         greet = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
 
@@ -82,6 +92,17 @@ public class Seller extends javax.swing.JFrame {
         jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 50));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
+
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
+        jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 130));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI Black", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("DropXchange");
+        jLabel1.setToolTipText("");
+        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 530));
 
@@ -156,10 +177,12 @@ public class Seller extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel close_button;
     private javax.swing.JLabel greet;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel logo;
     private javax.swing.JDesktopPane main_desktop;
     // End of variables declaration//GEN-END:variables
 }
