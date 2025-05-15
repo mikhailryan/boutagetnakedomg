@@ -42,10 +42,12 @@ public class QuantityActionPanel extends JPanel {
         ));
 
         addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 addButton.setBackground(Utility.darkermiku);
             }
 
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 addButton.setBackground(Utility.miku);
             }

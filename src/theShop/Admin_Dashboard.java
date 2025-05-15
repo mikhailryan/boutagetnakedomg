@@ -261,8 +261,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
             return;
         }
         
-        Session session = Session.getInstance();
-        session.clearSession();
+        Session.getInstance().clearSession();
         
         new Login().setVisible(true);
         this.dispose();

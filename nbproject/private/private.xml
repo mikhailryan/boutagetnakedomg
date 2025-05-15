@@ -13,7 +13,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/EmailSender.java</file>
+            <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/QuantityActionEditor.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/theShop/User_Dashboard.java</file>
+            <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/ProductCardEditor.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/Dialogs/verify_email.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/Dialogs/forgot_pass.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/InternalFrames/products_view.java</file>
@@ -24,7 +26,10 @@
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/theShop/Reseeller.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/Utility.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/theShop/Admin_Dashboard.java</file>
+            <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/ProductCardRenderer.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/InternalFrames/browse_prods.java</file>
+            <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/ProductCardPanel.java</file>
+            <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/config/QuantityActionPanel.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/InternalFrames/users_table.java</file>
             <file>file:/C:/Users/Mercy/Desktop/NetBeans/boutagetnakedomg/src/Dialogs/reset_code.java</file>
         </group>

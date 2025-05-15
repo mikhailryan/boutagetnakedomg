@@ -54,6 +54,20 @@ public class Session {
         return name;
     }
     
+    public String getUsername() {
+        String name = "";
+
+        try {
+            ResultSet result = conn.getData("SELECT username FROM user WHERE id = '" + userId + "'");
+            if(result.next()) {
+                name = result.getString("username");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return name;
+    }
+    
     public boolean isEmailVerified(){
         try {
             ResultSet result = conn.getData("SELECT email_verified FROM user WHERE id = '"+ userId + "'");

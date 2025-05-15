@@ -5,6 +5,7 @@
  */
 package InternalFrames;
 
+import Dialogs.CustomYesNoDialog;
 import Dialogs.change_pass;
 import Dialogs.verify_email;
 import config.Session;
@@ -14,14 +15,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.FocusTraversalPolicy;
+import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JDesktopPane;
+import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,7 +37,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import java.sql.*;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -45,6 +56,7 @@ public class account_main_page extends javax.swing.JInternalFrame {
     String username = "";
     
     db_connector conn = new db_connector();
+    Connection connn = conn.getConnection();
     
     /**
      * Creates new form account_profile
@@ -59,8 +71,9 @@ public class account_main_page extends javax.swing.JInternalFrame {
         getData();
         addPanelMouseListener();
         setEmail();
+        displayProfilePicture();
         
-        setLabels();
+//        setLabels();
         Utility.setBorders(name_field, email_field, username_field);
         
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -68,6 +81,101 @@ public class account_main_page extends javax.swing.JInternalFrame {
         bi.setNorthPane(null);
     }
     
+    private void uploadProfilePicture(String filePath) {
+        try {
+            File selectedFile = new File(filePath);
+            if (!selectedFile.exists()) {
+                throw new IllegalArgumentException("File does not exist.");
+            }
+
+            int userId = Session.getInstance().getUserId();
+            String oldImagePath = null;
+
+            String query = "SELECT profile_pic FROM user WHERE id = ?";
+            PreparedStatement getStmt = connn.prepareStatement(query);
+            getStmt.setInt(1, userId);
+            ResultSet rs = getStmt.executeQuery();
+
+            if (rs.next()) {
+                oldImagePath = rs.getString("profile_pic");
+            }
+
+            String targetDir = "ProfilePics";
+            File targetFolder = new File(targetDir);
+            if (!targetFolder.exists()) {
+                targetFolder.mkdirs();
+            }   
+
+            String newFileName = System.currentTimeMillis() + "_" + selectedFile.getName();
+            File targetFile = new File(targetFolder, newFileName);
+
+            Files.copy(selectedFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+            String imagePath = "ProfilePics/" + newFileName;
+            String updateSQL = "UPDATE user SET profile_pic = ? WHERE id = ?";
+            PreparedStatement updateStmt = connn.prepareStatement(updateSQL);
+            updateStmt.setString(1, imagePath);
+            updateStmt.setInt(2, userId);
+
+            int rowsAffected = updateStmt.executeUpdate();
+            if (rowsAffected > 0) {
+                JOptionPane.showMessageDialog(null, "Profile picture updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "Failed to update profile picture.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            // ✅ Delete old image if it's not the default
+            if (oldImagePath != null && !oldImagePath.equals("ProfilePics/user_pic.jpg")) {
+                File oldFile = new File(System.getProperty("user.dir"), oldImagePath);
+                if (oldFile.exists()) {
+                    boolean deleted = oldFile.delete();
+                }
+            }
+
+            displayProfilePicture(); 
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error uploading profile picture: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+    
+    private void displayProfilePicture() {
+        try {
+            // Query to get the profile picture path from the database
+            String query = "SELECT profile_pic FROM user WHERE id = ?";
+            PreparedStatement stmt = connn.prepareStatement(query);
+            stmt.setInt(1, Session.getInstance().getUserId());
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String profilePicPath = rs.getString("profile_pic");
+
+                // If the profile picture path is null or empty, use the default image
+                if (profilePicPath == null || profilePicPath.isEmpty()) {
+                    profilePicPath = "ProfilePics/user_pic.jpg"; // Default image path
+                }
+
+                // Check if the file exists in the directory
+                File imgFile = new File(profilePicPath);
+                if (!imgFile.exists()) {
+                    // If the file doesn't exist, use the default image
+                    imgFile = new File("ProfilePics/user_pic.jpg");
+                }
+
+                // Load and scale the image
+                ImageIcon profilePic = new ImageIcon(imgFile.getAbsolutePath());
+                Image image = profilePic.getImage().getScaledInstance(110, 100, Image.SCALE_SMOOTH);
+                user_pic.setIcon(new ImageIcon(image)); // Set the scaled image as the icon
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     private void getData(){
         String sql = "SELECT * FROM user WHERE id = " + id;
         try {
@@ -259,6 +367,12 @@ public class account_main_page extends javax.swing.JInternalFrame {
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         user_pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/user.png"))); // NOI18N
+        user_pic.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 2, true));
+        user_pic.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                user_picMouseClicked(evt);
+            }
+        });
         jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 100));
 
         jPanel4.setBackground(Utility.darkermiku);
@@ -698,6 +812,26 @@ public class account_main_page extends javax.swing.JInternalFrame {
     private void jLabel7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseExited
         jLabel7.setForeground(new Color(0,0,204));
     }//GEN-LAST:event_jLabel7MouseExited
+
+    private void user_picMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_user_picMouseClicked
+        boolean changePP = CustomYesNoDialog.showConfirm(null, "Change Profile Picture?", "Profile Picture");
+        
+        if(!changePP) { return; }
+        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Choose Profile Picture");
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image files", "jpg", "png", "jpeg"));
+
+        int result = fileChooser.showOpenDialog(null);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String filePath = selectedFile.getAbsolutePath();
+            // Now you have the file path and can proceed to upload
+            uploadProfilePicture(filePath);
+        }
+    }//GEN-LAST:event_user_picMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel change_pass_btn;

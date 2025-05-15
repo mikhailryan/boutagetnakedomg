@@ -20,6 +20,10 @@ public class db_connector {
         
     }
     
+    public Connection getConnection() {
+        return this.conn;
+    }
+    
     public ResultSet getData(String sql) throws SQLException{
         Statement statement = conn.createStatement();
         ResultSet result = statement.executeQuery(sql);
@@ -57,6 +61,7 @@ public class db_connector {
             return false;
         }
     }
+
 
     
     /*

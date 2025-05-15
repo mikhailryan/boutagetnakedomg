@@ -232,10 +232,10 @@ public class add_product extends javax.swing.JDialog {
 
         name_field.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
         name_field.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 name_fieldCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         name_field.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -262,7 +262,19 @@ public class add_product extends javax.swing.JDialog {
         jLabel6.setFont(new java.awt.Font("Segoe UI Light", 1, 12)); // NOI18N
         jLabel6.setText("Price");
         jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 70, 30));
+
+        price_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                price_fieldKeyTyped(evt);
+            }
+        });
         jPanel3.add(price_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 180, 30));
+
+        stocks_field.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                stocks_fieldKeyTyped(evt);
+            }
+        });
         jPanel3.add(stocks_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 170, 180, 30));
 
         stocks_error.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
@@ -313,6 +325,14 @@ public class add_product extends javax.swing.JDialog {
     }//GEN-LAST:event_cancel_buttonMouseExited
 
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
+        
+        Utility.resetBorder(name_field);
+        Utility.resetBorder(price_field);
+        Utility.resetBorder(stocks_field);
+        
+        name_error.setText("");
+        price_error.setText("");
+        stocks_error.setText("");
         
         unFocus();
 
@@ -384,12 +404,23 @@ public class add_product extends javax.swing.JDialog {
     }//GEN-LAST:event_name_fieldCaretPositionChanged
 
     private void name_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_name_fieldKeyTyped
-        
+        Utility.resetBorder(name_field);
+        name_error.setText("");
     }//GEN-LAST:event_name_fieldKeyTyped
 
     private void minimize_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize_buttonMouseClicked
         this.setVisible(false);
     }//GEN-LAST:event_minimize_buttonMouseClicked
+
+    private void price_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_price_fieldKeyTyped
+        Utility.resetBorder(price_field);
+        price_error.setText("");
+    }//GEN-LAST:event_price_fieldKeyTyped
+
+    private void stocks_fieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_stocks_fieldKeyTyped
+        Utility.resetBorder(stocks_field);
+        stocks_error.setText("");
+    }//GEN-LAST:event_stocks_fieldKeyTyped
 
     /**
      * @param args the command line arguments

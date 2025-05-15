@@ -5,10 +5,13 @@
  */
 package theShop;
 
+import Dialogs.CustomYesNoDialog;
 import InternalFrames.products_view;
 import InternalFrames.account_main_page;
 import config.Session;
 import config.Utility;
+import java.beans.PropertyVetoException;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 
 /**
@@ -16,7 +19,9 @@ import javax.swing.JLabel;
  * @author Mercy
  */
 public class Seller extends javax.swing.JFrame {
-
+    
+    private JInternalFrame activeFrame = null;
+    
     /**
      * Creates new form Seller
      */
@@ -27,8 +32,8 @@ public class Seller extends javax.swing.JFrame {
         
         greet.setText("Seller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
-        JLabel[] labels = {logo, close_button};
-        String[] paths = {"leeeek.png", "close.png"};
+        JLabel[] labels = {logo, close_button, logout_pic, profile_pic};
+        String[] paths = {"leeeek.png", "close.png", "logout.png", "user.png"};
         Utility.setIcons(labels, paths);
         
         products_view prods = new products_view();
@@ -36,7 +41,10 @@ public class Seller extends javax.swing.JFrame {
         prods.setVisible(true);
     }
     
-    
+    private void resetButtonColors() {
+        profile_button.setBackground(Utility.darkermiku);
+        products_button.setBackground(Utility.darkermiku);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -50,10 +58,16 @@ public class Seller extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         close_button = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
+        products_button = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        logout_button = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        logout_pic = new javax.swing.JLabel();
+        profile_button = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        profile_pic = new javax.swing.JLabel();
         greet = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
 
@@ -78,20 +92,20 @@ public class Seller extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(190, 500));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel3.setBackground(Utility.miku);
-        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+        products_button.setBackground(Utility.miku);
+        products_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jPanel3MouseClicked(evt);
+                products_buttonMouseClicked(evt);
             }
         });
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        products_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("Products");
-        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(37, 0, 109, 50));
+        products_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 0, 110, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 190, 50));
+        jPanel2.add(products_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
         jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 130));
@@ -103,6 +117,49 @@ public class Seller extends javax.swing.JFrame {
         jLabel1.setToolTipText("");
         jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
+
+        logout_button.setBackground(Utility.darkermiku);
+        logout_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logout_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logout_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logout_buttonMouseExited(evt);
+            }
+        });
+        logout_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Logout");
+        logout_button.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 80, 40));
+        logout_button.add(logout_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 40, 40));
+
+        jPanel2.add(logout_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 190, 40));
+
+        profile_button.setBackground(Utility.darkermiku);
+        profile_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                profile_buttonMouseExited(evt);
+            }
+        });
+        profile_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setText("Account Profile");
+        profile_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 110, 40));
+        profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 40, 40));
+
+        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 190, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 530));
 
@@ -133,11 +190,77 @@ public class Seller extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_close_buttonMouseClicked
 
-    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+    private void products_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseClicked
         products_view prods = new products_view();
         main_desktop.add(prods);
         prods.setVisible(true);
-    }//GEN-LAST:event_jPanel3MouseClicked
+    }//GEN-LAST:event_products_buttonMouseClicked
+
+    private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
+        boolean confirmed = CustomYesNoDialog.showConfirm(this, "Are you sure you want to Logout?", "Confirm Logout");
+        if(!confirmed){
+            return;
+        }
+
+        Session session = Session.getInstance();
+        session.clearSession();
+
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_logout_buttonMouseClicked
+
+    private void logout_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseEntered
+        logout_button.setBackground(Utility.miku);
+    }//GEN-LAST:event_logout_buttonMouseEntered
+
+    private void logout_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseExited
+
+        logout_button.setBackground(Utility.darkermiku);
+    }//GEN-LAST:event_logout_buttonMouseExited
+
+    private void profile_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseClicked
+        resetButtonColors();
+        profile_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof account_main_page) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        account_main_page acc = new account_main_page();
+        main_desktop.add(acc);
+        acc.setVisible(true);
+
+        try {
+            acc.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = acc;
+    }//GEN-LAST:event_profile_buttonMouseClicked
+
+    private void profile_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
+            profile_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseEntered
+
+    private void profile_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof account_main_page)) {
+            profile_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_profile_buttonMouseExited
 
     /**
      * @param args the command line arguments
@@ -179,10 +302,16 @@ public class Seller extends javax.swing.JFrame {
     private javax.swing.JLabel greet;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel logo;
+    private javax.swing.JPanel logout_button;
+    private javax.swing.JLabel logout_pic;
     private javax.swing.JDesktopPane main_desktop;
+    private javax.swing.JPanel products_button;
+    private javax.swing.JPanel profile_button;
+    private javax.swing.JLabel profile_pic;
     // End of variables declaration//GEN-END:variables
 }
