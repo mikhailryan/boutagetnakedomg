@@ -20,6 +20,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,9 +28,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -44,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -60,7 +59,7 @@ public class cart_content extends javax.swing.JInternalFrame {
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         BasicInternalFrameUI bi = (BasicInternalFrameUI)this.getUI();
         bi.setNorthPane(null);
-        dummy.setIcon(Utility.resizeImage("/images/trash.png", dummy));
+        
         display_cart();
     }
     
@@ -73,19 +72,20 @@ public class cart_content extends javax.swing.JInternalFrame {
                 "WHERE c.user_id = " + Session.getInstance().getUserId()
             );
 
-            DefaultTableModel model = new DefaultTableModel(new Object[]{"Product", "Qty", "Price", "Subtotal", "Remove", "cartId"}, 0) {
+            DefaultTableModel model = new DefaultTableModel(
+                new Object[]{"Product", "Qty", "Price", "Subtotal", "", "cartId", "", ""}, 0
+            ) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return column == 4; // only remove icon column editable
+                    return column == 4 || column == 6 || column == 7;
                 }
 
                 @Override
                 public Class<?> getColumnClass(int columnIndex) {
-                    if (columnIndex == 4) return Icon.class; // ensure it treats the trash column as Icon
+                    if (columnIndex == 4 || columnIndex == 6 || columnIndex == 7) return Icon.class;
                     return Object.class;
                 }
             };
-
 
             boolean hasItems = false;
             while (result.next()) {
@@ -103,12 +103,14 @@ public class cart_content extends javax.swing.JInternalFrame {
                     String.format("₱%.2f", price),
                     String.format("₱%.2f", subtotal),
                     resizeImage("/images/trash.png", 24),
-                    cartId
+                    cartId,
+                    resizeImage("/images/minus.png", 18),
+                    resizeImage("/images/plus.png", 18)
                 });
             }
 
             if (!hasItems) {
-                model.addRow(new Object[]{"Your cart is empty", "", "", "", null, null});
+                model.addRow(new Object[]{"Your cart is empty", "", "", "", null, null, null, null});
                 cart_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
                     @Override
                     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
@@ -122,24 +124,37 @@ public class cart_content extends javax.swing.JInternalFrame {
                         return label;
                     }
                 });
-            }
-            
-            if (!hasItems) {
                 cart_table.setRowSelectionAllowed(false);
             }
 
+            // Calculate total
+            double total = 0.0;
+            result.beforeFirst();
+            while (result.next()) {
+                total += result.getDouble("subtotal");
+            }
+            total_price.setText("Total: ₱" + String.format("%.2f", total));
+
             cart_table.setModel(model);
-            cart_table.getColumnModel().getColumn(4).setHeaderValue("");
+
+            // Column sizing
             cart_table.getColumnModel().getColumn(0).setPreferredWidth(180); // Product
             cart_table.getColumnModel().getColumn(1).setPreferredWidth(50);  // Qty
             cart_table.getColumnModel().getColumn(2).setPreferredWidth(80);  // Price
             cart_table.getColumnModel().getColumn(3).setPreferredWidth(100); // Subtotal
-            cart_table.getColumnModel().getColumn(4).setPreferredWidth(50);  // Trash
-            
+            cart_table.getColumnModel().getColumn(4).setPreferredWidth(40);  // Trash
+            cart_table.getColumnModel().getColumn(6).setPreferredWidth(30);  // Decrease
+            cart_table.getColumnModel().getColumn(7).setPreferredWidth(30);  // Increase
+
+            // Set blank headers for icons
+            cart_table.getColumnModel().getColumn(4).setHeaderValue("");
+            cart_table.getColumnModel().getColumn(6).setHeaderValue("");
+            cart_table.getColumnModel().getColumn(7).setHeaderValue("");
+
+            // Header styling
             JTableHeader header = cart_table.getTableHeader();
             for (int i = 0; i < cart_table.getColumnCount(); i++) {
-                int col = i;
-                cart_table.getColumnModel().getColumn(col).setHeaderRenderer(new DefaultTableCellRenderer() {
+                cart_table.getColumnModel().getColumn(i).setHeaderRenderer(new DefaultTableCellRenderer() {
                     @Override
                     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                                    boolean hasFocus, int row, int column) {
@@ -153,59 +168,76 @@ public class cart_content extends javax.swing.JInternalFrame {
                     }
                 });
             }
-            
+
+            // 🔒 Remove previous listeners to avoid duplicates
+            for (MouseListener ml : cart_table.getMouseListeners()) {
+                cart_table.removeMouseListener(ml);
+            }
+
+            // 🖱️ Mouse listener for remove/increase/decrease
             cart_table.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     int row = cart_table.rowAtPoint(e.getPoint());
                     int col = cart_table.columnAtPoint(e.getPoint());
 
-                    if (col == 4) {
-                        int cartId = (int) cart_table.getValueAt(row, 5);
+                    if (row < 0 || col < 0 || cart_table.getValueAt(row, 5) == null) return;
+
+                    int cartId = (int) cart_table.getValueAt(row, 5);
+                    int currentQty = (int) cart_table.getValueAt(row, 1);
+
+                    if (col == 4) { // Trash
                         boolean confirm = CustomYesNoDialog.showConfirm(null, "Remove this item from cart?", "Confirm");
                         if (confirm) {
-                            db_connector .updateDatabase("DELETE FROM cart WHERE id = " + cartId);
-                            display_cart(); // refresh
+                            db_connector.updateDatabase("DELETE FROM cart WHERE id = " + cartId);
+                            display_cart();
+                        }
+                    } else if (col == 6) { // Decrease
+                        if (currentQty > 1) {
+                            db_connector.updateDatabase("UPDATE cart SET quantity = quantity - 1 WHERE id = " + cartId);
+                            display_cart();
+                        } else {
+                            boolean confirm = CustomYesNoDialog.showConfirm(null, "Quantity is 1. Remove this item?", "Confirm");
+                            if (confirm) {
+                                db_connector.updateDatabase("DELETE FROM cart WHERE id = " + cartId);
+                                display_cart();
+                            }
+                        }
+                    } else if (col == 7) { // Increase
+                        try {
+                            db_connector conn = new db_connector();
+                            ResultSet stockResult = conn.getData(
+                                "SELECT p.stock FROM cart c JOIN products p ON c.product_id = p.id WHERE c.id = " + cartId
+                            );
+
+                            if (stockResult.next()) {
+                                int stock = stockResult.getInt("stock");
+
+                                if (currentQty < stock) {
+                                    db_connector.updateDatabase("UPDATE cart SET quantity = quantity + 1 WHERE id = " + cartId);
+                                    display_cart();
+                                } else {
+                                    CustomMessageDialog.showError(null,
+                                        "Cannot add more. Only " + stock + " item(s) available in stock.",
+                                        "Stock Limit Reached"
+                                    );
+                                }
+                            }
+                        } catch (SQLException ex) {
+                            System.out.println("Error checking stock: " + ex.getMessage());
                         }
                     }
-                }
-            });
-            
-            cart_table.getColumnModel().getColumn(4).setHeaderRenderer(new DefaultTableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                               boolean hasFocus, int row, int column) {
-                    JLabel label = new JLabel(""); // Empty label, no crash
-                    label.setHorizontalAlignment(JLabel.CENTER);
-                    return label;
                 }
             });
 
             SwingUtilities.invokeLater(this::styleCartTable);
 
-            SwingUtilities.invokeLater(() -> {
-                cart_table.setRowHeight(40);
-                cart_table.getColumnModel().getColumn(5).setMinWidth(0);
-                cart_table.getColumnModel().getColumn(5).setMaxWidth(0);
-                cart_table.getColumnModel().getColumn(5).setWidth(0);
-                cart_table.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
-                    @Override
-                    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                                  boolean hasFocus, int row, int column) {
-                        JLabel label = new JLabel();
-                        if (value instanceof Icon) {
-                            label.setIcon((Icon) value);
-                        }
-                        label.setHorizontalAlignment(JLabel.CENTER);
-                        return label;
-                    }
-                });
-            });
-
         } catch (SQLException e) {
             System.out.println("Can't Load Cart: " + e.getMessage());
         }
     }
+
+
     
     private void styleCartTable() {
         cart_table.setRowHeight(40);
@@ -216,7 +248,6 @@ public class cart_content extends javax.swing.JInternalFrame {
         cart_table.setFont(new Font("SansSerif", Font.PLAIN, 14));
         cart_table.setIntercellSpacing(new Dimension(0, 8));
 
-        // Style each cell renderer for better visibility
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setForeground(Color.WHITE);
         cellRenderer.setBackground(Utility.blackish);
@@ -226,26 +257,53 @@ public class cart_content extends javax.swing.JInternalFrame {
             cart_table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
         }
 
-        // Trash icon column
+        // Trash
         cart_table.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                           boolean hasFocus, int row, int column) {
                 JLabel label = new JLabel();
                 label.setHorizontalAlignment(JLabel.CENTER);
-                label.setIcon((Icon) value);
+                if (value instanceof Icon) label.setIcon((Icon) value);
                 label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 label.setOpaque(true);
-                label.setBackground(Utility.pink); // use your custom color
+                label.setBackground(Utility.blackish);
                 return label;
             }
         });
 
-        // Hide cartId column
+        // Hide cartId
         cart_table.getColumnModel().getColumn(5).setMinWidth(0);
         cart_table.getColumnModel().getColumn(5).setMaxWidth(0);
         cart_table.getColumnModel().getColumn(5).setWidth(0);
+
+        // Decrease button
+        cart_table.getColumnModel().getColumn(6).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                          boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel();
+                if (value instanceof Icon) label.setIcon((Icon) value);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                return label;
+            }
+        });
+
+        // Increase button
+        cart_table.getColumnModel().getColumn(7).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                          boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel();
+                if (value instanceof Icon) label.setIcon((Icon) value);
+                label.setHorizontalAlignment(JLabel.CENTER);
+                label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                return label;
+            }
+        });
     }
+
 
     
     public static ImageIcon resizeImage(String path, int size) {
@@ -303,11 +361,10 @@ public class cart_content extends javax.swing.JInternalFrame {
             if (!confirm) return;
 
             // Insert order
-            String insertOrder = "INSERT INTO orders (reseller_id, total_amount, status, order_date) VALUES (?, ?, ?, NOW())";
+            String insertOrder = "INSERT INTO orders (reseller_id, total_amount, order_date) VALUES (?, ?, NOW())";
             PreparedStatement orderStmt = conn.prepareStatement(insertOrder, Statement.RETURN_GENERATED_KEYS);
             orderStmt.setInt(1, userId);
             orderStmt.setDouble(2, total);
-            orderStmt.setString(3, "Pending");
             orderStmt.executeUpdate();
 
             ResultSet generatedKeys = orderStmt.getGeneratedKeys();
@@ -418,9 +475,10 @@ public class cart_content extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         cart_table = new javax.swing.JTable();
-        dummy = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        total_price = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(610, 470));
 
@@ -440,10 +498,7 @@ public class cart_content extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(cart_table);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 610, 390));
-
-        dummy.setMinimumSize(new java.awt.Dimension(40, 50));
-        jPanel1.add(dummy, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 40, 50));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 610, 340));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -468,9 +523,19 @@ public class cart_content extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Order Cart");
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 90, 40));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 100, 40));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 30, 110, 40));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 80, 120, 40));
+
+        total_price.setFont(new java.awt.Font("SansSerif", 1, 18)); // NOI18N
+        total_price.setText("Total: ");
+        total_price.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanel1.add(total_price, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 160, 40));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Your Shopping Cart");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 6, 610, 70));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -491,11 +556,11 @@ public class cart_content extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jPanel2MouseClicked
 
     private void jPanel2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseEntered
-        // TODO add your handling code here:
+        jPanel2.setBackground(Color.lightGray);
     }//GEN-LAST:event_jPanel2MouseEntered
 
     private void jPanel2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MouseExited
-        // TODO add your handling code here:
+        jPanel2.setBackground(Color.WHITE);
     }//GEN-LAST:event_jPanel2MouseExited
 
     private void jPanel2MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel2MousePressed
@@ -509,10 +574,11 @@ public class cart_content extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable cart_table;
-    private javax.swing.JLabel dummy;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel total_price;
     // End of variables declaration//GEN-END:variables
 }

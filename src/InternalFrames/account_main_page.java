@@ -373,7 +373,7 @@ public class account_main_page extends javax.swing.JInternalFrame {
                 user_picMouseClicked(evt);
             }
         });
-        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 100));
+        jPanel3.add(user_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 120, 110));
 
         jPanel4.setBackground(Utility.darkermiku);
 
@@ -392,11 +392,11 @@ public class account_main_page extends javax.swing.JInternalFrame {
 
         name_label.setFont(new java.awt.Font("Segoe UI Semibold", 1, 24)); // NOI18N
         name_label.setText("Name");
-        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 350, 30));
+        jPanel3.add(name_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 350, 30));
 
         email_label.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         email_label.setText("Email");
-        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 140, 330, 30));
+        jPanel3.add(email_label, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, 330, 30));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Symbol", 1, 12)); // NOI18N
         jLabel3.setText("Name");
