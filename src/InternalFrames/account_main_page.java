@@ -82,7 +82,7 @@ public class account_main_page extends javax.swing.JInternalFrame {
     }
     
     private void uploadProfilePicture(String filePath) {
-        try {
+        try {   
             File selectedFile = new File(filePath);
             if (!selectedFile.exists()) {
                 throw new IllegalArgumentException("File does not exist.");
@@ -153,14 +153,14 @@ public class account_main_page extends javax.swing.JInternalFrame {
 
                 // If the profile picture path is null or empty, use the default image
                 if (profilePicPath == null || profilePicPath.isEmpty()) {
-                    profilePicPath = "ProfilePics/user_pic.jpg"; // Default image path
+                    profilePicPath = "ProfilePics/user.png"; // Default image path
                 }
 
                 // Check if the file exists in the directory
                 File imgFile = new File(profilePicPath);
                 if (!imgFile.exists()) {
                     // If the file doesn't exist, use the default image
-                    imgFile = new File("ProfilePics/user_pic.jpg");
+                    imgFile = new File("ProfilePics/user.png");
                 }
 
                 // Load and scale the image
@@ -172,9 +172,6 @@ public class account_main_page extends javax.swing.JInternalFrame {
             e.printStackTrace();
         }
     }
-
-
-
 
     private void getData(){
         String sql = "SELECT * FROM user WHERE id = " + id;

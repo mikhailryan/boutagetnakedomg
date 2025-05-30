@@ -5,6 +5,7 @@ package Dialogs;
 import config.*;
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -468,8 +469,15 @@ public class add_user_form extends javax.swing.JDialog {
                     valid_to_add = false;
                 }
             }else{
-                if(valid_to_add) {
+                if (valid_to_add) {
                     conn.insertData("INSERT INTO `user` (name, username, email, password, role, status) VALUES ('"+name+"','"+username+"', '"+email+"', '"+hashedPassword+"', '"+role+"', '"+status+"')");
+
+                    ResultSet rs = conn.getData("SELECT id FROM user WHERE username = '"+username+"' LIMIT 1");
+                    if (rs.next()) {
+                        int newUserId = rs.getInt("id");
+                        conn.insertLog(Session.getInstance().getUserId(), "Added user with ID " + newUserId);
+                    }
+
                     JOptionPane.showMessageDialog(null, "User Inserted Successfully!");
                     this.dispose();
                 }

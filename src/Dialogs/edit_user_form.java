@@ -7,6 +7,7 @@ package Dialogs;
 
 import InternalFrames.users_table;
 import config.CustomComboBoxUI;
+import config.Session;
 import config.Utility;
 import config.db_connector;
 import java.awt.Color;
@@ -515,7 +516,8 @@ public class edit_user_form extends javax.swing.JDialog {
                                     + "role = '"+role+"', "
                                     + "status = '"+status+"' "
                                         + "WHERE id = '"+userId+"'");
-
+            
+            conn.insertLog(Session.getInstance().getUserId(), "Edited User with ID: " + userId);
             CustomMessageDialog.showMessage(null, "User Edited Successfully!", "Edit User");
             new users_table().refreshData();
             this.dispose();

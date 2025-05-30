@@ -11,6 +11,7 @@ import InternalFrames.account_main_page;
 import InternalFrames.cart_content;
 import config.Session;
 import config.Utility;
+import config.db_connector;
 import java.beans.PropertyVetoException;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -23,13 +24,14 @@ import javax.swing.JLabel;
 public class Reseeller extends javax.swing.JFrame {
     
     private JInternalFrame activeFrame = null;
+    db_connector conn = new db_connector();
     
     /**
      * Creates new form Reseeller
      */
     public Reseeller() {
         initComponents();
-        Session.getInstance().setUserId(119);
+//        Session.getInstance().setUserId(119);
         greet.setText("Reseller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
         JLabel[] labels = {logo, close_button, logout_pic, profile_pic};
@@ -53,6 +55,18 @@ public class Reseeller extends javax.swing.JFrame {
     public JDesktopPane getDesktopPane() {
         return main_desktop;
     }
+    
+    private void logout() {
+        Session session = Session.getInstance();
+        int userId = session.getUserId();
+        String role = conn.getUserRoleById(userId); 
+
+        conn.insertLog(userId, "User (" + role + ") logged out");
+
+        session.clearSession(); 
+        new Login().setVisible(true);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -243,7 +257,7 @@ public class Reseeller extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
-        System.exit(0);
+        Utility.logout(this);
     }//GEN-LAST:event_close_buttonMouseClicked
 
     private void cart_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cart_buttonMouseClicked

@@ -660,6 +660,8 @@ public class Register extends javax.swing.JFrame {
             }else{
                 if(valid_to_register) {
                     conn.insertData("INSERT INTO `user` (name, username, email, password, role, status) VALUES ('"+name+"','"+username+"', '"+email+"', '"+hashedPassword+"', '"+role+"', '"+status+"')");
+                    conn.insertLog(conn.getLastInsertedId("user"), "New user registered: " + username);
+                    
                     JOptionPane.showMessageDialog(null, "Registered Successfully!");
 
                     new Login().setVisible(true);

@@ -5,6 +5,7 @@ import Dialogs.CustomYesNoDialog;
 import Dialogs.edit_user_form;
 import Dialogs.add_user_form;
 import config.CustomScrollBarUI;
+import config.Session;
 import config.Utility;
 import config.db_connector;
 import java.awt.*;
@@ -443,7 +444,9 @@ public class users_table extends javax.swing.JInternalFrame {
 
     private void delete_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_delete_buttonMouseClicked
         int row = users_table.getSelectedRow(); 
-
+        
+        db_connector conn = new db_connector();
+        
         if (row == -1) {
             CustomMessageDialog.showMessage(null, "Please select a row to delete.", "No Selection");
             return;
@@ -458,6 +461,7 @@ public class users_table extends javax.swing.JInternalFrame {
 
         if (db_connector.updateDatabase("DELETE FROM user WHERE id = '" + id + "'")) {
             display_data();
+            conn.insertLog(Session.getInstance().getUserId(), "Deleted user with ID:" + id);
             CustomMessageDialog.showMessage(null, "User deleted successfully.", "Deleted");
         } else {
             CustomMessageDialog.showMessage(null, "Failed to delete user.", "Error");

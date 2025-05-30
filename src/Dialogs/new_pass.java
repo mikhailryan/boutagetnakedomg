@@ -247,6 +247,7 @@ public class new_pass extends javax.swing.JDialog {
         
         String updateQuery = "UPDATE user SET password = '" + hashed_pass + "', verification_code = NULL WHERE id = " + Session.getInstance().getUserId();
         db_connector.updateDatabase(updateQuery);
+        conn.insertLog(Session.getInstance().getUserId(), "Password reset via forgot password");
         CustomMessageDialog.showMessage(null, "Password successfully updated!", "Success");
         this.dispose();
         instance = null;

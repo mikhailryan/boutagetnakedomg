@@ -312,7 +312,7 @@ public class cart_content extends javax.swing.JInternalFrame {
         return new ImageIcon(img);
     }
     
-    private void orderCart() {
+private void orderCart() {
         db_connector db = new db_connector();
         Connection conn = null;
 
@@ -421,6 +421,9 @@ public class cart_content extends javax.swing.JInternalFrame {
 
             // Commit transaction
             conn.commit();
+            
+            db_connector connn = new db_connector();
+            connn.insertLog(userId, "Placed cart order with ID: " + orderId + " (₱" + String.format("%.2f", total) + ")");
 
             String receiptPath = OrderReceiptGenerator.generateReceipt(orderId, Session.getInstance().getUsername(), items, total);
 

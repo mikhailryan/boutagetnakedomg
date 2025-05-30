@@ -5,6 +5,8 @@
  */
 package InternalFrames;
 
+import Dialogs.CustomMessageDialog;
+import Dialogs.CustomYesNoDialog;
 import Dialogs.add_product;
 import Dialogs.verify_email;
 import config.CustomScrollBarUI;
@@ -14,10 +16,16 @@ import config.db_connector;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -33,6 +41,7 @@ import net.proteanit.sql.DbUtils;
  * @author Mercy
  */
 public class products_view extends javax.swing.JInternalFrame {
+    
 
     /**
      * Creates new form products_view
@@ -52,7 +61,7 @@ public class products_view extends javax.swing.JInternalFrame {
         bi.setNorthPane(null);
         
         display_products();
-        styleProductTable();
+        styleProductTable();   
     }
     
     private void display_products() {
@@ -139,6 +148,9 @@ public class products_view extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         product_pic = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        restock_button = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
 
         setPreferredSize(new java.awt.Dimension(610, 470));
 
@@ -159,7 +171,7 @@ public class products_view extends javax.swing.JInternalFrame {
         ));
         productScrollPane.setViewportView(products_table);
 
-        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 610, 410));
+        jPanel1.add(productScrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 610, 380));
 
         jPanel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -174,7 +186,52 @@ public class products_view extends javax.swing.JInternalFrame {
         jLabel2.setText("Add");
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, 60, 30));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 80, 30));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 90, 30));
+
+        restock_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                restock_buttonMouseClicked(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Restock");
+
+        javax.swing.GroupLayout restock_buttonLayout = new javax.swing.GroupLayout(restock_button);
+        restock_button.setLayout(restock_buttonLayout);
+        restock_buttonLayout.setHorizontalGroup(
+            restock_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(restock_buttonLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        restock_buttonLayout.setVerticalGroup(
+            restock_buttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(restock_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 50, -1, 30));
+
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, -1, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,14 +254,91 @@ public class products_view extends javax.swing.JInternalFrame {
             add_product.addProductDialog(desktopPane);
         }
     }//GEN-LAST:event_jPanel2MouseClicked
+    db_connector conn = new db_connector();
+    private void restock_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_restock_buttonMouseClicked
+        int selectedRow = products_table.getSelectedRow();
+
+        if (selectedRow != -1) {  // Make sure a row is selected
+            int productId = (int) products_table.getValueAt(selectedRow, 0); 
+
+            int currentQuantity = (int) products_table.getValueAt(selectedRow, 3); 
+
+            String input = JOptionPane.showInputDialog(null, "Enter the number of units to restock:");
+
+            try {
+                int restockAmount = Integer.parseInt(input);
+
+                int updatedQuantity = currentQuantity + restockAmount;
+
+                products_table.setValueAt(updatedQuantity, selectedRow, 3);
+
+                String sql = "UPDATE products SET stock = ? WHERE id = ?";
+                
+                Connection connn = conn.getConnection();
+                PreparedStatement pstmt = connn.prepareStatement(sql);
+              
+                pstmt.setInt(1, updatedQuantity);  // Set the updated stock
+                pstmt.setInt(2, productId);        // Set the product ID
+
+                // Call the updateDatabase method to execute the update query
+                boolean success = db_connector.updateDatabase(pstmt);
+
+                if (success) {
+                    // Optional: Notify user of successful restock
+                    JOptionPane.showMessageDialog(null, "Restocked " + restockAmount + " units and updated the database!");
+                } else {
+                    // Handle failure (couldn't update the database)
+                    JOptionPane.showMessageDialog(null, "Failed to update the database.");
+                }
+            } catch (NumberFormatException ex) {
+                // Handle invalid input (non-numeric or empty input)
+                JOptionPane.showMessageDialog(null, "Invalid input. Please enter a valid number.");
+            } catch (SQLException ex) {
+                Logger.getLogger(products_view.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            // If no row is selected, show an error message
+            JOptionPane.showMessageDialog(null, "Please select a product to restock.");
+        }
+
+    }//GEN-LAST:event_restock_buttonMouseClicked
+
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+        int selected_row = products_table.getSelectedRow();
+        
+        if (selected_row == -1) {
+            CustomMessageDialog.showMessage(null, "Please select a row to delete.", "No Selection");
+            return;
+        }
+
+        boolean confirm = CustomYesNoDialog.showConfirm(null, "Are you sure you want to remove this Product?", "Confirm Delete");
+        if (!confirm) {
+            return;
+        }
+
+        String id = products_table.getValueAt(selected_row, 0).toString(); 
+
+        if (db_connector.updateDatabase("DELETE FROM products WHERE id = '" + id + "'")) {
+            
+            display_products();
+            styleProductTable();   
+            conn.insertLog(Session.getInstance().getUserId(), "Deleted Product with ID:" + id);
+            CustomMessageDialog.showMessage(null, "Product deleted successfully.", "Deleted");
+        } else {
+            CustomMessageDialog.showMessage(null, "Failed to delete Product.", "Error");
+        }
+    }//GEN-LAST:event_jPanel3MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane productScrollPane;
     private javax.swing.JLabel product_pic;
     private javax.swing.JTable products_table;
+    private javax.swing.JPanel restock_button;
     // End of variables declaration//GEN-END:variables
 }

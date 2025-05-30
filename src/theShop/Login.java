@@ -459,6 +459,7 @@ public class Login extends javax.swing.JFrame {
                     if(!status.equals("Pending")){
                         
                         session.setUserId(id);
+                        conn.insertLog(id, "User (" + role + ") logged in");
                         
                         switch (role) {
                         case "Admin":

@@ -5,14 +5,26 @@
  */
 package theShop;
 
+import Dialogs.CustomMessageDialog;
 import Dialogs.CustomYesNoDialog;
 import InternalFrames.products_view;
 import InternalFrames.account_main_page;
+import InternalFrames.browse_prods;
+import InternalFrames.ordered_products;
 import config.Session;
 import config.Utility;
+import config.db_connector;
 import java.beans.PropertyVetoException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -28,7 +40,7 @@ public class Seller extends javax.swing.JFrame {
     public Seller() {
         initComponents();
         
-        Session.getInstance().setUserId(112);
+//        Session.getInstance().setUserId(157);
         
         greet.setText("Seller: " + (Session.getInstance().getName() != null ? Session.getInstance().getName() : "NOT LOGGED IN"));
         
@@ -39,11 +51,14 @@ public class Seller extends javax.swing.JFrame {
         products_view prods = new products_view();
         main_desktop.add(prods);
         prods.setVisible(true);
+
+        
     }
     
     private void resetButtonColors() {
         profile_button.setBackground(Utility.darkermiku);
         products_button.setBackground(Utility.darkermiku);
+        ordered_products_button.setBackground(Utility.darkermiku);
     }
 
     /**
@@ -58,7 +73,7 @@ public class Seller extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         close_button = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        products_button = new javax.swing.JPanel();
+        ordered_products_button = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         logo = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -68,6 +83,8 @@ public class Seller extends javax.swing.JFrame {
         profile_button = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         profile_pic = new javax.swing.JLabel();
+        products_button = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         greet = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
 
@@ -92,20 +109,26 @@ public class Seller extends javax.swing.JFrame {
         jPanel2.setPreferredSize(new java.awt.Dimension(190, 500));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        products_button.setBackground(Utility.miku);
-        products_button.addMouseListener(new java.awt.event.MouseAdapter() {
+        ordered_products_button.setBackground(Utility.darkermiku);
+        ordered_products_button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                products_buttonMouseClicked(evt);
+                ordered_products_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                ordered_products_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                ordered_products_buttonMouseExited(evt);
             }
         });
-        products_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        ordered_products_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Products");
-        products_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 0, 110, 40));
+        jLabel2.setText("Ordered Products");
+        ordered_products_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 110, 40));
 
-        jPanel2.add(products_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
+        jPanel2.add(ordered_products_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 190, 40));
 
         logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/leeeek.png"))); // NOI18N
         jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 150, 130));
@@ -159,7 +182,28 @@ public class Seller extends javax.swing.JFrame {
         profile_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 110, 40));
         profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 40, 40));
 
-        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 190, 40));
+        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 190, 40));
+
+        products_button.setBackground(Utility.miku);
+        products_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                products_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                products_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                products_buttonMouseExited(evt);
+            }
+        });
+        products_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Products");
+        products_button.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, 0, 110, 40));
+
+        jPanel2.add(products_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 190, 40));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 530));
 
@@ -187,14 +231,44 @@ public class Seller extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
-        System.exit(0);
+        Utility.logout(this);
     }//GEN-LAST:event_close_buttonMouseClicked
 
-    private void products_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseClicked
-        products_view prods = new products_view();
-        main_desktop.add(prods);
-        prods.setVisible(true);
-    }//GEN-LAST:event_products_buttonMouseClicked
+    private void ordered_products_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordered_products_buttonMouseClicked
+        resetButtonColors();
+        ordered_products_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof ordered_products) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null && !activeFrame.isClosed()) {
+            activeFrame.dispose();
+        }
+
+        ordered_products ordprod = new ordered_products();
+        main_desktop.add(ordprod);
+
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                ordprod.setVisible(true);
+                try {
+                    ordprod.setMaximum(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        });
+
+        activeFrame = ordprod;
+    }//GEN-LAST:event_ordered_products_buttonMouseClicked
 
     private void logout_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logout_buttonMouseClicked
         boolean confirmed = CustomYesNoDialog.showConfirm(this, "Are you sure you want to Logout?", "Confirm Logout");
@@ -261,6 +335,67 @@ public class Seller extends javax.swing.JFrame {
             profile_button.setBackground(Utility.darkermiku);
         }
     }//GEN-LAST:event_profile_buttonMouseExited
+    
+    private JFrame parent;
+    
+    private void products_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseClicked
+        resetButtonColors();
+        products_button.setBackground(Utility.miku);
+        
+        int sellerId = Session.getInstance().getUserId();
+        Utility.showIndividualStockAlerts(sellerId, parent); 
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof products_view) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        products_view prod = new products_view();
+        main_desktop.add(prod);
+        prod.setVisible(true);
+
+        try {
+            prod.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = prod;
+    }//GEN-LAST:event_products_buttonMouseClicked
+
+    private void products_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof products_view)) {
+            products_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_products_buttonMouseEntered
+
+    private void products_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_products_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof products_view)) {
+            products_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_products_buttonMouseExited
+
+    private void ordered_products_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordered_products_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof ordered_products)) {
+            ordered_products_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_ordered_products_buttonMouseEntered
+
+    private void ordered_products_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ordered_products_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof ordered_products)) {
+            ordered_products_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_ordered_products_buttonMouseExited
 
     /**
      * @param args the command line arguments
@@ -302,6 +437,7 @@ public class Seller extends javax.swing.JFrame {
     private javax.swing.JLabel greet;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
@@ -310,6 +446,7 @@ public class Seller extends javax.swing.JFrame {
     private javax.swing.JPanel logout_button;
     private javax.swing.JLabel logout_pic;
     private javax.swing.JDesktopPane main_desktop;
+    private javax.swing.JPanel ordered_products_button;
     private javax.swing.JPanel products_button;
     private javax.swing.JPanel profile_button;
     private javax.swing.JLabel profile_pic;

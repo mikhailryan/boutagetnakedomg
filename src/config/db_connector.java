@@ -61,6 +61,16 @@ public class db_connector {
             return false;
         }
     }
+    
+    public static boolean updateDatabase(PreparedStatement sql) {
+        try {
+            int rowsAffected = sql.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            System.out.println("Error in Updating: " + e.getMessage());
+            return false;
+        }
+    }
 
 
     
@@ -89,6 +99,41 @@ public class db_connector {
             result = 0;
         }
         return result;
+    }
+    
+    public int insertLog(int userId, String action) {
+        String sql = "INSERT INTO logs (user_id, action) VALUES (?, ?)";
+        try {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, action);
+            pstmt.executeUpdate();
+            return 1;
+        } catch (SQLException e) {
+            System.out.println("Log Insert Error: " + e.getMessage());
+            return 0;
+        }
+    }
+    
+    public int getLastInsertedId(String tableName) {
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM " + tableName + " ORDER BY id DESC LIMIT 1");
+            if (rs.next()) return rs.getInt("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    
+    public String getUserRoleById(int id) {
+        try {
+            ResultSet rs = getData("SELECT role FROM user WHERE id = " + id);
+            if (rs.next()) return rs.getString("role");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Unknown";
     }
     
 }

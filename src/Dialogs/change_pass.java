@@ -444,9 +444,12 @@ public class change_pass extends javax.swing.JDialog {
         boolean success = db_connector.updateDatabase(sql);
 
         if (success) {
+            
             CustomMessageDialog.showMessage(null, "Password Changed Successfully!\nLogging Out.", "Success");
 
             Session session = Session.getInstance();
+            conn.insertLog(session.getUserId(), "Password changed in account settings");
+            conn.insertLog(session.getUserId(), "User logged out after password change");
             session.clearSession();
 
             Window parentWindow = SwingUtilities.getWindowAncestor(change_button);

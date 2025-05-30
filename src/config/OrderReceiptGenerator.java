@@ -28,53 +28,91 @@ public class OrderReceiptGenerator {
             PdfWriter.getInstance(document, new FileOutputStream(fileName));
             document.open();
 
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
-            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
-            Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
+            // Fonts
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 20, BaseColor.DARK_GRAY);
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.WHITE);
+            Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 12, BaseColor.BLACK);
 
+            // Title
             Paragraph title = new Paragraph("Order Receipt", titleFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
-
             document.add(Chunk.NEWLINE);
 
+            // Info section
             document.add(new Paragraph("Order ID: " + orderId, normalFont));
             document.add(new Paragraph("Customer: " + userName, normalFont));
             document.add(new Paragraph("Date: " + java.time.LocalDate.now(), normalFont));
             document.add(Chunk.NEWLINE);
 
+            // Table with colored header
             PdfPTable table = new PdfPTable(4);
             table.setWidthPercentage(100);
             table.setSpacingBefore(10f);
             table.setSpacingAfter(10f);
             table.setWidths(new float[]{3, 1, 1, 1});
 
-            table.addCell(new PdfPCell(new Phrase("Product", headerFont)));
-            table.addCell(new PdfPCell(new Phrase("Qty", headerFont)));
-            table.addCell(new PdfPCell(new Phrase("Price", headerFont)));
-            table.addCell(new PdfPCell(new Phrase("Subtotal", headerFont)));
+            BaseColor headerBgColor = new BaseColor(30, 144, 255); // Dodger Blue
 
-            for (Map<String, Object> item : items) {
-                table.addCell(new Phrase(item.get("name").toString(), normalFont));
-                table.addCell(new Phrase(item.get("qty").toString(), normalFont));
-                table.addCell(new Phrase(String.format("₱%.2f", item.get("price")), normalFont));
-                table.addCell(new Phrase(String.format("₱%.2f", item.get("subtotal")), normalFont));
+            // Add header cells with background color
+            String[] headers = {"Product", "Qty", "Price", "Subtotal"};
+            for (String h : headers) {
+                PdfPCell headerCell = new PdfPCell(new Phrase(h, headerFont));
+                headerCell.setBackgroundColor(headerBgColor);
+                headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                headerCell.setPadding(5);
+                table.addCell(headerCell);
             }
 
-            PdfPCell emptyCell = new PdfPCell(new Phrase(""));
-            emptyCell.setColspan(3);
-            emptyCell.setBorder(Rectangle.NO_BORDER);
+            // Add item rows
+            for (Map<String, Object> item : items) {
+                PdfPCell productCell = new PdfPCell(new Phrase(item.get("name").toString(), normalFont));
+                productCell.setPadding(5);
+                table.addCell(productCell);
 
-            PdfPCell totalCell = new PdfPCell(new Phrase("Total: ₱" + String.format("%.2f", total), headerFont));
-            totalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                PdfPCell qtyCell = new PdfPCell(new Phrase(item.get("qty").toString(), normalFont));
+                qtyCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                qtyCell.setPadding(5);
+                table.addCell(qtyCell);
 
-            table.addCell(emptyCell);
-            table.addCell(totalCell);
+                PdfPCell priceCell = new PdfPCell(new Phrase(String.format("₱%.2f", item.get("price")), normalFont));
+                priceCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                priceCell.setPadding(5);
+                table.addCell(priceCell);
+
+                PdfPCell subtotalCell = new PdfPCell(new Phrase(String.format("₱%.2f", item.get("subtotal")), normalFont));
+                subtotalCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+                subtotalCell.setPadding(5);
+                table.addCell(subtotalCell);
+            }
+
+            // Separator line before total
+            PdfPCell separator = new PdfPCell();
+            separator.setColspan(4);
+            separator.setBorder(Rectangle.TOP);
+            separator.setPaddingTop(10f);
+            table.addCell(separator);
+
+            // Total row
+            PdfPCell totalLabelCell = new PdfPCell(new Phrase("Total:", headerFont));
+            totalLabelCell.setColspan(3);
+            totalLabelCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalLabelCell.setBorder(Rectangle.NO_BORDER);
+            totalLabelCell.setPadding(5);
+            table.addCell(totalLabelCell);
+
+            PdfPCell totalValueCell = new PdfPCell(new Phrase(String.format("₱%.2f", total), headerFont));
+            totalValueCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            totalValueCell.setPadding(5);
+            totalValueCell.setBorder(Rectangle.NO_BORDER);
+            table.addCell(totalValueCell);
 
             document.add(table);
 
+            // Thank you note
             Paragraph thanks = new Paragraph("Thank you for your order!", normalFont);
             thanks.setAlignment(Element.ALIGN_CENTER);
+            thanks.setSpacingBefore(20);
             document.add(thanks);
 
             document.close();
@@ -85,4 +123,5 @@ public class OrderReceiptGenerator {
             return null;
         }
     }
+
 }

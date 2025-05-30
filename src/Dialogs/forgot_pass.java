@@ -296,7 +296,8 @@ public class forgot_pass extends javax.swing.JDialog {
                 int userId = rs.getInt("id");
                 String userEmail = rs.getString("email");
                 boolean emailVerified = rs.getBoolean("email_verified"); // assuming 0 = not verified, 1 = verified
-
+                conn.insertLog(userId, "Requested password reset code");
+                
                 if (emailVerified) {
                     // Proceed with sending reset code
                     code = String.format("%06d", new Random().nextInt(999999));
@@ -325,7 +326,7 @@ public class forgot_pass extends javax.swing.JDialog {
                         verify_email_fp.verifyEmailDialog(parentFrame, userId);
                     }
                     
-                }
+                }   
             } else {
                 error.setText("No match found for username and email.");
                 Utility.setInvalidBorder(email_field);

@@ -3,9 +3,12 @@ package theShop;
 
 import Dialogs.CustomYesNoDialog;
 import InternalFrames.account_main_page;
+import InternalFrames.logs;
+import InternalFrames.order_history;
 import InternalFrames.users_table;
 import config.Session;
 import config.Utility;
+import config.db_connector;
 import java.beans.PropertyVetoException;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -21,8 +24,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     public Admin_Dashboard() {
         initComponents();
         
-        JLabel[] labels = {logo, close_button, minimize_button, users_manage_pic, profile_pic, logout_pic};
-        String[] paths = {"leeeek.png", "close.png", "minimize-sign.png", "management.png", "user.png", "logout.png"};
+        JLabel[] labels = {logo, close_button, minimize_button, users_manage_pic, profile_pic, logout_pic, history_pic};
+        String[] paths = {"leeeek.png", "close.png", "minimize-sign.png", "management.png", "user.png", "logout.png", "order.png"};
         Utility.setIcons(labels, paths);
         
         users_table users_table = new users_table();
@@ -36,6 +39,8 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private void resetButtonColors() {
         profile_button.setBackground(Utility.darkermiku);
         users_button.setBackground(Utility.darkermiku);
+        history_button.setBackground(Utility.darkermiku);
+        logs_button.setBackground(Utility.darkermiku);
     }
 
     /**
@@ -60,6 +65,11 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         users_button = new javax.swing.JPanel();
         users_manage_pic = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        history_button = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        history_pic = new javax.swing.JLabel();
+        logs_button = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         main_desktop = new javax.swing.JDesktopPane();
         minimize_button = new javax.swing.JLabel();
         close_button = new javax.swing.JLabel();
@@ -104,7 +114,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         profile_button.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 0, 110, 40));
         profile_button.add(profile_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
 
-        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 380, 190, 40));
+        jPanel2.add(profile_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 190, 40));
 
         logout_button.setBackground(Utility.darkermiku);
         logout_button.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -147,7 +157,43 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         jLabel6.setText("Users Management");
         users_button.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 110, 40));
 
-        jPanel2.add(users_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 190, 40));
+        jPanel2.add(users_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 190, 40));
+
+        history_button.setBackground(Utility.darkermiku);
+        history_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                history_buttonMouseClicked(evt);
+            }
+        });
+        history_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Order Logs");
+        history_button.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 0, 110, 40));
+        history_button.add(history_pic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 0, 40, 40));
+
+        jPanel2.add(history_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 190, 40));
+
+        logs_button.setBackground(Utility.darkermiku);
+        logs_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logs_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logs_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logs_buttonMouseExited(evt);
+            }
+        });
+        logs_button.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Check Logs");
+        logs_button.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(36, -1, 120, 40));
+
+        jPanel2.add(logs_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 190, 40));
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(0, 0, 190, 530);
@@ -208,7 +254,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_minimize_buttonMouseClicked
 
     private void close_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_close_buttonMouseClicked
-        System.exit(0);
+        Utility.logout(this);
     }//GEN-LAST:event_close_buttonMouseClicked
 
     private void profile_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_buttonMouseClicked
@@ -322,6 +368,82 @@ public class Admin_Dashboard extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_users_buttonMouseExited
 
+    private void history_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_history_buttonMouseClicked
+        resetButtonColors();
+        history_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof order_history) { 
+                try {
+                    frame.setSelected(true); 
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        order_history history = new order_history();
+        main_desktop.add(history);
+        history.setVisible(true);
+
+        try {
+            history.setMaximum(true); 
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = history;
+    }//GEN-LAST:event_history_buttonMouseClicked
+    
+    private void logs_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logs_buttonMouseClicked
+        resetButtonColors();
+        logs_button.setBackground(Utility.miku);
+
+        for (JInternalFrame frame : main_desktop.getAllFrames()) {
+            if (frame instanceof logs) {
+                try {
+                    frame.setSelected(true);
+                } catch (PropertyVetoException e) {
+                    System.out.println(e.getMessage());
+                }
+                return;
+            }
+        }
+
+        if (activeFrame != null) {
+            activeFrame.dispose();
+        }
+
+        logs logs = new logs();  // Logs is now an internal frame
+        main_desktop.add(logs);
+        logs.setVisible(true);
+
+        try {
+            logs.setMaximum(true);
+        } catch (PropertyVetoException e) {
+            System.out.println(e.getMessage());
+        }
+
+        activeFrame = logs;
+    }//GEN-LAST:event_logs_buttonMouseClicked
+
+    private void logs_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logs_buttonMouseEntered
+        if (activeFrame == null || !(activeFrame instanceof logs)) {
+            logs_button.setBackground(Utility.miku);
+        }
+    }//GEN-LAST:event_logs_buttonMouseEntered
+
+    private void logs_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logs_buttonMouseExited
+        if (activeFrame == null || !(activeFrame instanceof logs)) {
+            logs_button.setBackground(Utility.darkermiku);
+        }
+    }//GEN-LAST:event_logs_buttonMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -357,7 +479,11 @@ public class Admin_Dashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel close_button;
+    private javax.swing.JPanel history_button;
+    private javax.swing.JLabel history_pic;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -366,6 +492,7 @@ public class Admin_Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel logo;
     private javax.swing.JPanel logout_button;
     private javax.swing.JLabel logout_pic;
+    private javax.swing.JPanel logs_button;
     private javax.swing.JDesktopPane main_desktop;
     private javax.swing.JLabel minimize_button;
     private javax.swing.JPanel profile_button;
